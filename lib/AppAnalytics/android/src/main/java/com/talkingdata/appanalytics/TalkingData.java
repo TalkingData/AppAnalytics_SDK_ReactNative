@@ -134,13 +134,7 @@ public class TalkingData extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void onEvent(String eventId, String eventLabel, ReadableMap map) {
-        if (!TextUtils.isEmpty(eventId) && !TextUtils.isEmpty(eventLabel) && map != null && !map.toHashMap().isEmpty()){
-            TCAgent.onEvent(context,eventId,eventLabel,map.toHashMap());
-        }else if (!TextUtils.isEmpty(eventId) && !TextUtils.isEmpty(eventLabel) && (map == null || map.toHashMap().isEmpty())){
-            TCAgent.onEvent(context,eventId,eventLabel);
-        }else if (!TextUtils.isEmpty(eventId) && TextUtils.isEmpty(eventLabel) && (map == null || map.toHashMap().isEmpty())){
-            TCAgent.onEvent(context, eventId);
-        }
+        TCAgent.onEvent(context, eventId, eventLabel, map == null ? null : ((ReadableNativeMap)map).toHashMap());
     }
 
     /**
