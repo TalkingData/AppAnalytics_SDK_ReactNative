@@ -5,6 +5,9 @@ project(':react-native-vector-icons').projectDir = new File(rootProject.projectD
 include ':react-native-talkingdata-appanalytics'
 project(':react-native-talkingdata-appanalytics').projectDir = new File(rootProject.projectDir, '../../lib/AppAnalytics/android')
 
+include ':react-native-talkingdata-adtracking'
+project(':react-native-talkingdata-adtracking').projectDir = new File(rootProject.projectDir, '../../lib/AdTracking/android')
+
 include ':app'
 
 

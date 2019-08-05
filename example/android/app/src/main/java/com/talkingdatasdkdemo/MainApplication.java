@@ -9,7 +9,9 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.talkingdata.appanalytics.TalkingDataPackage;
+import com.talkingdata.adtracking.TalkingDataADTPackage;
 import com.tendcloud.tenddata.TCAgent;
+import com.tendcloud.appcpa.TalkingDataAppCpa;
 
 
 import java.util.Arrays;
@@ -28,6 +30,7 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
             new TalkingDataPackage(),
+            new TalkingDataADTPackage(),
             new VectorIconsPackage()
       );
     }
@@ -48,5 +51,6 @@ public class MainApplication extends Application implements ReactApplication {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
     TCAgent.init(this,"","");
+    TalkingDataAppCpa.init(this,"sss","aaa");
   }
 }

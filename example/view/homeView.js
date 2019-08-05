@@ -185,7 +185,7 @@ export class HomeScreen extends React.Component {
 
     static navigationOptions = ({navigation}) => {
         return {
-            headerTitle: <LogoTitle txt='TalkingData react-native SDK Demo'/>,
+            headerTitle: <LogoTitle txt='产品线：AppAnalytics'/>,
         };
     };
 

@@ -1,0 +1,36 @@
+apply plugin: 'com.android.library'
+
+buildscript {
+    repositories {
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }
+        maven{ url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'}
+    }
+
+    
+}
+
+repositories {
+    mavenCentral()
+}
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion "26.0.3"
+
+
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+
+    }
+
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.facebook.react:react-native:+'
+    compile files('src/main/libs/SaaS_AdTracking_Android_SDK_V4.0.27.jar')
+}

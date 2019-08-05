@@ -20,6 +20,21 @@ import {ViewShoppingCartScreen} from "./iap/viewShoppingCart";
 import {EventScreen} from "./event/eventView";
 import {KVScreen} from "./kv/kv";
 
+//adt view
+import {ADTDeviceIdScreen} from "./adtracking/adt_deviceid/adtDeviceView";
+import {ADTRegisterScreen} from "./adtracking/adt_on_register/adtAccount"
+import {ADTCreateRoleScreen} from "./adtracking/adt_createrole/adtCreateRole"
+import {ADTOnPayScreen} from "./adtracking/adt_onpay/adtOnPay"
+import {ADTOnPayWithItemScreen} from "./adtracking/adt_onpay/adtOnPayWithItem"
+import {ADTOnPayWithOrderScreen} from "./adtracking/adt_onpay/adtOnPayWithOrder"
+import {ADTViewShoppingCartScreen} from "./adtracking/adt_shoppingcart/adt_viewShoppingCart"
+import {ADTAddItemScreen} from "./adtracking/adt_onadditemto_shoppingcart/adt_addItemView"
+import {ADTViewItemScreen} from "./adtracking/adt_viewitem/adt_viewItemView"
+import {ADTOnPlaceOrderScreen} from "./adtracking/adt_onplaceorder/adt_orderView"
+import {ADTOnOrderPaySuccessScreen} from "./adtracking/adt_onorderpaysuccess/adt_onOrderPaySucc"
+import {ADTOnCustomScreen} from "./adtracking/adt_customevent/adt_oncustomevent"
+import {ADTAdSearchScreen} from "./adtracking/adt_adsearch/adtAdSearch"
+
 //定义一个变量，存储StackNav 也就是栈导航的构造方法，Home是参数，screen对应的是上边的homeViewController
 // const RootStack = StackNavigator({
 //   Home : HomeScreen,
@@ -72,6 +87,21 @@ export const RootStack = createStackNavigator(
 export const Tab2Nav = createStackNavigator(
     {
         Home: Tab2Screen,
+        ADTDeviceId:ADTDeviceIdScreen,
+        ADTRegister:ADTRegisterScreen,
+        ADTCreateRole:ADTCreateRoleScreen,
+        ADTCreateRole:ADTCreateRoleScreen,
+        ADTOnPay:ADTOnPayScreen,
+        ADTOnPayWithItem:ADTOnPayWithItemScreen,
+        ADTOnPayWithOrder:ADTOnPayWithOrderScreen,
+        ADTOnViewShoppingCart:ADTViewShoppingCartScreen,
+        ADTOnViewShoppingCart:ADTViewShoppingCartScreen,
+        ADTOnAddItemToShoppingCart:ADTAddItemScreen,
+        ADTOnViewItem:ADTViewItemScreen,
+        ADTOnPlaceOrder:ADTOnPlaceOrderScreen,
+        ADTOnOrderPaySuccess:ADTOnOrderPaySuccessScreen,
+        ADTOnCustomEvent:ADTOnCustomScreen,
+        ADTAdSearch:ADTAdSearchScreen,
         // Details: DetailsScreen,
     },
     {

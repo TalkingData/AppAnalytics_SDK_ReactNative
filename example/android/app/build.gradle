@@ -139,6 +139,7 @@ android {
 dependencies {
     compile project(':react-native-vector-icons')
     compile project(':react-native-talkingdata-appanalytics')
+    compile project(':react-native-talkingdata-adtracking')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
     implementation "com.facebook.react:react-native:+"  // From node_modules
