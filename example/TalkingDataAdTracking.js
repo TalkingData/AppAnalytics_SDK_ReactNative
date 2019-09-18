@@ -77,18 +77,6 @@ class TalkingDataAdSearch {
 		this.end_date = end_date;
 	}
 
-	setSearchTerm(search_term){
-		this.search_term = search_term;
-	}
-
-	setGoogleBusinessVertical(google_business_vertical){
-		this.google_business_vertical = google_business_vertical;
-	}
-
-	addCustom(key, value){
-		this.custom[key] = value;
-	}
-
   	get adSearchString(){
   		return JSON.stringify({
 			  'destination':this.destination,
@@ -97,9 +85,6 @@ class TalkingDataAdSearch {
 			  'item_location_id':this.item_location_id,
 			  'start_date':this.start_date,
 			  'end_date':this.end_date,
-			  'search_term':this.search_term,
-			  'google_business_vertical':this.google_business_vertical,
-			  'custom':this.custom
   		});
 	}
 	  

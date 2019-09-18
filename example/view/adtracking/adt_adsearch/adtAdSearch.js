@@ -23,9 +23,6 @@ export class ADTAdSearchScreen extends React.Component {
             item_location_id: '',
             start_date: '',
             end_date: '',
-            search_term: '',
-            google_business_vertical: '',
-            custom:null,
             adSearch:new TalkingDataAdSearch(),
             key:'',
             value:''
@@ -61,26 +58,6 @@ export class ADTAdSearchScreen extends React.Component {
                     <View style={{justifyContent: 'space-between'}}>
 
                     <View style={{marginTop: 20, justifyContent: 'space-between'}}>
-
-                        <MyTextInput
-                            onChangeText={(key) => this.setState({key:key})}
-                            placeholder='key'
-                        />
-
-                        <MyTextInput
-                            onChangeText={(value) => this.setState({value: value})
-                            }
-                            placeholder='value'
-                        />
-
-                        <Button
-                            title={"添加自定义参数"}
-                            onPress={
-                                () => {
-                                    this.state.adSearch.addCustom(this.state.key, this.state.value);
-                                }
-                            }
-                        />
 
                         <View style={{marginTop: 20, justifyContent: 'space-between'}}/>
 
@@ -118,18 +95,6 @@ export class ADTAdSearchScreen extends React.Component {
                             placeholder='业务事件截止日期（航班返程日期）'
                         />
 
-                        <MyTextInput
-                            onChangeText={(search_term) => this.setState({search_term: search_term})
-                            }
-                            placeholder='搜索字符串'
-                        />
-
-                        <MyTextInput
-                            onChangeText={(google_business_vertical) => this.setState({google_business_vertical: google_business_vertical})
-                            }
-                            placeholder='用于区分各种业务类型的字符串'
-                        />
-
  
 
                         <Button
@@ -142,8 +107,6 @@ export class ADTAdSearchScreen extends React.Component {
                                     this.state.adSearch.setItemLocationId(this.state.item_location_id);
                                     this.state.adSearch.setStartDate(this.state.start_date);
                                     this.state.adSearch.setEndDate(this.state.end_date);
-                                    this.state.adSearch.setSearchTerm(this.state.search_term);
-                                    this.state.adSearch.setGoogleBusinessVertical(this.state.google_business_vertical);
                                     TalkingDataAdTracking.onAdSearch(this.state.adSearch.adSearchString);
                                 }
                             }

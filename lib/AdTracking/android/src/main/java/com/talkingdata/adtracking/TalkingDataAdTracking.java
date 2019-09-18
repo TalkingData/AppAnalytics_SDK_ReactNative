@@ -7,16 +7,13 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.tendcloud.appcpa.AdSearch;
 import com.tendcloud.appcpa.Order;
 import com.tendcloud.appcpa.ShoppingCart;
+import com.tendcloud.appcpa.TDSearch;
 import com.tendcloud.appcpa.TalkingDataAppCpa;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.HashMap;
 
 public class TalkingDataAdTracking extends ReactContextBaseJavaModule {
     private Context context;
@@ -102,8 +99,8 @@ public class TalkingDataAdTracking extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void onAdSearch(String adSearch){
-        TalkingDataAppCpa.onAdSearch(getAdSearch(adSearch));
+    public void onAdSearch(String tdSearch){
+        TalkingDataAppCpa.onSearch(getSearch(tdSearch));
     }
 
     @ReactMethod
@@ -219,32 +216,25 @@ public class TalkingDataAdTracking extends ReactContextBaseJavaModule {
         return shoppingCart;
     }
 
-    private AdSearch getAdSearch(String json){
-        AdSearch adSearch = AdSearch.createAdSearch();
+    private TDSearch getSearch(String json){
+        TDSearch tdSearch = TDSearch.createAdSearch();
         try{
             JSONObject jsonObject = new JSONObject(json);
-            adSearch.setDestination(jsonObject.optString("destination", null));
-            adSearch.setOrigin(jsonObject.optString("origin", null));
-            adSearch.setItemId(jsonObject.optString("item_id", null));
-            adSearch.setItemLocationId(jsonObject.optString("item_location_id", null));
-            adSearch.setStartDate(jsonObject.optString("start_date", null));
-            adSearch.setEndDate(jsonObject.optString("end_date", null));
-            adSearch.setSearchTerm(jsonObject.optString("search_term", null));
-            adSearch.setGoogleBusinessVertical(jsonObject.optString("google_business_vertical", null));
-            adSearch.setDestination(jsonObject.optString("destination", null));
-            JSONObject custom = jsonObject.optJSONObject("custom");
-            if(custom != null){
-                Map<String, Object> map = new HashMap();
-                Iterator iterator = custom.keys();
-                while(iterator.hasNext()){
-                    String key = (String)iterator.next();
-                    map.put(key, custom.opt(key));
-                }
-                adSearch.setCustomParam(map);
+            tdSearch.setCategory(jsonObject.optString("category", null));
+            tdSearch.setContent(jsonObject.optString("content", null));
+            tdSearch.setItemId(jsonObject.optString("item_id", null));
+            tdSearch.setItemLocationId(jsonObject.optString("item_location_id", null));
+            tdSearch.setDestination(jsonObject.optString("destination", null));
+            tdSearch.setOrigin(jsonObject.optString("origin", null));
+            if (jsonObject.has("start_date")){
+                tdSearch.setStartDate(jsonObject.optLong("start_date", 0));
+            }
+            if (jsonObject.has("end_date")){
+                tdSearch.setEndDate(jsonObject.optLong("end_date", 0));
             }
         }catch (Throwable t){
             t.printStackTrace();
         }
-        return adSearch;
+        return tdSearch;
     }
 }
