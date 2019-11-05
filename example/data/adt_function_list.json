@@ -3,6 +3,14 @@
     "key": "TalkingDataAdTracking.js",
     "data": [
       {
+        "id":"ADTBusinessTest",
+        "page":"ADTBusinessTest",
+        "name":"多个函数，如果不需要或者编译报错请注释或删除对应行业接口",
+        "supportiOS": true,
+        "supportAndroid":true,
+        "desc":"ADT新增行业测试接口"
+      },
+      {
         "id":"ADTDeviceId",
         "page":"ADTDeviceId",
         "name":"getDeviceID(callback)",

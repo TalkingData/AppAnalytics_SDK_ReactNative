@@ -10,6 +10,7 @@ import com.facebook.react.bridge.ReactMethod;
 import com.tendcloud.appcpa.Order;
 import com.tendcloud.appcpa.ShoppingCart;
 import com.tendcloud.appcpa.TDSearch;
+import com.tendcloud.appcpa.TDTransaction;
 import com.tendcloud.appcpa.TalkingDataAppCpa;
 
 import org.json.JSONArray;
@@ -41,6 +42,11 @@ public class TalkingDataAdTracking extends ReactContextBaseJavaModule {
     @ReactMethod
     public void onRegister(String account) {
         TalkingDataAppCpa.onRegister(account);
+    }
+
+    @ReactMethod
+    public void onRegisterWithinvitationCode(String account, String invitationCode) {
+        TalkingDataAppCpa.onRegister(account, invitationCode);
     }
 
     @ReactMethod
@@ -104,6 +110,11 @@ public class TalkingDataAdTracking extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void onSearch(String tdSearch){
+        TalkingDataAppCpa.onSearch(getSearch(tdSearch));
+    }
+
+    @ReactMethod
     public void onCustEvent1(){
         TalkingDataAppCpa.onCustEvent1();
     }
@@ -153,7 +164,87 @@ public class TalkingDataAdTracking extends ReactContextBaseJavaModule {
         TalkingDataAppCpa.onCustEvent10();
     }
 
+    @ReactMethod
+    public void onCreateCard(String accountId, String method, String content) {
+        TalkingDataAppCpa.onCreateCard(accountId, method, content);
+    }
 
+    @ReactMethod
+    public void onTransaction(String accountId, String transaction) {
+        TalkingDataAppCpa.onTransaction(accountId, getTransaction(transaction));
+    }
+
+    @ReactMethod
+    public void onCredit(String accountId, int amount, String content) {
+        TalkingDataAppCpa.onCredit(accountId, amount, content);
+    }
+
+    @ReactMethod
+    public  void onFavorite(String category, String content) {
+        TalkingDataAppCpa.onFavorite(category, content);
+    }
+
+    @ReactMethod
+    public  void onShare(String accountId, String content) {
+        TalkingDataAppCpa.onShare(accountId, content);
+    }
+    @ReactMethod
+    public  void onPunch(String accountId, String punchId) {
+        TalkingDataAppCpa.onPunch(accountId, punchId);
+    }
+    @ReactMethod
+    public  void onReservation(String accountId, String reservationId, String category, int amount, String term) {
+        TalkingDataAppCpa.onReservation(accountId, reservationId, category, amount, term);
+    }
+    @ReactMethod
+    public  void onBooking(String accountId, String bookingId, String category, int amount, String content) {
+        TalkingDataAppCpa.onBooking(accountId, bookingId, category, amount, content);
+    }
+    @ReactMethod
+    public  void onContact(String accountId, String content) {
+        TalkingDataAppCpa.onContact(accountId, content);
+    }
+    @ReactMethod
+    public  void onLearn(String accountId, String course, int begin, int duration) {
+        TalkingDataAppCpa.onLearn(accountId, course, begin, duration);
+    }
+    @ReactMethod
+    public  void onRead(String accountId, String book, int begin, int duration) {
+        TalkingDataAppCpa.onRead(accountId, book, begin, duration);
+    }
+    @ReactMethod
+    public  void onBrowse(String accountId, String content, int begin, int duration) {
+        TalkingDataAppCpa.onBrowse(accountId, content, begin, duration);
+    }
+    @ReactMethod
+    public  void onChargeBack(String accountId, String orderId, String reason, String type) {
+        TalkingDataAppCpa.onChargeBack(accountId, orderId, reason, type);
+    }
+    @ReactMethod
+    public  void onTrialFinished(String accountId, String content) {
+        TalkingDataAppCpa.onTrialFinished(accountId, content);
+    }
+    @ReactMethod
+    public  void onGuideFinished(String accountId, String content) {
+        TalkingDataAppCpa.onGuideFinished(accountId, content);
+    }
+    @ReactMethod
+    public  void onPreviewFinished(String accountId, String content) {
+        TalkingDataAppCpa.onPreviewFinished(accountId, content);
+    }
+    @ReactMethod
+    public  void onFreeFinished(String accountId, String content) {
+        TalkingDataAppCpa.onFreeFinished(accountId, content);
+    }
+    @ReactMethod
+    public  void onLevelPass(String accountId, String levelId) {
+        TalkingDataAppCpa.onLevelPass(accountId, levelId);
+    }
+    @ReactMethod
+    public  void onAchievementUnlock(String accountId, String achievementId) {
+        TalkingDataAppCpa.onAchievementUnlock(accountId, achievementId);
+    }
+    
     /**
      * 获取订单
      *
@@ -222,19 +313,41 @@ public class TalkingDataAdTracking extends ReactContextBaseJavaModule {
             JSONObject jsonObject = new JSONObject(json);
             tdSearch.setCategory(jsonObject.optString("category", null));
             tdSearch.setContent(jsonObject.optString("content", null));
-            tdSearch.setItemId(jsonObject.optString("item_id", null));
-            tdSearch.setItemLocationId(jsonObject.optString("item_location_id", null));
+            tdSearch.setItemId(jsonObject.optString("itemId", null));
+            tdSearch.setItemLocationId(jsonObject.optString("itemLocationId", null));
             tdSearch.setDestination(jsonObject.optString("destination", null));
             tdSearch.setOrigin(jsonObject.optString("origin", null));
-            if (jsonObject.has("start_date")){
-                tdSearch.setStartDate(jsonObject.optLong("start_date", 0));
+            if (jsonObject.has("startDate")){
+                tdSearch.setStartDate(jsonObject.optLong("startDate", 0));
             }
-            if (jsonObject.has("end_date")){
-                tdSearch.setEndDate(jsonObject.optLong("end_date", 0));
+            if (jsonObject.has("endDate")){
+                tdSearch.setEndDate(jsonObject.optLong("endDate", 0));
             }
         }catch (Throwable t){
             t.printStackTrace();
         }
         return tdSearch;
+    }
+
+    private TDTransaction getTransaction(String json) {
+        TDTransaction tdTransaction = TDTransaction.createTDTransaction();
+        if (TextUtils.isEmpty(json)) {
+            return tdTransaction;
+        }
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+            tdTransaction.setTransactionId(jsonObject.optString("transactionId", null))
+                    .setCategory(jsonObject.optString("category", null))
+                    .setAmount(jsonObject.optInt("amount", 0))
+                    .setPersonA(jsonObject.optString("personA", null))
+                    .setPersonB(jsonObject.optString("personB", null))
+                    .setStartDate(jsonObject.optLong("startDate", 0))
+                    .setEndDate(jsonObject.optLong("endDate", 0))
+                    .setContent(jsonObject.optString("content", null))
+                    .setCurrencyType(jsonObject.optString("currencyType", null));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return tdTransaction;
     }
 }

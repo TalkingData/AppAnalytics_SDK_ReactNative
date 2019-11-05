@@ -53,6 +53,14 @@ class TalkingDataAdSearch {
 		this.custom = new Object();
 	}
 
+	setCategory(category){
+		this.category = category;
+	}
+
+	setContent(content){
+		this.content = content;
+	}
+
 	setDestination(destination){
 		this.destination = destination;
 	}
@@ -79,12 +87,75 @@ class TalkingDataAdSearch {
 
   	get adSearchString(){
   		return JSON.stringify({
+  			'category':this.category,
+  			'content':this.content,
 			  'destination':this.destination,
 			  'origin':this.origin,
-			  'item_id':this.item_id,
-			  'item_location_id':this.item_location_id,
-			  'start_date':this.start_date,
-			  'end_date':this.end_date,
+			  'itemId':this.itemId,
+			  'itemLocationId':this.itemLocationId,
+			  'startDate':this.startDate,
+			  'endDate':this.endDate,
+  		});
+	}
+	  
+}
+
+
+class TalkingDataTransaction {
+	
+	constructor(){
+
+	}
+
+	setTransactionId(transactionId){
+		this.transactionId = transactionId;
+	}
+
+	setCategory(category){
+		this.category = category;
+	}
+
+	setAmount(amount){
+		this.amount = amount;
+	}
+
+	setPersonA(personA){
+		this.personA = personA;
+	}
+
+	setPersonB(personB){
+		this.personB = personB;
+	}
+
+	setStartDate(startDate){
+		this.startDate = startDate;
+	}
+
+	setEndDate(endDate){
+		this.endDate = endDate;
+	}
+
+	setCurrencyType(currencyType){
+		this.currencyType = currencyType;
+	}
+
+	setContent(content){
+		this.content = content;
+	}
+
+
+
+  	get transactionStr(){
+  		return JSON.stringify({
+			  'transactionId':this.transactionId,
+			  'category':this.category,
+			  'amount':this.amount,
+			  'personA':this.personA,
+			  'personB':this.personB,
+			  'startDate':this.startDate,
+			  'endDate':this.endDate,
+			  'currencyType':this.currencyType,
+			  'content':this.content,
   		});
 	}
 	  
@@ -115,6 +186,15 @@ class TalkingDataAdTracking {
 		TDADT.onRegister(account);
 	}
 
+	static onRegisterWithinvitationCode(account,invitationCode){
+		if (typeof account !== 'string') {
+			return ;
+		}
+		if (typeof invitationCode!== 'string') {
+			return ;
+		}
+		TDADT.onRegisterWithinvitationCode(account,invitationCode);
+	}
 	/**
 	* 登录
 	* iOS Android
@@ -315,7 +395,284 @@ class TalkingDataAdTracking {
 	static onAdSearch(adSearch){
 		TDADT.onAdSearch(adSearch);
 	}
+	
+	static onSearch(adSearch){
+		TDADT.onSearch(adSearch);
+	}
+
+	static onCreateCard(account,method,content)
+	{
+		if (typeof account !== 'string') {
+			return;
+		};
+		if (typeof method !== 'string') {
+			return;
+		};
+		if (typeof content !== 'string') {
+			return;
+		}
+		TDADT.onCreateCard(account,method,content);
+	}
+
+	static onFavorite(category,content)
+	{
+		if (typeof category !== 'string') {
+			return;
+		};
+
+		if (typeof content !== 'string') {
+			return;
+		}
+		TDADT.onFavorite(category,content);
+	}
+
+	static onShare(account,content)
+	{
+		if (typeof account !== 'string') {
+			return;
+		};
+		if (typeof content !== 'string') {
+			return;
+		}
+		TDADT.onShare(account,content);
+	}
+
+	static onPunch(account,punchId)
+	{
+		if (typeof account !== 'string') {
+			return;
+		};
+		if (typeof punchId !== 'string') {
+			return;
+		}
+		TDADT.onPunch(account,punchId);
+	}
+
+	static onReservation(account,reservationId,category,amount,term)
+	{
+		if (typeof account !== 'string') {
+			return;
+		};
+		if (typeof reservationId !== 'string') {
+			return;
+		}
+		if (typeof category !== 'string') {
+			return;
+		}
+		if (typeof amount !== 'number') {
+			return;
+		}
+		if (typeof term !== 'string') {
+			return;
+		}
+
+		TDADT.onReservation(account,reservationId,category,amount,term);
+	}
+
+	static onBooking(account,bookingId,category,amount,content)
+	{
+		if (typeof account !== 'string') {
+			return;
+		};
+		if (typeof bookingId !== 'string') {
+			return;
+		}
+		if (typeof category !== 'string') {
+			return;
+		}
+		if (typeof amount !== 'number') {
+			return;
+		}
+		if (typeof content !== 'string') {
+			return;
+		}
+
+		TDADT.onBooking(account,bookingId,category,amount,content);
+	}
+
+	static onContact(account,content)
+	{
+		if (typeof account !== 'string') {
+			return;
+		};
+
+		if (typeof content !== 'string') {
+			return;
+		}
+
+		TDADT.onContact(account,content);
+	}
+
+	static onLearn(account,course,begin,duration)
+	{
+		if (typeof account !== 'string') {
+			return;
+		};
+
+		if (typeof course !== 'string') {
+			return;
+		}
+
+		if (typeof begin !== 'number') {
+			return;
+		}
+
+		if (typeof duration !== 'number') {
+			return;
+		}
+		TDADT.onLearn(account,course,begin,duration)
+	}
+
+	static onRead(account,book,begin,duration)
+	{
+		if (typeof account !== 'string') {
+			return;
+		};
+
+		if (typeof book !== 'string') {
+			return;
+		}
+
+		if (typeof begin !== 'number') {
+			return;
+		}
+
+		if (typeof duration !== 'number') {
+			return;
+		}
+		TDADT.onRead(account,book,begin,duration)
+	}
+
+	static onBrowse(account,content,begin,duration)
+	{
+		if (typeof account !== 'string') {
+			return;
+		};
+
+		if (typeof content !== 'string') {
+			return;
+		}
+
+		if (typeof begin !== 'number') {
+			return;
+		}
+
+		if (typeof duration !== 'number') {
+			return;
+		}
+		TDADT.onBrowse(account,content,begin,duration)
+	}
+
+
+	static onTransaction(account,transactionStr){
+		if (typeof account !== 'string') {
+			return;
+		};
+
+		if (typeof transactionStr !== 'string') {
+			return;
+		}
+
+		TDADT.onTransaction(account,transactionStr);
+	}
+
+	static onCredit(account,amount,content)
+	{
+		if (typeof account !== 'string') {
+			return;
+		};
+		if (typeof amount !== 'number') {
+			return;
+		}
+		if (typeof content !== 'string') {
+			return;
+		}
+		TDADT.onCredit(account,amount,content)
+	}
+
+	static onChargeBack(account,orderId,reason,type)
+	{
+		if (typeof account !== 'string') {
+			return;
+		};
+		if (typeof orderId !== 'string') {
+			return;
+		}
+		if (typeof reason !== 'string') {
+			return;
+		}
+		if (typeof type !== 'string') {
+			return;
+		}
+		TDADT.onChargeBack(account,orderId,reason,type)
+	}
+
+	static onTrialFinished(account,content)
+	{
+		if (typeof account !== 'string') {
+			return;
+		};
+		if (typeof content !== 'string') {
+			return;
+		}
+		TDADT.onTrialFinished(account,content)
+	}
+
+	static onGuideFinished(account,content)
+	{
+		if (typeof account !== 'string') {
+			return;
+		};
+		if (typeof content !== 'string') {
+			return;
+		}
+		TDADT.onGuideFinished(account,content)
+	}
+	static onPreviewFinished(account,content)
+	{
+		if (typeof account !== 'string') {
+			return;
+		};
+		if (typeof content !== 'string') {
+			return;
+		}
+		TDADT.onPreviewFinished(account,content)
+	}
+	static onFreeFinished(account,content)
+	{
+		if (typeof account !== 'string') {
+			return;
+		};
+		if (typeof content !== 'string') {
+			return;
+		}
+		TDADT.onFreeFinished(account,content)
+	}
+
+	static onLevelPass(account,levelId)
+	{
+		if (typeof account !== 'string') {
+			return;
+		};
+		if (typeof levelId !== 'string') {
+			return;
+		}
+		TDADT.onLevelPass(account,levelId)
+	}
+
+	
+	static onAchievementUnlock(account,achievementId)
+	{
+		if (typeof account !== 'string') {
+			return;
+		};
+		if (typeof achievementId !== 'string') {
+			return;
+		}
+		TDADT.onAchievementUnlock(account,achievementId)
+	}
+
 
 }
 
-export {TalkingDataAdTracking,TalkingDataADTOrder,TalkingDataADTShoppingCart,TalkingDataAdSearch};
+export {TalkingDataAdTracking,TalkingDataADTOrder,TalkingDataADTShoppingCart,TalkingDataAdSearch,TalkingDataTransaction};

@@ -11,7 +11,7 @@
     "react-native": "^0.57.0",
     "react-native-actionsheet": "^2.4.2",
     "react-native-keyboard-aware-scroll-view": "^0.7.4",
-    "react-native-vector-icons": "^6.5.0",
+    "react-native-vector-icons": "^6.6.0",
     "react-navigation": "^2.18.3"
   },
   "devDependencies": {

@@ -6,7 +6,7 @@ import jsondata from './../../data/adt_function_list.json'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import * as ScreenUtil from './../../util/ScreenUtil'
 
-import {TalkingDataAppAnalytics} from '../../TalkingDataAdTracking.js'
+import {TalkingDataAppAnalytics, TalkingDataAdTracking,TalkingDataTransaction,TalkingDataAdSearch} from '../../TalkingDataAdTracking.js'
 
 
 //homeViewController
@@ -29,10 +29,58 @@ export class Tab2Screen extends React.Component {
 
     _pressRow(item) {
 
-
         if (item.page == null) {
             return;
+        }       
+        if (item.page == 'ADTBusinessTest') {
+
+            TalkingDataAdTracking.onRegisterWithinvitationCode('account','1234');
+
+            TalkingDataAdTracking.onCreateCard('account','method','content');
+            TalkingDataAdTracking.onFavorite('category','content');
+            TalkingDataAdTracking.onShare('account','content');
+            TalkingDataAdTracking.onPunch('account','content');
+            TalkingDataAdTracking.onReservation('account','reservationId','category',10086,'term');
+            TalkingDataAdTracking.onBooking('account','bookingId','category',12345,'content');
+            TalkingDataAdTracking.onContact('account','content');
+            TalkingDataAdTracking.onLearn('account','course',1234567890,6000)
+            TalkingDataAdTracking.onRead('account','book',1234567890,6000)
+            TalkingDataAdTracking.onBrowse('account','content',1234567890,6000)
+            TalkingDataAdTracking.onCredit('account',999,'content')
+            TalkingDataAdTracking.onChargeBack('account','orderId','reason','type')
+            TalkingDataAdTracking.onTrialFinished('account','content')
+            TalkingDataAdTracking.onGuideFinished('account','content')
+            TalkingDataAdTracking.onPreviewFinished('account','content')
+            TalkingDataAdTracking.onFreeFinished('account','content')
+            TalkingDataAdTracking.onLevelPass('account','levelId')
+            TalkingDataAdTracking.onAchievementUnlock('account','achievementId')
+
+            let trans = new TalkingDataTransaction();
+            trans.transactionId = 'id';
+            trans.category = 'category';
+            trans.amount = 12234;
+            trans.personA = 'a';
+            trans.personB = 'b';
+            trans.startDate = 1112233;
+            trans.endDate = 22233344;
+            trans.currencyType = 'ccc';
+            trans.content = 'ccc';
+            TalkingDataAdTracking.onTransaction('idaaa',trans.transactionStr);
+
+            let search = new TalkingDataAdSearch();
+            search.category = 'category'
+            search.content = 'content'
+            search.itemId = 'itemId'
+            search.itemLocationId = 'itemLocationId'
+            search.destination = 'destination'
+            search.origin = 'origin'
+            search.startDate = 1123333
+            search.endDate = 1223123123
+            TalkingDataAdTracking.onSearch(search.adSearchString)
+
+            return;
         }
+
 
         if (Platform.OS === 'ios') {
             if (!item.supportiOS) {

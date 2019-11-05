@@ -29,6 +29,11 @@ RCT_EXPORT_METHOD(onRegister:(NSString *)account)
 {
   [TalkingDataAppCpa onRegister:account];
 }
+
+RCT_EXPORT_METHOD(onRegisterWithinvitationCode:(NSString *)account invitationCode:(NSString *)invitationCode){
+  [TalkingDataAppCpa onRegister:account invitationCode:invitationCode];
+}
+
 RCT_EXPORT_METHOD(onLogin:(NSString *)account)
 {
   [TalkingDataAppCpa onLogin:account];
@@ -165,21 +170,134 @@ RCT_EXPORT_METHOD(onCustEvent9){[TalkingDataAppCpa onCustEvent9];}
 RCT_EXPORT_METHOD(onCustEvent10){[TalkingDataAppCpa onCustEvent10];}
 
 
-RCT_EXPORT_METHOD(onAdSearch:(NSString *)tdAdSearch)
+
+
+RCT_EXPORT_METHOD(onCreateCard:(NSString *)account method:(NSString *)method content:(NSString *)content)
 {
-  TDAdSearch * s = [[TDAdSearch alloc]init];
+  [TalkingDataAppCpa onCreateCard:account method:method content:content];
+}
+
+RCT_EXPORT_METHOD(onFavorite:(NSString *)category content:(NSString *)content)
+{
+  [TalkingDataAppCpa onFavorite:category content:content];
+}
+
+RCT_EXPORT_METHOD(onShare:(NSString *)account content:(NSString *)content)
+{
+  [TalkingDataAppCpa onShare:account content:content];
+}
+
+RCT_EXPORT_METHOD(onPunch:(NSString *)account punchId:(NSString *)punchId)
+{
+  [TalkingDataAppCpa onPunch:account punchId:punchId];
+}
+
+
+RCT_EXPORT_METHOD(onSearch:(NSString *)tdAdSearch)
+{
+  TDSearch * s = [[TDSearch alloc]init];
   NSError * error = nil;
   NSDictionary * dictADS = [NSJSONSerialization JSONObjectWithData:[tdAdSearch dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+  s.category = dictADS[@"category"];
+  s.content = dictADS[@"content"];
   s.destination = dictADS[@"destination"];
   s.origin = dictADS[@"origin"];
-  s.itemId = dictADS[@"item_id"];
-  s.itemLocationId = dictADS[@"item_location_id"];
-  s.startDate = dictADS[@"start_date"];
-  s.endDate = dictADS[@"end_date"];
-  s.searchTerm = dictADS[@"search_term"];
-  s.googleBusinessVertical = dictADS[@"google_business_vertical"];
-  s.custom = dictADS[@"custom"];
-  [TalkingDataAppCpa onAdSearch:s];
+  s.itemId = dictADS[@"itemId"];
+  s.itemLocationId = dictADS[@"itemLocationId"];
+  s.startDate = [dictADS[@"startDate"] longLongValue];
+  s.endDate = [dictADS[@"endDate"] longLongValue];
+  [TalkingDataAppCpa onSearch:s];
 }
+
+
+RCT_EXPORT_METHOD(onReservation:(NSString *)account reservationId:(NSString *)reservationId category:(NSString *)category amount:(int)amount term:(NSString *)term)
+{
+  [TalkingDataAppCpa onReservation:account reservationId:reservationId category:category amount:amount term:term];
+}
+
+RCT_EXPORT_METHOD(onBooking:(NSString *)account bookingId:(NSString *)bookingId category:(NSString *)category amount:(int)amount content:(NSString *)content)
+{
+  [TalkingDataAppCpa onBooking:account bookingId:bookingId category:category amount:amount content:content];
+}
+
+RCT_EXPORT_METHOD(onContact:(NSString *)account content:(NSString *)content)
+{
+  [TalkingDataAppCpa onContact:account content:content];
+}
+
+RCT_EXPORT_METHOD(onLearn:(NSString *)account course:(NSString *)course begin:(int64_t)begin duration:(int)duration)
+{
+  [TalkingDataAppCpa onLearn:account course:course begin:begin duration:duration];
+}
+
+RCT_EXPORT_METHOD(onRead:(NSString *)account book:(NSString *)book begin:(int64_t)begin duration:(int)duration)
+{
+  [TalkingDataAppCpa onRead:account book:book begin:begin duration:duration];
+}
+
+RCT_EXPORT_METHOD(onBrowse:(NSString *)account content:(NSString *)content begin:(int64_t)begin duration:(int)duration)
+{
+  [TalkingDataAppCpa onBrowse:account content:content begin:begin duration:duration];
+}
+
+RCT_EXPORT_METHOD(onTransaction:(NSString *)account transaction:(NSString *)transactionString)
+{
+  TDTransaction * t = [[TDTransaction alloc]init];
+  NSError * error = nil;
+  NSDictionary * dictADS = [NSJSONSerialization JSONObjectWithData:[transactionString dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+  t.transactionId = dictADS[@"transactionId"];
+  t.category = dictADS[@"category"];
+  t.amount = [dictADS[@"amount"] intValue];
+  t.personA = dictADS[@"personA"];
+  t.personB = dictADS[@"personB"];
+  t.startDate = [dictADS[@"startDate"] longLongValue];
+  t.endDate = [dictADS[@"endDate"] longLongValue];
+  t.currencyType = dictADS[@"currencyType"];
+  t.content = dictADS[@"content"];
+
+  [TalkingDataAppCpa onTransaction:account transaction:t];
+}
+
+RCT_EXPORT_METHOD(onCredit:(NSString *)account amount:(int)amount content:(NSString *)content)
+{
+  [TalkingDataAppCpa onCredit:account amount:amount content:content];
+}
+
+RCT_EXPORT_METHOD(onChargeBack:(NSString *)account orderId:(NSString *)orderId reason:(NSString *)reason type:(NSString *)type)
+{
+  [TalkingDataAppCpa onChargeBack:account orderId:orderId reason:reason type:type];
+}
+
+RCT_EXPORT_METHOD(onTrialFinished:(NSString *)account content:(NSString *)content)
+{
+  [TalkingDataAppCpa onTrialFinished:account content:content];
+}
+
+RCT_EXPORT_METHOD(onGuideFinished:(NSString *)account content:(NSString *)content)
+{
+  [TalkingDataAppCpa onGuideFinished:account content:content];
+}
+
+RCT_EXPORT_METHOD(onPreviewFinished:(NSString *)account content:(NSString *)content)
+{
+  [TalkingDataAppCpa onPreviewFinished:account content:content];
+}
+
+RCT_EXPORT_METHOD(onFreeFinished:(NSString *)account content:(NSString *)content)
+{
+  [TalkingDataAppCpa onFreeFinished:account content:content];
+}
+
+RCT_EXPORT_METHOD(onLevelPass:(NSString *)account levelId:(NSString *)levelId)
+{
+  [TalkingDataAppCpa onLevelPass:account levelId:levelId];
+}
+
+RCT_EXPORT_METHOD(onAchievementUnlock:(NSString *)account achievementId:(NSString *)achievementId)
+{
+  [TalkingDataAppCpa onAchievementUnlock:account achievementId:achievementId];
+}
+
+
 
 @end
