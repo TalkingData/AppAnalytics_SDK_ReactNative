@@ -1,5 +1,6 @@
 # react-native-talkingdata-appanalytics
 
+<font color=red size=5>❗️❗️❗️Warning：本仓库中的提供的静态库和jar包均为演示使用，请勿用作生产环境如果需要用于生产环境的SDK，请到[TalkingData官网](https://www.talkingdata.com/spa/sdk/#/config?productLine=AppAnalytics&sdkPlatform=Android)申请。</font>
 
 App Analytics react-native 平台 SDK 由`封装层`和`Native SDK`两部分构成，目前[GitHub](https://github.com/TalkingData/AppAnalytics_SDK_ReactNative)上提供了封装层代码，需要从 [TalkingData官网](https://www.talkingdata.com/spa/sdk/#/config) 下载最新版的 Android 和 iOS 平台 Native SDK，组合使用。
 
@@ -12,11 +13,6 @@ App Analytics react-native 平台 SDK 由`封装层`和`Native SDK`两部分构�
 * [Run Demo & 运行Demo](#rundemo)
 * [LICENSE & 许可](#license)
 
-## 版本支持
-
-⚠️ 支持 React Native **0.47+**
-
-
 ---
 
 <span id="integration"></span>
@@ -24,72 +20,76 @@ App Analytics react-native 平台 SDK 由`封装层`和`Native SDK`两部分构�
 1. 下载本项目（封装层）到本地；  
 2. 访问 [TalkingData官网](https://www.talkingdata.com/spa/sdk/#/config?productLine=AppAnalytics&sdkPlatform=react-native) 下载最新版的 Android 和 iOS 平台 App Analytics SDK（ Native SDK）
 选择 react-native 平台进行功能定制；
- 
+
 	![](./img/application.jpeg)
 3. 将下载的最新版 `Native SDK` 复制到`封装层`中，构成完整的 react-native SDK。  
-	- Android 平台  
-		* 将最新的 .jar 文件复制到 `lib/AppAnalytics/android/src/main/libs/` 目录下
-		* 修改lib/AppAnalytics/android/build.gradle中jar包的名称为新jar包的名称
+  - Android 平台  
+  	* 将最新的 .jar 文件复制到 `lib/AppAnalytics/android/src/main/libs/` 目录下
+  	* 修改lib/AppAnalytics/android/build.gradle中jar包的名称为新jar包的名称
+  	* 如果您的React Native版本较低，参考[Run Demo & 运行Demo](#rundemo)的Android部分的文件差异进行封装层的文件替换
 
-			<img src='./img/android_gradle.png'></img>
-	- iOS 平台  
-		* 将最新的 .a 文件复制到 `lib/AppAnalytics/ios` 目录下
+  		<img src='./img/android_gradle.png'></img>
+  - iOS 平台  
+
+    * 将最新的 .a 文件复制到 `lib/AppAnalytics/ios` 目录下
 4. 按 `Native SDK` 功能选项对`封装层`代码进行必要的删减，详见“注意事项”第2条；
+   - Android 平台  
+   * 如果您直接使用Demo进行代码的删减，那么请直接在Demo相应模块路径下进行操作
 5. 将 react-native SDK 集成您需要统计的工程中，并按 [集成文档](http://doc.talkingdata.com/posts/848) 进行必要配置和功能调用。
 
 ### 注意事项
 1. 分别选择 Android 和 iOS 平台进行功能定制时，请确保两个平台功能项一致。
 2. 如果申请 Native SDK 时只选择了部分功能，则需要在本项目中删除未选择功能对应的封装层代码。  
-	a) 未选择`自定义事件`功能则删除以下4部分  
-	删除 `lib/AppAnalytics/TalkingDataAppAnalytics.js` 文件中如下代码：
+  a) 未选择`自定义事件`功能则删除以下4部分  
+  删除 `lib/AppAnalytics/TalkingDataAppAnalytics.js` 文件中如下代码：
 
-	```
-	...
-	
-	static onEvent(eventName,label,parameters){
-		...
-	}
+  ```
+  ...
+  
+  static onEvent(eventName,label,parameters){
+  	...
+  }
+  
+  static setGlobalKV(k,v){
+  	...
+  }
+  
+  static removeGlobalKV(k){
+  	...
+  }
+  
+  ...
+  ```
+  删除 `lib/AppAnalytics/android/src/main/java/com/talkingdata/appanalytics/TalkingData.java` 文件中如下代码：
 
-	static setGlobalKV(k,v){
-		...
-	}
-
-	static removeGlobalKV(k){
-		...
-	}
-	
-	...
-	```
-	删除 `lib/AppAnalytics/android/src/main/java/com/talkingdata/appanalytics/TalkingData.java` 文件中如下代码：
-
-	```
-	...
-
+  ```
+  ...
+  
     @ReactMethod
     public void setGlobalKVMap(String key, ReadableMap value) {
         ...
     }
-  
+    
     @ReactMethod
     public void setGlobalKVArray(String key, ReadableArray value) {
         ...
     }
-
+  
     @ReactMethod
     public void setGlobalKVDouble(String key, double value) {
         ...
     }
-
+  
     @ReactMethod
     public void setGlobalKVString(String key, String value) {
         ...
     }
-
+  
     @ReactMethod
     public void setGlobalKVBoolean(String key, boolean value) {
         ...
     }
-
+  
     @ReactMethod
     public void removeGlobalKV(String key) {
         ...
@@ -101,138 +101,138 @@ App Analytics react-native 平台 SDK 由`封装层`和`Native SDK`两部分构�
     }
     
     ...
-	```
-	删除 `lib/AppAnalytics/ios/RCTTDAppSDK.m` 文件中如下代码：
+  ```
+  删除 `lib/AppAnalytics/ios/RCTTDAppSDK.m` 文件中如下代码：
 
-	```
-	...
-	
-	RCT_EXPORT_METHOD(onEvent:(NSString *)eventName
-	                  label:(NSString*)label
-	                  parameters:(NSDictionary*)parameters)
-	{
-	  ...
-	}
+  ```
+  ...
+  
+  RCT_EXPORT_METHOD(onEvent:(NSString *)eventName
+                    label:(NSString*)label
+                    parameters:(NSDictionary*)parameters)
+  {
+    ...
+  }
+  
+  RCT_EXPORT_METHOD(setGlobalKV:(NSString *)key value:(id)value)
+  {
+    ...
+  }
+  
+  RCT_EXPORT_METHOD(removeGlobalKV:(NSString *)key)
+  {
+    ...
+  }
+  
+  ...
+  ```
 
-	RCT_EXPORT_METHOD(setGlobalKV:(NSString *)key value:(id)value)
-	{
-	  ...
-	}
-	
-	RCT_EXPORT_METHOD(removeGlobalKV:(NSString *)key)
-	{
-	  ...
-	}
-	
-	...
-	```
+  删除 `src/AppAnalytics/ios/TalkingData.h` 文件中如下代码：
 
-	删除 `src/AppAnalytics/ios/TalkingData.h` 文件中如下代码：
+  ```
+  ...
+  
+  + (void)trackEvent:(NSString *)eventId;
+  + (void)trackEvent:(NSString *)eventId label:(NSString *)eventLabel;
+  + (void)trackEvent:(NSString *)eventId
+               label:(NSString *)eventLabel
+          parameters:(NSDictionary *)parameters;
+  + (void)setGlobalKV:(NSString *)key value:(id)value;
+  + (void)removeGlobalKV:(NSString *)key;
+  
+  ...
+  ```
+  b) 未选择`标准化事件分析`功能则删除以下4部分  
+  删除 `lib/AppAnalytics/TalkingDataAppAnalytics.js` 文件中如下代码：
 
-	```
-	...
-	
-	+ (void)trackEvent:(NSString *)eventId;
-	+ (void)trackEvent:(NSString *)eventId label:(NSString *)eventLabel;
-	+ (void)trackEvent:(NSString *)eventId
-	             label:(NSString *)eventLabel
-	        parameters:(NSDictionary *)parameters;
-	+ (void)setGlobalKV:(NSString *)key value:(id)value;
-	+ (void)removeGlobalKV:(NSString *)key;
+  ```
+  ...
+  
+  class TalkingDataOrder {
+  
+  	constructor(orderId,total,currencyType) {
+  		...
+    	}
+  
+    	addItem(itemId,category,name,unitPrice,amount){
+  	  	...	  	
+  	}
+  
+    	get orderString(){
+    		...
+    	}
+  }
+  
+  class TalkingDataShoppingCart {
+  	
+  	constructor(){
+  		...
+  	}
+  
+    	addItem(itemId,category,name,unitPrice,amount){
+    		...
+    	}
+  
+    	get shoppingCartString(){
+    		...
+    	}
+  }
+  
+  ...
+  
+  static onPlaceOrder(accountId,order){
+  	...
+  }
+  
+  static onOrderPaySucc(accountId,payType,order){
+  	...
+  }
+  
+  static onViewItem(itemId,category,name,unitPrice){
+  	...
+  }
+  
+  static onAddItemToShoppingCart(itemId,category,name,unitPrice,amount){
+  	...
+  }
+  
+  static onViewShoppingCart(shoppingCart){
+  	...
+  }
+  
+  ...
+  ```
 
-	...
-	```
-	b) 未选择`标准化事件分析`功能则删除以下4部分  
-	删除 `lib/AppAnalytics/TalkingDataAppAnalytics.js` 文件中如下代码：
+  删除 `lib/AppAnalytics/android/src/main/java/com/talkingdata/appanalytics/TalkingData.java` 文件中如下代码：
 
-	```
-	...
-	
-	class TalkingDataOrder {
-
-		constructor(orderId,total,currencyType) {
-			...
-	  	}
-	
-	  	addItem(itemId,category,name,unitPrice,amount){
-		  	...	  	
-		}
-	
-	  	get orderString(){
-	  		...
-	  	}
-	}
-	
-	class TalkingDataShoppingCart {
-		
-		constructor(){
-			...
-		}
-	
-	  	addItem(itemId,category,name,unitPrice,amount){
-	  		...
-	  	}
-	
-	  	get shoppingCartString(){
-	  		...
-	  	}
-	}
-	
-	...
-	
-	static onPlaceOrder(accountId,order){
-		...
-	}
-
-	static onOrderPaySucc(accountId,payType,order){
-		...
-	}
-
-	static onViewItem(itemId,category,name,unitPrice){
-		...
-	}
-
-	static onAddItemToShoppingCart(itemId,category,name,unitPrice,amount){
-		...
-	}
-
-	static onViewShoppingCart(shoppingCart){
-		...
-	}
-	
-	...
-	```
-	
-	删除 `lib/AppAnalytics/android/src/main/java/com/talkingdata/appanalytics/TalkingData.java` 文件中如下代码：
-
-	```
-	...
-	
-	import com.tendcloud.tenddata.Order;
-	import com.tendcloud.tenddata.ShoppingCart;
-	
-	...
-	
+  ```
+  ...
+  
+  import com.tendcloud.tenddata.Order;
+  import com.tendcloud.tenddata.ShoppingCart;
+  
+  ...
+  
     @ReactMethod
     public void onPlaceOrder(String accountID, String order) {
         ...
     }
-
+  
     @ReactMethod
     public void onOrderPaySucc(String accountID, String payType, String order) {
         ...
     }
-
+  
     @ReactMethod
     public void onAddItemToShoppingCart(String itemId, String category, String name, int unitPrice, int count) {
         ...
     }
-
+  
     @ReactMethod
     public void onViewItem(String itemId, String category, String name, int unitPrice) {
         ...
     }
-
+  
     @ReactMethod
     public void onViewShoppingCart(String shoppingCart) {
         ...
@@ -243,187 +243,175 @@ App Analytics react-native 平台 SDK 由`封装层`和`Native SDK`两部分构�
     private Order getOrder(String json){
         ...
     }
-
+  
     private ShoppingCart getShoppingCart(String json){
         ...
     }
-	
-	...
-	```
+  
+  ...
+  ```
 
-	删除 `src/AppAnalytics/ios/RCTTDAppSDK.m` 文件中如下代码：
+  删除 `src/AppAnalytics/ios/RCTTDAppSDK.m` 文件中如下代码：
 
-	```
-	...
-	
-	RCT_EXPORT_METHOD(onPlaceOrder:(NSString *)accountId order:(NSString *)orderString)
-	{
-		...
-	}
-	
-	RCT_EXPORT_METHOD(onOrderPaySucc:(NSString *)accountId payType:(NSString *)payType order:(NSString *)orderString)
-	{
-	  	...
-	}
-	
-	RCT_EXPORT_METHOD(onViewItem:(NSString *)itemId category:(NSString *)category name:(NSString *)name unitPrice:(int)unitPrice)
-	{
-		...
-	}
-	RCT_EXPORT_METHOD(onAddItemToShoppingCart:(NSString *)itemId category:(NSString *)category name:(NSString *)name unitPrice:(int)unitPrice amount:(int)amount)
-	{
-		...
-	}
-	RCT_EXPORT_METHOD(onViewShoppingCart:(NSString *)shoppingCartString)
-	{
-		...
-	}
-	
-	...
-	
-	- (TalkingDataOrder *)stringToOrder:(NSString *)orderStr {
-		...
-	}
+  ```
+  ...
+  
+  RCT_EXPORT_METHOD(onPlaceOrder:(NSString *)accountId order:(NSString *)orderString)
+  {
+  	...
+  }
+  
+  RCT_EXPORT_METHOD(onOrderPaySucc:(NSString *)accountId payType:(NSString *)payType order:(NSString *)orderString)
+  {
+    	...
+  }
+  
+  RCT_EXPORT_METHOD(onViewItem:(NSString *)itemId category:(NSString *)category name:(NSString *)name unitPrice:(int)unitPrice)
+  {
+  	...
+  }
+  RCT_EXPORT_METHOD(onAddItemToShoppingCart:(NSString *)itemId category:(NSString *)category name:(NSString *)name unitPrice:(int)unitPrice amount:(int)amount)
+  {
+  	...
+  }
+  RCT_EXPORT_METHOD(onViewShoppingCart:(NSString *)shoppingCartString)
+  {
+  	...
+  }
+  
+  ```
+  删除 `src/AppAnalytics/ios/TalkingData.h` 文件中如下代码：
 
-	- (TalkingDataShoppingCart *)stringToShoppingCart:(NSString *)shoppingCartStr {
-		...
-	}
-	
-	...
-	```
-	删除 `src/AppAnalytics/ios/TalkingData.h` 文件中如下代码：
+  ```
+  ...
+  
+  @interface TalkingDataOrder : NSObject
+  + (TalkingDataOrder *)createOrder:(NSString *)orderId total:(int)total currencyType:(NSString *)currencyType;
+  - (TalkingDataOrder *)addItem:(NSString *)itemId category:(NSString *)category name:(NSString *)name unitPrice:(int)unitPrice amount:(int)amount;
+  @end
+  
+  @interface TalkingDataShoppingCart : NSObject
+  + (TalkingDataShoppingCart *)createShoppingCart;
+  - (TalkingDataShoppingCart *)addItem:(NSString *)itemId category:(NSString *)category name:(NSString *)name unitPrice:(int)unitPrice amount:(int)amount;
+  @end
+  
+  ...
+  
+  + (void)onPlaceOrder:(NSString *)account order:(TalkingDataOrder *)order;
+  + (void)onOrderPaySucc:(NSString *)account payType:(NSString *)payType order:(TalkingDataOrder *)order;
+  + (void)onViewItem:(NSString *)itemId category:(NSString *)category name:(NSString *)name unitPrice:(int)unitPrice;
+  + (void)onAddItemToShoppingCart:(NSString *)itemId category:(NSString *)category name:(NSString *)name unitPrice:(int)unitPrice amount:(int)amount;
+  + (void)onViewShoppingCart:(TalkingDataShoppingCart *)shoppingCart;
+  
+  ...
+  ```
+  c) 未选择`页面统计`功能则删除以下4部分  
+  删除 `lib/AppAnalytics/TalkingDataAppAnalytics.js` 文件中如下代码：
 
-	```
-	...
-	
-	@interface TalkingDataOrder : NSObject
-	+ (TalkingDataOrder *)createOrder:(NSString *)orderId total:(int)total currencyType:(NSString *)currencyType;
-	- (TalkingDataOrder *)addItem:(NSString *)itemId category:(NSString *)category name:(NSString *)name unitPrice:(int)unitPrice amount:(int)amount;
-	@end
+  ```
+  ...
+  
+  static onPageStart(pageName) {
+  	...
+  }
+  
+  static onPageEnd(pageName){
+  	...
+  }
+  
+  ...
+  ```
+  删除 `lib/AppAnalytics/android/src/main/java/com/talkingdata/appanalytics/TalkingData.java` 文件中如下代码：
 
-	@interface TalkingDataShoppingCart : NSObject
-	+ (TalkingDataShoppingCart *)createShoppingCart;
-	- (TalkingDataShoppingCart *)addItem:(NSString *)itemId category:(NSString *)category name:(NSString *)name unitPrice:(int)unitPrice amount:(int)amount;
-	@end
-	
-	...
-	
-	+ (void)onPlaceOrder:(NSString *)account order:(TalkingDataOrder *)order;
-	+ (void)onOrderPaySucc:(NSString *)account payType:(NSString *)payType order:(TalkingDataOrder *)order;
-	+ (void)onViewItem:(NSString *)itemId category:(NSString *)category name:(NSString *)name unitPrice:(int)unitPrice;
-	+ (void)onAddItemToShoppingCart:(NSString *)itemId category:(NSString *)category name:(NSString *)name unitPrice:(int)unitPrice amount:(int)amount;
-	+ (void)onViewShoppingCart:(TalkingDataShoppingCart *)shoppingCart;
-	
-	...
-	```
-	c) 未选择`页面统计`功能则删除以下4部分  
-	删除 `lib/AppAnalytics/TalkingDataAppAnalytics.js` 文件中如下代码：
-
-	```
-	...
-	
-	static onPageStart(pageName) {
-		...
-	}
-
-	static onPageEnd(pageName){
-		...
-	}
-	
-	...
-	```
-	删除 `lib/AppAnalytics/android/src/main/java/com/talkingdata/appanalytics/TalkingData.java` 文件中如下代码：
-
-	```
-	...
-	
+  ```
+  ...
+  
     @ReactMethod
     public void onPageStart(String pageName) {
         ...
     }
-
+  
     @ReactMethod
     public void onPageEnd(String pageName) {
         ...
     }
     
     ...
-	```
+  ```
 
-	删除 `src/AppAnalytics/ios/RCTTDAppSDK.m` 文件中如下代码：
+  删除 `src/AppAnalytics/ios/RCTTDAppSDK.m` 文件中如下代码：
 
-	```
-	...
-	
-	RCT_EXPORT_METHOD(onPageStart:(NSString *)pageName)
-	{
-	  ...
-	}
-	RCT_EXPORT_METHOD(onPageEnd:(NSString *)pageName)
-	{
-	  ...
-	}
-	
-	...
-	```
+  ```
+  ...
+  
+  RCT_EXPORT_METHOD(onPageStart:(NSString *)pageName)
+  {
+    ...
+  }
+  RCT_EXPORT_METHOD(onPageEnd:(NSString *)pageName)
+  {
+    ...
+  }
+  
+  ...
+  ```
 
-	删除 `src/AppAnalytics/ios/TalkingData.h` 文件中如下代码：
+  删除 `src/AppAnalytics/ios/TalkingData.h` 文件中如下代码：
 
-	```
-	...
-	
-	+ (void)trackPageBegin:(NSString *)pageName;
-	+ (void)trackPageEnd:(NSString *)pageName;
+  ```
+  ...
+  
+  + (void)trackPageBegin:(NSString *)pageName;
+  + (void)trackPageEnd:(NSString *)pageName;
+  
+  ...
+  ```
+  d) 未选择`用户质量评估`功能则删除以下4部分  
+  删除 `lib/AppAnalytics/TalkingDataAppAnalytics.js` 文件中如下代码：
 
-	...
-	```
-	d) 未选择`用户质量评估`功能则删除以下4部分  
-	删除 `lib/AppAnalytics/TalkingDataAppAnalytics.js` 文件中如下代码：
+  ```
+  ...
+  
+  static setAntiCheatingEnabled(enable){
+  	...
+  }
+  
+  ...
+  ```
+  删除 `lib/AppAnalytics/android/src/main/java/com/talkingdata/appanalytics/TalkingData.java` 文件中如下代码：
 
-	```
-	...
-	
-	static setAntiCheatingEnabled(enable){
-		...
-	}
-	
-	...
-	```
-	删除 `lib/AppAnalytics/android/src/main/java/com/talkingdata/appanalytics/TalkingData.java` 文件中如下代码：
-
-	```
-	...
-	
+  ```
+  ...
+  
     @ReactMethod
     public void setAntiCheatingEnabled(boolean enabled){
         ...
     }
     
    ...
-	```
+  ```
 
-	删除 `lib/AppAnalytics/ios/RCTTDAppSDK.m` 文件中如下代码：
+  删除 `lib/AppAnalytics/ios/RCTTDAppSDK.m` 文件中如下代码：
 
-	```
-	...
-	
-	RCT_EXPORT_METHOD(setAntiCheatingEnabled:(BOOL)enabled)
-	{
-	  ...
-	}
-	
-	...
-	```
-	删除 `src/AppAnalytics/ios/TalkingData.h` 文件中如下代码：
+  ```
+  ...
+  
+  RCT_EXPORT_METHOD(setAntiCheatingEnabled:(BOOL)enabled)
+  {
+    ...
+  }
+  
+  ...
+  ```
+  删除 `src/AppAnalytics/ios/TalkingData.h` 文件中如下代码：
 
-	```
-	...
-	
-	+ (void)setAntiCheatingEnabled:(BOOL)enabled;
-
-	...
-	```
-
+  ```
+  ...
+  
+  + (void)setAntiCheatingEnabled:(BOOL)enabled;
+  
+  ...
+  ```
 
 ---
 
@@ -451,7 +439,7 @@ App Analytics react-native 平台 SDK 由`封装层`和`Native SDK`两部分构�
 <img src='./img/android_project.png'></img>
 
 
-* 在 `MainApplication.java` 中添加:
+* 在您`app`模块下的 `MainApplication.java` 中添加:
   
 ```diff
 + import com.talkingdata.appanalytics.TalkingDataPackage;
@@ -471,7 +459,6 @@ App Analytics react-native 平台 SDK 由`封装层`和`Native SDK`两部分构�
   }
 ```
 
-
 ---
 
 <span id="usage"></span>
@@ -480,7 +467,7 @@ App Analytics react-native 平台 SDK 由`封装层`和`Native SDK`两部分构�
 JS层引用头文件
 
 ```js
-import {TalkingDataAppAnalytics,TDACCOUNT,TalkingDataOrder,TalkingDataShoppingCart} from 'react-native-talkingdata-appanalytics'
+import {TalkingDataAppAnalytics,TDACCOUNT,TalkingDataOrder,TalkingDataShoppingCart} from 'TalkingDataAppAnalytics.js'
 ```
 
 #### iOS
@@ -518,7 +505,7 @@ import {TalkingDataAppAnalytics,TDACCOUNT,TalkingDataOrder,TalkingDataShoppingCa
 
 添加初始化代码
 
-* 在 `MainApplication.java` 中添加:
+* 在您`app`模块下的 `MainApplication.java` 中添加:
   
 ```diff
 + import com.tendcloud.tenddata.TCAgent;
@@ -537,7 +524,7 @@ import {TalkingDataAppAnalytics,TDACCOUNT,TalkingDataOrder,TalkingDataShoppingCa
   }
 ```
 
-* 在 `AndroidManifest.xml` 中添加：
+* 在您`app`模块下的 `AndroidManifest.xml` 中添加：
 
 ```diff
 <!--?xml version="1.0" encoding="utf-8"?-->
@@ -556,12 +543,6 @@ import {TalkingDataAppAnalytics,TDACCOUNT,TalkingDataOrder,TalkingDataShoppingCa
   ......
   </activity>
   ......
-+  <service android:name="com.talkingdata.sdk.TDAntiCheatingService"
-+            android:process="com.talkingdata.sdk.TDAntiCheatingService">  <!--用户质量评估Service可以配置在主进程或者单独进程-->
-+            <intent-filter>
-+                <action android:name="com.talkingdata.sdk.TDAntiCheatingService" />
-+            </intent-filter>
-+  </service>
 +  <meta-data android:name="TD_APP_ID" android:value="Your_app_id" />
 +  <meta-data android:name="TD_CHANNEL_ID" android:value="Your_channel_id" />
   </application>
@@ -626,7 +607,7 @@ import {TalkingDataAppAnalytics,TDACCOUNT,TalkingDataOrder,TalkingDataShoppingCa
 **Examples**
 
 ```js
-import {TalkingDataAppAnalytics} from 'react-native-talkingdata-appanalytics'
+import {TalkingDataAppAnalytics} from 'TalkingDataAppAnalytics.js'
 
 TalkingDataAppAnalytics.getDeviceID((device_id)=>{
    //do something with device_id
@@ -669,7 +650,6 @@ TalkingDataAppAnalytics.setLogEnabled(logEnable);
 
 * **logEnable (required):** Boolean
 
-
 ---
 
 <span id="setexceptionreportenabled"></span>
@@ -680,7 +660,7 @@ TalkingDataAppAnalytics.setLogEnabled(logEnable);
 **Examples**
 
 ```js
-import {TalkingDataAppAnalytics} from 'react-native-talkingdata-appanalytics'
+import {TalkingDataAppAnalytics} from 'TalkingDataAppAnalytics.js'
 
 excpEnable = false;
 TalkingDataAppAnalytics. setExceptionReportEnabled(excpEnable);
@@ -709,7 +689,7 @@ TalkingDataAppAnalytics. setExceptionReportEnabled(excpEnable);
 **Examples**
 
 ```js
-import {TalkingDataAppAnalytics} from 'react-native-talkingdata-appanalytics'
+import {TalkingDataAppAnalytics} from 'TalkingDataAppAnalytics.js'
 
 signalEnable = false;
 TalkingDataAppAnalytics. setSignalReportEnabled(signalEnable);
@@ -743,7 +723,7 @@ TalkingDataAppAnalytics. setSignalReportEnabled(signalEnable);
 **Examples**
 
 ```js
-import {TalkingDataAppAnalytics} from 'react-native-talkingdata-appanalytics'
+import {TalkingDataAppAnalytics} from 'TalkingDataAppAnalytics.js'
 
 lat = 30; //纬度
 lnt = 50; //经度
@@ -773,7 +753,7 @@ TalkingDataAppAnalytics.setLatitudeLongitude(lat,lnt);
 **Examples**
 
 ```js
-import {TalkingDataAppAnalytics} from 'react-native-talkingdata-appanalytics'
+import {TalkingDataAppAnalytics} from 'TalkingDataAppAnalytics.js'
 
 acEnable = false;
 TalkingDataAppAnalytics. setAntiCheatingEnabled(acEnable)
@@ -798,7 +778,7 @@ TalkingDataAppAnalytics. setAntiCheatingEnabled(acEnable)
 **Examples**
 
 ```js
-import {TalkingDataAppAnalytics,TDACCOUNT} from 'react-native-talkingdata-appanalytics'
+import {TalkingDataAppAnalytics,TDACCOUNT} from 'TalkingDataAppAnalytics.js'
 
 accountId = '123'; //账户id
 accountType = TDACCOUNT.ANONYMOUS; //账户类型 枚举
@@ -827,7 +807,7 @@ TalkingDataAppAnalytics.onRegister(accountId,accountType,accountName);
 **Examples**
 
 ```js
-import {TalkingDataAppAnalytics,TDACCOUNT} from 'react-native-talkingdata-appanalytics'
+import {TalkingDataAppAnalytics,TDACCOUNT} from 'TalkingDataAppAnalytics.js'
 
 accountId = '123'; //账户id
 accountType = TDACCOUNT.ANONYMOUS; //账户类型 枚举
@@ -855,7 +835,7 @@ TalkingDataAppAnalytics.onLogin(accountId,accountType,accountName);
 **Examples**
 
 ```js
-import {TalkingDataAppAnalytics} from 'react-native-talkingdata-appanalytics'
+import {TalkingDataAppAnalytics} from 'TalkingDataAppAnalytics.js'
 
 eventName = 'click_btn'; //事件名称
 eventLabel = 'my_custom_label'; //事件标签
@@ -884,7 +864,7 @@ TalkingDataAppAnalytics.onEvent(eventName, eventLabel,parameter);
 **Examples**
 
 ```js
-import {TalkingDataAppAnalytics} from 'react-native-talkingdata-appanalytics'
+import {TalkingDataAppAnalytics} from 'TalkingDataAppAnalytics.js'
 
 globalKey = 'gkey'; //全局的key
 globalValue = 'gvalue'; //全局的value
@@ -900,9 +880,10 @@ TalkingDataAppAnalytics.setGlobalKV(globalKey,globalValue);
 * **globalKey (required):** string 全局的key
 * **globalValue (required):** any 全局的value
 
---- 
+---
 
 <span id="removeglobalkv"></span>
+
 ### removeGlobalKV(k)
 
 移除全局的key,value。
@@ -910,7 +891,7 @@ TalkingDataAppAnalytics.setGlobalKV(globalKey,globalValue);
 **Examples**
 
 ```js
-import {TalkingDataAppAnalytics} from 'react-native-talkingdata-appanalytics'
+import {TalkingDataAppAnalytics} from 'TalkingDataAppAnalytics.js'
 
 globalKey = 'gkey'; //全局的key
 TalkingDataAppAnalytics.removeGlobalKV(globalKey);
@@ -924,8 +905,7 @@ TalkingDataAppAnalytics.removeGlobalKV(globalKey);
 
 * **globalKey (required):** string 全局的key
 
-
---- 
+---
 
 <span id="onpagestart"></span>
 ### onPageStart(pageName)
@@ -935,7 +915,7 @@ TalkingDataAppAnalytics.removeGlobalKV(globalKey);
 **Examples**
 
 ```js
-import {TalkingDataAppAnalytics} from 'react-native-talkingdata-appanalytics'
+import {TalkingDataAppAnalytics} from 'TalkingDataAppAnalytics.js'
 
 pageName = 'homePage'; //页面名称
 TalkingDataAppAnalytics.onPageStart(pageName);
@@ -949,7 +929,7 @@ TalkingDataAppAnalytics.onPageStart(pageName);
 
 * **pageName (required):** string 页面名称
 
---- 
+---
 
 <span id="onpageend"></span>
 ### onPageEnd(pageName)
@@ -959,7 +939,7 @@ TalkingDataAppAnalytics.onPageStart(pageName);
 **Examples**
 
 ```js
-import {TalkingDataAppAnalytics} from 'react-native-talkingdata-appanalytics'
+import {TalkingDataAppAnalytics} from 'TalkingDataAppAnalytics.js'
 
 pageName = 'homePage'; //页面名称
 TalkingDataAppAnalytics.onPageEnd(pageName);
@@ -973,7 +953,7 @@ TalkingDataAppAnalytics.onPageEnd(pageName);
 
 * **pageName (required):** string 页面名称
 
---- 
+---
 
 <span id="onplaceorder"></span>
 ### onPlaceOrder(accountId,orderString)
@@ -984,7 +964,7 @@ TalkingDataAppAnalytics.onPageEnd(pageName);
 **Examples**
 
 ```js
-import {TalkingDataAppAnalytics, TalkingDataOrder} from 'react-native-talkingdata-appanalytics'
+import {TalkingDataAppAnalytics, TalkingDataOrder} from 'TalkingDataAppAnalytics.js'
 
 accountId = 'aid_123';//账户id
 orderId = 'oid_123';//订单id
@@ -1006,8 +986,7 @@ TalkingDataAppAnalytics.onPlaceOrder(accountId, order.orderString);
 * **total (required):** string 总钱数 单位为分
 * **currencyType (required):** string 货币类型
 
-
---- 
+---
 
 <span id="onorderpaysucc"></span>
 ### onOrderPaySucc(accountId,payType,orderString)
@@ -1018,7 +997,7 @@ TalkingDataAppAnalytics.onPlaceOrder(accountId, order.orderString);
 **Examples**
 
 ```js
-import {TalkingDataAppAnalytics, TalkingDataOrder} from 'react-native-talkingdata-appanalytics'
+import {TalkingDataAppAnalytics, TalkingDataOrder} from 'TalkingDataAppAnalytics.js'
 
 accountid = 'aid_123';//账户id
 
@@ -1056,7 +1035,7 @@ TalkingDataAppAnalytics.onOrderPaySucc(accountid,payType,order.orderString);
 **Examples**
 
 ```js
-import {TalkingDataAppAnalytics} from 'react-native-talkingdata-appanalytics'
+import {TalkingDataAppAnalytics} from 'TalkingDataAppAnalytics.js'
 
 itemId = 'item_123';//订单id
 category = 'item_category'; //类别
@@ -1077,7 +1056,6 @@ TalkingDataAppAnalytics.onViewItem(itemId,category,name,unitPrice);
 * **name (required):** string 道具名称
 * **unitPrice (required):** number 道具单价
 
-
 ---
 
 <span id="onadditemtoshoppingcart"></span>
@@ -1089,7 +1067,7 @@ TalkingDataAppAnalytics.onViewItem(itemId,category,name,unitPrice);
 **Examples**
 
 ```js
-import {TalkingDataAppAnalytics} from 'react-native-talkingdata-appanalytics'
+import {TalkingDataAppAnalytics} from 'TalkingDataAppAnalytics.js'
 
 itemId = 'item_123';//订单id
 category = 'item_category'; //类别
@@ -1123,7 +1101,7 @@ TalkingDataAppAnalytics.onAddItemToShoppingCart(itemId,category,name,unitPrice,a
 **Examples**
 
 ```js
-import {TalkingDataAppAnalytics, TalkingDataShoppingCart} from 'react-native-talkingdata-appanalytics'
+import {TalkingDataAppAnalytics, TalkingDataShoppingCart} from 'TalkingDataAppAnalytics.js'
 
 let talkingdataShoppingCart = new TalkingDataShoppingCart();
 
@@ -1154,56 +1132,131 @@ TalkingDataAppAnalytics.onViewShoppingCart(talkingdataShoppingCart.shoppingCartS
 <span id="rundemo"></span>
 
 ## Run Demo & 运行Demo
-下载本项目，进入到example文件夹
+下载本项目，进入到example文件夹并安装依赖
 
 ```
-cd example
+cd example/demo_aa
+npm install
 ```
 
-安装Demo的依赖
+#### iOS
 
-```js
-npm install --save react-native@0.57.0
-npm install --save react-navigation
-npm install --save react-native-actionsheet
-npm install --save react-native-vector-icons
-npm install --save react-native-keyboard-aware-scroll-view
-```
+双击`demo_aa.xcodeproj`
 
-适配Xcode10
+##### Xcode11适配
+
+此部分代码作为RN库代码的一部分，并未随着仓库提交，每次新clone项目，需要手动适配。
+
+搜索RCTModuleMethod.m 将 `static BOOL RCTParseUnused(const char** input)`修改为
 
 ```
-cd node_modules/react-native/scripts && ./ios-install-third-party.sh && cd ../../../
-cd node_modules/react-native/third-party/glog-0.3.5/ && ../../scripts/ios-configure-glog.sh
-
-⚠️如果因为nullable等关键字报错，在rn模板里点fix即可。
-```
-
-
-链接静态库
+static BOOL RCTParseUnused(const char **input)
+{
+  return RCTReadString(input, "__unused") ||
+         RCTReadString(input, "__attribute__((__unused__))") ||
+         RCTReadString(input, "__attribute__((unused))");
+}
 
 ```
-react-native link
-```
-
-运行Demo
-
-```js
-react-native run-ios
-react-native run-android
-```
-
-Demo截图
-
-<img src="./img/iosdemo.png" width="75%" hegiht="75%" align=center />
-
-
----
 
 
 
+#### ANDROID
 
-<span id="license"></span>
+在`example/demo_aa`路径下执行`react-native run-android`命令运行程序
+
+可能会遇到的问题：
+
+* 1.java.lang.RuntimeException: SDK location not found. Define location with sdk.dir in the local.properties file or with an ANDROID_HOME environment variable.
+
+  原因：找不到SDK
+
+  解决方法：在Demo的android目录下新建一个local.properties的文件，然后在文件中写入
+
+  > sdk.dir = XXX
+
+  XXX是你的Android SDK对应的路径
+
+* 2.Demo启动成功，但是应用界面是红色的，JS Server没有启动。可以使用命令`react-native start`启动JS Server。
+
+  如果提示
+
+  ```
+  Invalid regular expression: /(node_modules[]react[]dist[].*|website\node_modules\.*|heapCapture\bundle.js)$/: Unterminated character class
+  ```
+
+  那么请按照以下方式解决
+
+  原因：Node的版本较高的原因导致文件内的正则表达式无效
+
+  解决方法：进入node_nodules搜索blacklist，如果搜索不到文件，进入路径`node_modules\react-native\packager`可找到该文件，修改
+
+  ```
+  var sharedBlacklist = [
+    /node_modules[/\\]react[/\\]dist[/\\].*/,
+  
+    /website\/node_modules\/.*/,
+  
+    /heapCapture\/bundle\.js/,
+  ];
+  ```
+
+  更新为
+
+  ```
+  var sharedBlacklist = [
+    /node_modules[/\\]react[\/\\]dist[\/\\].*/,
+  
+    /website\/node_modules\/.*/,
+  
+    /heapCapture\/bundle\.js/,
+  ];
+  ```
+  
+* 3.如果执行完问题2的解决方法，启动了JS Server，并且点击RELOAD重新加载后仍然为红色，内容是:
+
+  ```
+  could not connect to development server
+  ```
+
+  那么可以执行以下两个方法进行解决：
+
+  * 1.终端运行adb reverse tcp:8081 tcp:8081，然后在对应目录执行react-native start启动JS Server并且点击RELOAD重新加载
+
+  * 2.尝试打开：
+
+    ```
+    http://localhost:8081/index.android.bundle?platform=android
+    ```
+
+
+
+    如果无法加载，那么执行以下步骤：
+
+    ```
+    1.报错页面晃动手机，显示菜单
+    2.点击Dev Settings
+    3.点击Debug server host & port for device
+    4.设置IP和端口（ex:192.168.0.20:8081）,ip在终端执行ipconfig，使用其中的IPv4地址即可
+    5.点击返回
+    6.页面是空白，再次点击摇一摇，选择Reload JS程序就显示出来了
+    ```
+
+
+##### 赋予权限
+
+运行成功Android项目后，会弹出设置界面，赋予悬浮窗权限即可
+
+##### 文件差异
+
+此版本的Demo是基于React Native v0.44.3建立的项目。Demo中对应的Module中的封装层代码因为React Native接口和类方法的变动而有所差异。
+
+如果您的React Native项目版本是在v0.46.0-rc.0以下（不包括v0.46.0-rc.0），那么请您使用Demo中的`android\react-native-talkingdata-appanalytics\src\main\java\com\talkingdata\appanalytics`下的`TalkingData.java`文件替换封装层对应的文件
+
+如果您的React Native项目版本是在v0.47.0-rc.0以下（不包括v0.47.0-rc.0），那么请您使用Demo中的`android\react-native-talkingdata-appanalytics\src\main\java\com\talkingdata\appanalytics`下的`TalkingDataPackage.java`文件替换封装层对应的文件
+
+如果您的React Native项目版本是在v0.47.0-rc.0以及v0.47.0-rc.0以上的话，请直接接入封装层的代码即可
+
 ## LICENSE & 许可
 
 [MIT LICENSE](LICENSE)

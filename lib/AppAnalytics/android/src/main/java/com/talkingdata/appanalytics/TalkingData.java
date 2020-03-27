@@ -43,7 +43,6 @@ public class TalkingData extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setAntiCheatingEnabled(boolean enabled){
-        TCAgent.setAntiCheatingEnabled(context,enabled);
     }
 
     /**

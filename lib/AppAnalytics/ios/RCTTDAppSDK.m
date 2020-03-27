@@ -84,9 +84,8 @@ RCT_REMAP_METHOD(getDeviceID, getDeviceID:(RCTPromiseResolveBlock)resolve
                  rejecter:(RCTPromiseRejectBlock)reject)
 {
   NSString * deviceId = [TalkingData getDeviceID];
-  NSArray *events = @[deviceId];
-  if (events) {
-    resolve(events);
+  if (deviceId) {
+    resolve(deviceId);
   } else {
     reject(@"",@"",nil);
   }
@@ -154,7 +153,7 @@ RCT_EXPORT_METHOD(onPlaceOrder:(NSString *)accountId order:(NSString *)orderStri
   NSDictionary * orderDict = [NSJSONSerialization JSONObjectWithData:[orderString dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
   if (!error) {
     NSString * orderid = [orderDict objectForKey:@"orderId"];
-    NSString * total = [orderDict objectForKey:@"total"];
+    NSNumber * total = [orderDict objectForKey:@"total"];
     NSString * currencyType = [orderDict objectForKey:@"currencyType"];
     NSArray * items = [orderDict objectForKey:@"items"];
     TalkingDataOrder * order = [TalkingDataOrder createOrder:orderid total:[total intValue] currencyType:currencyType];
@@ -186,7 +185,7 @@ RCT_EXPORT_METHOD(onOrderPaySucc:(NSString *)accountId payType:(NSString *)payTy
   NSDictionary * orderDict = [NSJSONSerialization JSONObjectWithData:[orderString dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
   if (!error) {
     NSString * orderid = [orderDict objectForKey:@"orderId"];
-    NSString * total = [orderDict objectForKey:@"total"];
+    NSNumber * total = [orderDict objectForKey:@"total"];
     NSString * currencyType = [orderDict objectForKey:@"currencyType"];
     NSArray * items = [orderDict objectForKey:@"items"];
     TalkingDataOrder * order = [TalkingDataOrder createOrder:orderid total:[total intValue] currencyType:currencyType];

@@ -17,9 +17,9 @@ RCT_REMAP_METHOD(getDeviceID, getDeviceID:(RCTPromiseResolveBlock)resolve
                  rejecter:(RCTPromiseRejectBlock)reject)
 {
   NSString * deviceId = [TalkingDataAppCpa getDeviceId];
-  NSArray *events = @[deviceId];
-  if (events) {
-    resolve(events);
+//  NSArray *events = @[deviceId];
+  if (deviceId) {
+    resolve(deviceId);
   } else {
     reject(@"",@"",nil);
   }
@@ -202,8 +202,8 @@ RCT_EXPORT_METHOD(onSearch:(NSString *)tdAdSearch)
   s.content = dictADS[@"content"];
   s.destination = dictADS[@"destination"];
   s.origin = dictADS[@"origin"];
-  s.itemId = dictADS[@"itemId"];
-  s.itemLocationId = dictADS[@"itemLocationId"];
+  s.itemId = dictADS[@"item_id"];
+  s.itemLocationId = dictADS[@"item_location_id"];
   s.startDate = [dictADS[@"startDate"] longLongValue];
   s.endDate = [dictADS[@"endDate"] longLongValue];
   [TalkingDataAppCpa onSearch:s];
