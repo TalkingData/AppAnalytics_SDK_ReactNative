@@ -1,0 +1,3 @@
+rootProject.name = 'demo_aa'
+
+include ':app', ':react-native-talkingdata-appanalytics'

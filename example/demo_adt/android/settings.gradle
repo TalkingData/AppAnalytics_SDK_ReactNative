@@ -1,0 +1,3 @@
+rootProject.name = 'demo_adt'
+
+include ':app', ':react-native-talkingdata-adtracking'
