@@ -39,6 +39,16 @@ public class TalkingDataAdTracking extends ReactContextBaseJavaModule {
         callback.resolve(TalkingDataAppCpa.getDeviceId(context));
     }
 
+    /**
+     * 获取设备匿名标识符
+     *
+     * @param callback 返回获取的设备匿名标识符
+     */
+    @ReactMethod
+    public void getOAID(Promise callback) {
+        callback.resolve(TalkingDataAppCpa.getOAID(context));
+    }
+
     @ReactMethod
     public void onRegister(String account) {
         TalkingDataAppCpa.onRegister(account);

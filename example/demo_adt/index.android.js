@@ -32,6 +32,18 @@ export default class demo_adt extends Component {
                     }
                 />
                 <Button
+                    title={"getOAID"}
+                    onPress={
+                        () => {
+                        this.timer = setTimeout(() => {
+                           TalkingDataAdTracking.getOAID((oaid)=>{
+                                 Alert.alert(oaid);
+                           });
+                         },3000);
+                      }
+                    }
+                />
+                <Button
                     title={"onRegister"}
                     onPress={
                         () => {

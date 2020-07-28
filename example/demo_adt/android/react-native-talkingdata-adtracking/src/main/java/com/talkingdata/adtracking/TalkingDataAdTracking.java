@@ -40,6 +40,11 @@ public class TalkingDataAdTracking extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void getOAID(Promise callback) {
+        callback.resolve(TalkingDataAppCpa.getOAID(context));
+    }
+
+    @ReactMethod
     public void onRegister(String account) {
         TalkingDataAppCpa.onRegister(account);
     }
