@@ -14,11 +14,11 @@
 #import <React/RCTConvert.h>
 
 
-//注意这个类的命名，如果命名成TDAccountType 就会报错。 所以这里加个RN后缀，在导出module的时候，去掉RN即可。
-@interface TDAccountTypeRN : NSObject<RCTBridgeModule>
+//注意这个类的命名，如果命名成TDProfileType 就会报错。 所以这里加个RN后缀，在导出module的时候，去掉RN即可。
+@interface TDProfileTypeRN : NSObject<RCTBridgeModule>
 @end
 
-@interface RCTConvert (TDAccountType)
+@interface RCTConvert (TDProfileType)
 @end
 
 

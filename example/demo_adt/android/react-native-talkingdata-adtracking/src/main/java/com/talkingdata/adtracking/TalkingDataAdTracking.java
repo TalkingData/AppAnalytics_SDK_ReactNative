@@ -39,24 +39,29 @@ public class TalkingDataAdTracking extends ReactContextBaseJavaModule {
         callback.resolve(TalkingDataAppCpa.getDeviceId(context));
     }
 
+    /**
+     * 获取设备匿名标识符
+     *
+     * @param callback 返回获取的设备匿名标识符
+     */
     @ReactMethod
     public void getOAID(Promise callback) {
         callback.resolve(TalkingDataAppCpa.getOAID(context));
     }
 
     @ReactMethod
-    public void onRegister(String account) {
-        TalkingDataAppCpa.onRegister(account);
+    public void onRegister(String profile) {
+        TalkingDataAppCpa.onRegister(profile);
     }
 
     @ReactMethod
-    public void onRegisterWithinvitationCode(String account, String invitationCode) {
-        TalkingDataAppCpa.onRegister(account, invitationCode);
+    public void onRegisterWithinvitationCode(String profile, String invitationCode) {
+        TalkingDataAppCpa.onRegister(profile, invitationCode);
     }
 
     @ReactMethod
-    public void onLogin(String account) {
-        TalkingDataAppCpa.onLogin(account);
+    public void onLogin(String profile) {
+        TalkingDataAppCpa.onLogin(profile);
     }
 
     @ReactMethod
@@ -65,28 +70,28 @@ public class TalkingDataAdTracking extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void onPay(String account, String orderid, int amount, String currencyType, String payType) {
-        TalkingDataAppCpa.onPay(account, orderid, amount, currencyType, payType);
+    public void onPay(String profile, String orderid, int amount, String currencyType, String payType) {
+        TalkingDataAppCpa.onPay(profile, orderid, amount, currencyType, payType);
     }
 
     @ReactMethod
-    public void onPayWithOrder(String account, String orderid, int amount, String currencyType, String payType, String order) {
-        TalkingDataAppCpa.onPay(account, orderid, amount, currencyType, payType, getOrder(order));
+    public void onPayWithOrder(String profile, String orderid, int amount, String currencyType, String payType, String order) {
+        TalkingDataAppCpa.onPay(profile, orderid, amount, currencyType, payType, getOrder(order));
     }
 
     @ReactMethod
-    public void onPayWithItem(String account, String orderid, int amount, String currencyType, String payType, String itemId, int itemCount) {
-        TalkingDataAppCpa.onPay(account, orderid, amount, currencyType, payType, itemId, itemCount);
+    public void onPayWithItem(String profile, String orderid, int amount, String currencyType, String payType, String itemId, int itemCount) {
+        TalkingDataAppCpa.onPay(profile, orderid, amount, currencyType, payType, itemId, itemCount);
     }
 
     @ReactMethod
-    public void onPlaceOrder(String account, String order) {
-        TalkingDataAppCpa.onPlaceOrder(account, getOrder(order));
+    public void onPlaceOrder(String profile, String order) {
+        TalkingDataAppCpa.onPlaceOrder(profile, getOrder(order));
     }
 
     @ReactMethod
-    public void onOrderPaySucc(String account,String orderid,int amount,String currencyType,String payType){
-        TalkingDataAppCpa.onOrderPaySucc(account, orderid, amount, currencyType, payType);
+    public void onOrderPaySucc(String profile,String orderid,int amount,String currencyType,String payType){
+        TalkingDataAppCpa.onOrderPaySucc(profile, orderid, amount, currencyType, payType);
     }
 
     @ReactMethod
@@ -170,18 +175,18 @@ public class TalkingDataAdTracking extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void onCreateCard(String accountId, String method, String content) {
-        TalkingDataAppCpa.onCreateCard(accountId, method, content);
+    public void onCreateCard(String profileId, String method, String content) {
+        TalkingDataAppCpa.onCreateCard(profileId, method, content);
     }
 
     @ReactMethod
-    public void onTransaction(String accountId, String transaction) {
-        TalkingDataAppCpa.onTransaction(accountId, getTransaction(transaction));
+    public void onTransaction(String profileId, String transaction) {
+        TalkingDataAppCpa.onTransaction(profileId, getTransaction(transaction));
     }
 
     @ReactMethod
-    public void onCredit(String accountId, int amount, String content) {
-        TalkingDataAppCpa.onCredit(accountId, amount, content);
+    public void onCredit(String profileId, int amount, String content) {
+        TalkingDataAppCpa.onCredit(profileId, amount, content);
     }
 
     @ReactMethod
@@ -190,64 +195,64 @@ public class TalkingDataAdTracking extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public  void onShare(String accountId, String content) {
-        TalkingDataAppCpa.onShare(accountId, content);
+    public  void onShare(String profileId, String content) {
+        TalkingDataAppCpa.onShare(profileId, content);
     }
     @ReactMethod
-    public  void onPunch(String accountId, String punchId) {
-        TalkingDataAppCpa.onPunch(accountId, punchId);
+    public  void onPunch(String profileId, String punchId) {
+        TalkingDataAppCpa.onPunch(profileId, punchId);
     }
     @ReactMethod
-    public  void onReservation(String accountId, String reservationId, String category, int amount, String term) {
-        TalkingDataAppCpa.onReservation(accountId, reservationId, category, amount, term);
+    public  void onReservation(String profileId, String reservationId, String category, int amount, String term) {
+        TalkingDataAppCpa.onReservation(profileId, reservationId, category, amount, term);
     }
     @ReactMethod
-    public  void onBooking(String accountId, String bookingId, String category, int amount, String content) {
-        TalkingDataAppCpa.onBooking(accountId, bookingId, category, amount, content);
+    public  void onBooking(String profileId, String bookingId, String category, int amount, String content) {
+        TalkingDataAppCpa.onBooking(profileId, bookingId, category, amount, content);
     }
     @ReactMethod
-    public  void onContact(String accountId, String content) {
-        TalkingDataAppCpa.onContact(accountId, content);
+    public  void onContact(String profileId, String content) {
+        TalkingDataAppCpa.onContact(profileId, content);
     }
     @ReactMethod
-    public  void onLearn(String accountId, String course, int begin, int duration) {
-        TalkingDataAppCpa.onLearn(accountId, course, begin, duration);
+    public  void onLearn(String profileId, String course, int begin, int duration) {
+        TalkingDataAppCpa.onLearn(profileId, course, begin, duration);
     }
     @ReactMethod
-    public  void onRead(String accountId, String book, int begin, int duration) {
-        TalkingDataAppCpa.onRead(accountId, book, begin, duration);
+    public  void onRead(String profileId, String book, int begin, int duration) {
+        TalkingDataAppCpa.onRead(profileId, book, begin, duration);
     }
     @ReactMethod
-    public  void onBrowse(String accountId, String content, int begin, int duration) {
-        TalkingDataAppCpa.onBrowse(accountId, content, begin, duration);
+    public  void onBrowse(String profileId, String content, int begin, int duration) {
+        TalkingDataAppCpa.onBrowse(profileId, content, begin, duration);
     }
     @ReactMethod
-    public  void onChargeBack(String accountId, String orderId, String reason, String type) {
-        TalkingDataAppCpa.onChargeBack(accountId, orderId, reason, type);
+    public  void onChargeBack(String profileId, String orderId, String reason, String type) {
+        TalkingDataAppCpa.onChargeBack(profileId, orderId, reason, type);
     }
     @ReactMethod
-    public  void onTrialFinished(String accountId, String content) {
-        TalkingDataAppCpa.onTrialFinished(accountId, content);
+    public  void onTrialFinished(String profileId, String content) {
+        TalkingDataAppCpa.onTrialFinished(profileId, content);
     }
     @ReactMethod
-    public  void onGuideFinished(String accountId, String content) {
-        TalkingDataAppCpa.onGuideFinished(accountId, content);
+    public  void onGuideFinished(String profileId, String content) {
+        TalkingDataAppCpa.onGuideFinished(profileId, content);
     }
     @ReactMethod
-    public  void onPreviewFinished(String accountId, String content) {
-        TalkingDataAppCpa.onPreviewFinished(accountId, content);
+    public  void onPreviewFinished(String profileId, String content) {
+        TalkingDataAppCpa.onPreviewFinished(profileId, content);
     }
     @ReactMethod
-    public  void onFreeFinished(String accountId, String content) {
-        TalkingDataAppCpa.onFreeFinished(accountId, content);
+    public  void onFreeFinished(String profileId, String content) {
+        TalkingDataAppCpa.onFreeFinished(profileId, content);
     }
     @ReactMethod
-    public  void onLevelPass(String accountId, String levelId) {
-        TalkingDataAppCpa.onLevelPass(accountId, levelId);
+    public  void onLevelPass(String profileId, String levelId) {
+        TalkingDataAppCpa.onLevelPass(profileId, levelId);
     }
     @ReactMethod
-    public  void onAchievementUnlock(String accountId, String achievementId) {
-        TalkingDataAppCpa.onAchievementUnlock(accountId, achievementId);
+    public  void onAchievementUnlock(String profileId, String achievementId) {
+        TalkingDataAppCpa.onAchievementUnlock(profileId, achievementId);
     }
     
     /**

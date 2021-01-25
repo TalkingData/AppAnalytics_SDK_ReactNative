@@ -66,9 +66,9 @@ JS:
 删除`RCTTDAdTrackingSDK.m`的:
 
 ```
-RCT_EXPORT_METHOD(onRead:(NSString *)account book:(NSString *)book begin:(int64_t)begin duration:(int)duration)
+RCT_EXPORT_METHOD(onRead:(NSString *)profile book:(NSString *)book begin:(int64_t)begin duration:(int)duration)
 {
-  [TalkingDataAppCpa onRead:account book:book begin:begin duration:duration];
+  [TalkingDataAppCpa onRead:profile book:book begin:begin duration:duration];
 }
 
 ```
@@ -77,17 +77,17 @@ RCT_EXPORT_METHOD(onRead:(NSString *)account book:(NSString *)book begin:(int64_
 
 ```
 @ReactMethod
-public  void onRead(String accountId, String book, int begin, int duration) {
-TalkingDataAppCpa.onRead(accountId, book, begin, duration);
+public  void onRead(String profileId, String book, int begin, int duration) {
+TalkingDataAppCpa.onRead(profileId, book, begin, duration);
 }
 ```
 
 删除`TalkingDataAdTracking.js` 的：
 
 ```
-static onRead(account,book,begin,duration)
+static onRead(profile,book,begin,duration)
 {
-if (typeof account !== 'string') {
+if (typeof profile !== 'string') {
 return;
 };
 
@@ -102,7 +102,7 @@ return;
 if (typeof duration !== 'number') {
 return;
 }
-TDADT.onRead(account,book,begin,duration)
+TDADT.onRead(profile,book,begin,duration)
 }
 
 ```

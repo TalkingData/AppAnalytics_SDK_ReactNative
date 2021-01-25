@@ -40,8 +40,8 @@ App Analytics react-native 平台 SDK 由`封装层`和`Native SDK`两部分构�
 ### 注意事项
 1. 分别选择 Android 和 iOS 平台进行功能定制时，请确保两个平台功能项一致。
 2. 如果申请 Native SDK 时只选择了部分功能，则需要在本项目中删除未选择功能对应的封装层代码。  
-  a) 未选择`自定义事件`功能则删除以下4部分  
-  删除 `lib/AppAnalytics/TalkingDataAppAnalytics.js` 文件中如下代码：
+    a) 未选择`自定义事件`功能则删除以下4部分
+    删除 `lib/AppAnalytics/TalkingDataAppAnalytics.js` 文件中如下代码：
 
   ```
   ...
@@ -180,11 +180,11 @@ App Analytics react-native 平台 SDK 由`封装层`和`Native SDK`两部分构�
   
   ...
   
-  static onPlaceOrder(accountId,order){
+  static onPlaceOrder(profileId,order){
   	...
   }
   
-  static onOrderPaySucc(accountId,payType,order){
+  static onOrderPaySucc(profileId,payType,order){
   	...
   }
   
@@ -214,12 +214,12 @@ App Analytics react-native 平台 SDK 由`封装层`和`Native SDK`两部分构�
   ...
   
     @ReactMethod
-    public void onPlaceOrder(String accountID, String order) {
+    public void onPlaceOrder(String profileID, String order) {
         ...
     }
   
     @ReactMethod
-    public void onOrderPaySucc(String accountID, String payType, String order) {
+    public void onOrderPaySucc(String profileID, String payType, String order) {
         ...
     }
   
@@ -256,12 +256,12 @@ App Analytics react-native 平台 SDK 由`封装层`和`Native SDK`两部分构�
   ```
   ...
   
-  RCT_EXPORT_METHOD(onPlaceOrder:(NSString *)accountId order:(NSString *)orderString)
+  RCT_EXPORT_METHOD(onPlaceOrder:(NSString *)profileId order:(NSString *)orderString)
   {
   	...
   }
   
-  RCT_EXPORT_METHOD(onOrderPaySucc:(NSString *)accountId payType:(NSString *)payType order:(NSString *)orderString)
+  RCT_EXPORT_METHOD(onOrderPaySucc:(NSString *)profileId payType:(NSString *)payType order:(NSString *)orderString)
   {
     	...
   }
@@ -297,8 +297,8 @@ App Analytics react-native 平台 SDK 由`封装层`和`Native SDK`两部分构�
   
   ...
   
-  + (void)onPlaceOrder:(NSString *)account order:(TalkingDataOrder *)order;
-  + (void)onOrderPaySucc:(NSString *)account payType:(NSString *)payType order:(TalkingDataOrder *)order;
+  + (void)onPlaceOrder:(NSString *)profile order:(TalkingDataOrder *)order;
+  + (void)onOrderPaySucc:(NSString *)profile payType:(NSString *)payType order:(TalkingDataOrder *)order;
   + (void)onViewItem:(NSString *)itemId category:(NSString *)category name:(NSString *)name unitPrice:(int)unitPrice;
   + (void)onAddItemToShoppingCart:(NSString *)itemId category:(NSString *)category name:(NSString *)name unitPrice:(int)unitPrice amount:(int)amount;
   + (void)onViewShoppingCart:(TalkingDataShoppingCart *)shoppingCart;
@@ -467,7 +467,7 @@ App Analytics react-native 平台 SDK 由`封装层`和`Native SDK`两部分构�
 JS层引用头文件
 
 ```js
-import {TalkingDataAppAnalytics,TDACCOUNT,TalkingDataOrder,TalkingDataShoppingCart} from 'TalkingDataAppAnalytics.js'
+import {TalkingDataAppAnalytics,TDPROFILE,TalkingDataOrder,TalkingDataShoppingCart} from 'TalkingDataAppAnalytics.js'
 ```
 
 #### iOS
@@ -556,25 +556,27 @@ import {TalkingDataAppAnalytics,TDACCOUNT,TalkingDataOrder,TalkingDataShoppingCa
 | 方法                    | 参数         |  iOS | Android |  desc     |
 | :---- | :----- | :-- | :---- | :-------- |
 | [getDeviceID(callback)](#getdeviceid)|    enabled bool      |  ✅  |   ✅   |  获取设备ID  |
+| [getOAID(callback)](#getOAID)|    enabled bool      |  ❌  |   ✅   |  获取OAID  |
 | [setLogEnabled(enable)](#setlogenabled) |    enabled bool      |  ✅  |   ❌   |  开启/关闭日志功能  |
 | [setExceptionReportEnabled(enable)](#setexceptionreportenabled)|    enabled bool      |  ✅  |   ✅   |  开启/关闭异常捕获功能(捕获原生代码异常) |
 | [setSignalReportEnabled(enable)](#setsignalreportenabled))   |    enabled bool      |  ✅  |   ❌   | 开启/关闭异常信号捕获(原生异常信号) |
 | [setLatitudeLongitude(lat,lnt)](#setlatitudelongitude)                 |    lat 经度，lnt纬度      |  ✅  |   ❌   |  自定义经纬度 |
 | [setAntiCheatingEnabled(enable)](#setanticheatingenabled)                 |    enabled bool      |  ✅  |   ✅   |  开启/关闭用户质量评估(反作弊功能)  |
-| [onRegister(accountId,accountType,name)](#onregister)                 |    accountId 账户id，accountType 账户类型，name 账户昵称     |  ✅  |   ✅  |  注册接口用于记录用户在使用应用过程中的注册行为。建议在注册成功时调用此接口。 |
-| [onLogin(accountId,accountType,name)](#onlogin)                 |    accountId 账户id，accountType 账户类型，name 账户昵称      |  ✅  |   ✅   |  登录接口用于记录用户在使用应用过程中的登录行为。  |
-| [onEvent(eventName,label,parameters)](#onevent)                 |    eventName 事件名称，label 事件标签(自定义),parameters 参数     |  ✅  |   ✅   |  自定义事件用于追踪任何需要了解的用户行为，如：用户点击某功能按钮、填写某个输入框、触发了某个广告等。 |
+| [onRegister(profileId,profileType,name)](#onregister)                 |    profileId 账户id，profileType 账户类型，name 账户昵称     |  ✅  |   ✅  |  注册接口用于记录用户在使用应用过程中的注册行为。建议在注册成功时调用此接口。 |
+| [onLogin(profileId,profileType,name)](#onlogin)                 |    profileId 账户id，profileType 账户类型，name 账户昵称      |  ✅  |   ✅   |  登录接口用于记录用户在使用应用过程中的登录行为。  |
+| [onEvent(eventName,label,parameters)](#onevent)                 |    eventName 事件名称，label 事件标签(自定义),parameters 参数     |  ✅  |   ✅   |  自定义事件用于追踪任何需要了解的用户行为，如：用户点击某功能按钮、填写某个输入框、触发了某个广告等。|
+| [onEventWithValue(eventName,label,parameters,value)](#oneventwithvalue) |    eventName 事件名称，label 事件标签(自定义),parameters 参数,value 事件数值    |  ✅  |   ✅   |  自定义事件用于追踪任何需要了解的用户行为，如：用户点击某功能按钮、填写某个输入框、触发了某个广告等。|
 | [setGlobalKV(k,v)](#setglobalkv)                 |    k 全局key ，v 全局的value    |  ✅  |   ✅   |  移除全局的key,value。|
 | [removeGlobalKV(k)](#removeglobalkv)                 |    k 需要删除的全局的key      |  ✅  |   ✅   |  删除全局数据  |
 | [onPageStart(pageName)](#onpagestart)                 |   pageName 页面名称     |  ✅  |   ✅   |  触发页面事件，在页面加载完毕的时候调用，用于记录页面名称和使用时长，和 onPageEnd 配合使用  |
 | [onPageEnd(pageName)](#onpageend)                 |    pageName 页面名称      |  ✅  |   ✅   |  触发页面事件，在页面加载完毕的时候调用，用于记录页面名称和使用时长，和 onPageBegin 配合使用|
-| [onPlaceOrder(accountId,orderString)](#onplaceorder)                 |    accountId 账户id,orderString 订单的字符串     |  ✅  |   ✅   |  下单接口用于记录用户在使用应用过程中的成功下单的行为。 下单接口由3个子接口构成：创建订单、添加订单详情、成功下单。  |
-| [onOrderPaySucc(accountId,payType,orderString)](#onOrderPaySucc(accountId,payType,orderString))                 |    accountId账户id,payType 支付类型,orderString 订单的字符串     |  ✅  |   ✅   |  成功支付订单接口用于记录用户完成订单支付的行为。 |
+| [onPlaceOrder(profileId,orderString)](#onplaceorder)                 |    profileId 账户id,orderString 订单的字符串     |  ✅  |   ✅   |  下单接口用于记录用户在使用应用过程中的成功下单的行为。 下单接口由3个子接口构成：创建订单、添加订单详情、成功下单。  |
+| [onOrderPaySucc(profileId,payType,orderString)](#onOrderPaySucc(profileId,payType,orderString))                 |    profileId账户id,payType 支付类型,orderString 订单的字符串     |  ✅  |   ✅   |  成功支付订单接口用于记录用户完成订单支付的行为。 |
 | [onViewItem(itemId,category,name)](#onviewitem)                 |   itemId item的id,category 类别,name item的名称    |  ✅  |   ✅   | 用于记录用户查看商品详情的行为。 |
 | [onAddItemToShoppingCart(itemId,category,name,unitPrice,amount)](#onadditemtoshoppingcart)                 |    itemId item的ID,category 类别,name 名称,unitPrice 单价,amount 数量     |  ✅  |   ✅   |  用于记录用户将商品加入购物车的行为。|
 | [onViewShoppingCart(shoppingCartString)](#onviewshoppingcart)                 |   shoppingCartString 购物车字符串    |  ✅  |   ✅   | 查看购物车用于记录用户浏览购物车内商品的行为。 这个接口由3个子接口构成：创建购物车、添加购物车详情、查看购物车。调用时需要按顺序完成这3个子接口的调用，否则可能会无法产生正确的查看购物车行为数据。 |
 
-## 账户类型AccountType 枚举
+## 账户类型ProfileType 枚举
 
 | 账户类型                  | 枚举含义                  |
 | ------------------------ | -------------------     |
@@ -619,6 +621,32 @@ TalkingDataAppAnalytics.getDeviceID((device_id)=>{
 > 此接口是异步接口
 >
 > 接口支持iOS+Android平台。
+
+---
+
+<span id="getOAID"></span>
+
+### getOAID(callback)
+
+  获取OAID。需要注意的是，这个接口建议您在初始化SDK之后的3-5秒再去调用，以避免您获取到null值
+
+  **Examples**
+
+  ```js
+import {TalkingDataAppAnalytics} from 'TalkingDataAppAnalytics.js'
+
+this.timer = setTimeout(() => {
+	TalkingDataAppAnalytics.getOAID((oaid)=>{
+  	Alert.alert(oaid);
+  });
+},3000);
+  ```
+
+**Notes**
+
+> 此接口是异步接口
+>
+> 接口支持Android平台。
 
 ---
 
@@ -771,19 +799,19 @@ TalkingDataAppAnalytics. setAntiCheatingEnabled(acEnable)
 ---
 
 <span id="onregister"></span>
-### onRegister(accountId,accountType,name)
+### onRegister(profileId,profileType,name)
 
 注册接口用于记录用户在使用应用过程中的注册行为。建议在注册成功时调用此接口。
 
 **Examples**
 
 ```js
-import {TalkingDataAppAnalytics,TDACCOUNT} from 'TalkingDataAppAnalytics.js'
+import {TalkingDataAppAnalytics,TDPROFILE} from 'TalkingDataAppAnalytics.js'
 
-accountId = '123'; //账户id
-accountType = TDACCOUNT.ANONYMOUS; //账户类型 枚举
-accountName = 'NickName'; //账户昵称
-TalkingDataAppAnalytics.onRegister(accountId,accountType,accountName);
+profileId = '123'; //账户id
+profileType = TDPROFILE.ANONYMOUS; //账户类型 枚举
+profileName = 'NickName'; //账户昵称
+TalkingDataAppAnalytics.onRegister(profileId,profileType,profileName);
 ```
 
 **Notes**
@@ -793,26 +821,26 @@ TalkingDataAppAnalytics.onRegister(accountId,accountType,accountName);
 
 **参数**
 
-* **accountId (required):** string 账户ID
-* **accountType (required):** TDACCOUNT枚举 账户类型
-* **accountName (required):** string 账户昵称
+* **profileId (required):** string 账户ID
+* **profileType (required):** TDPROFILE枚举 账户类型
+* **profileName (required):** string 账户昵称
 
 ---
 
 <span id="onlogin"></span>
-### onLogin(accountId,accountType,name)
+### onLogin(profileId,profileType,name)
 
 登录接口用于记录用户在使用应用过程中的登录行为。
 
 **Examples**
 
 ```js
-import {TalkingDataAppAnalytics,TDACCOUNT} from 'TalkingDataAppAnalytics.js'
+import {TalkingDataAppAnalytics,TDPROFILE} from 'TalkingDataAppAnalytics.js'
 
-accountId = '123'; //账户id
-accountType = TDACCOUNT.ANONYMOUS; //账户类型 枚举
-accountName = 'NickName'; //账户昵称
-TalkingDataAppAnalytics.onLogin(accountId,accountType,accountName);
+profileId = '123'; //账户id
+profileType = TDPROFILE.ANONYMOUS; //账户类型 枚举
+profileName = 'NickName'; //账户昵称
+TalkingDataAppAnalytics.onLogin(profileId,profileType,profileName);
 ```
 
 **Notes**
@@ -821,9 +849,9 @@ TalkingDataAppAnalytics.onLogin(accountId,accountType,accountName);
 
 **参数**
 
-* **accountId (required):** string 账户ID
-* **accountType (required):** TDACCOUNT枚举 账户类型
-* **accountName (required):** string 账户昵称
+* **profileId (required):** string 账户ID
+* **profileType (required):** TDPROFILE枚举 账户类型
+* **profileName (required):** string 账户昵称
 
 ---
 
@@ -853,6 +881,38 @@ TalkingDataAppAnalytics.onEvent(eventName, eventLabel,parameter);
 * **eventName (required):** string 事件名称
 * **eventLabel (required):** string 事件标签
 * **parameters (required):** object 事件参数
+
+---
+
+<span id="oneventwithvalue"></span>
+
+  ### onEventWithValue(eventName,label,parameters,value)
+
+  自定义事件用于追踪任何需要了解的用户行为，如：用户点击某功能按钮、填写某个输入框、触发了某个广告等。   
+
+  **Examples**
+
+  ```js
+import {TalkingDataAppAnalytics} from 'TalkingDataAppAnalytics.js'
+  
+eventName = 'click_btn'; //事件名称
+eventLabel = 'my_custom_label'; //事件标签
+parameter = {'btn_name':'xx_btn','btn_color':'xxcolor'} //事件参数
+value = 5.21;//事件数值
+TalkingDataAppAnalytics.onEventWithValue(eventName, eventLabel,parameter,value);
+  
+  ```
+
+  **Notes**
+
+  > 接口支持iOS+Android平台。
+
+  **参数**
+
+  * **eventName (required):** string 事件名称
+* **eventLabel (required):** string 事件标签
+* **parameters (required):** object 事件参数
+* **value(required)**:double 事件数值
 
 ---
 
@@ -956,7 +1016,7 @@ TalkingDataAppAnalytics.onPageEnd(pageName);
 ---
 
 <span id="onplaceorder"></span>
-### onPlaceOrder(accountId,orderString)
+### onPlaceOrder(profileId,orderString)
 
 下单接口用于记录用户在使用应用过程中的成功下单的行为。
 下单接口由3个子接口构成：创建订单、添加订单详情、成功下单。
@@ -966,13 +1026,13 @@ TalkingDataAppAnalytics.onPageEnd(pageName);
 ```js
 import {TalkingDataAppAnalytics, TalkingDataOrder} from 'TalkingDataAppAnalytics.js'
 
-accountId = 'aid_123';//账户id
+profileId = 'aid_123';//账户id
 orderId = 'oid_123';//订单id
 total = 59900; //总钱数 单位为分
 currencyType = 'CNY';//货币类型
 order = new TalkingDataOrder(orderId,total,currencyType);//生成新的订单对象
 order.addItem('007','家电','电视',499900,1)
-TalkingDataAppAnalytics.onPlaceOrder(accountId, order.orderString);
+TalkingDataAppAnalytics.onPlaceOrder(profileId, order.orderString);
 
 ```
 
@@ -981,7 +1041,7 @@ TalkingDataAppAnalytics.onPlaceOrder(accountId, order.orderString);
 
 **参数**
 
-* **accountId (required):** string 账户id
+* **profileId (required):** string 账户id
 * **orderId (required):** string 订单id
 * **total (required):** string 总钱数 单位为分
 * **currencyType (required):** string 货币类型
@@ -989,7 +1049,7 @@ TalkingDataAppAnalytics.onPlaceOrder(accountId, order.orderString);
 ---
 
 <span id="onorderpaysucc"></span>
-### onOrderPaySucc(accountId,payType,orderString)
+### onOrderPaySucc(profileId,payType,orderString)
 
 成功支付订单接口用于记录用户完成订单支付的行为。
 
@@ -999,7 +1059,7 @@ TalkingDataAppAnalytics.onPlaceOrder(accountId, order.orderString);
 ```js
 import {TalkingDataAppAnalytics, TalkingDataOrder} from 'TalkingDataAppAnalytics.js'
 
-accountid = 'aid_123';//账户id
+profileid = 'aid_123';//账户id
 
 payType = '银联支付' //支付类型
 
@@ -1008,7 +1068,7 @@ total = 59900; //总钱数 单位为分
 currencyType = 'CNY';//货币类型
 order = new TalkingDataOrder(orderId,total,currencyType);//生成新的订单对象
 order.addItem('008','家电','冰箱',399900,1)
-TalkingDataAppAnalytics.onOrderPaySucc(accountid,payType,order.orderString);
+TalkingDataAppAnalytics.onOrderPaySucc(profileid,payType,order.orderString);
 
 ```
 
@@ -1018,7 +1078,7 @@ TalkingDataAppAnalytics.onOrderPaySucc(accountid,payType,order.orderString);
 
 **参数**
 
-* **accountid (required):** string 账户id
+* **profileid (required):** string 账户id
 * **payType (required):** string 支付方式
 * **orderId (required):** string 订单id
 * **total (required):** number 总钱数 单位为分
@@ -1232,7 +1292,7 @@ static BOOL RCTParseUnused(const char **input)
 
 
     如果无法加载，那么执行以下步骤：
-
+    
     ```
     1.报错页面晃动手机，显示菜单
     2.点击Dev Settings

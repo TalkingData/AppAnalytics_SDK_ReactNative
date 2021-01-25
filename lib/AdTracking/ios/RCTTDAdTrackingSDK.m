@@ -25,28 +25,28 @@ RCT_REMAP_METHOD(getDeviceID, getDeviceID:(RCTPromiseResolveBlock)resolve
   }
 }
 
-RCT_EXPORT_METHOD(onRegister:(NSString *)account)
+RCT_EXPORT_METHOD(onRegister:(NSString *)profile)
 {
-  [TalkingDataAppCpa onRegister:account];
+  [TalkingDataAppCpa onRegister:profile];
 }
 
-RCT_EXPORT_METHOD(onRegisterWithinvitationCode:(NSString *)account invitationCode:(NSString *)invitationCode){
-  [TalkingDataAppCpa onRegister:account invitationCode:invitationCode];
+RCT_EXPORT_METHOD(onRegisterWithinvitationCode:(NSString *)profile invitationCode:(NSString *)invitationCode){
+  [TalkingDataAppCpa onRegister:profile invitationCode:invitationCode];
 }
 
-RCT_EXPORT_METHOD(onLogin:(NSString *)account)
+RCT_EXPORT_METHOD(onLogin:(NSString *)profile)
 {
-  [TalkingDataAppCpa onLogin:account];
+  [TalkingDataAppCpa onLogin:profile];
 }
 RCT_EXPORT_METHOD(onCreateRole:(NSString *)name)
 {
   [TalkingDataAppCpa onCreateRole:name];
 }
-RCT_EXPORT_METHOD(onPay:(NSString *)account withOrderId:(NSString *)orderId withAmount:(int)amount withCurrencyType:(NSString *)currencyType withPayType:(NSString *)payType)
+RCT_EXPORT_METHOD(onPay:(NSString *)profile withOrderId:(NSString *)orderId withAmount:(int)amount withCurrencyType:(NSString *)currencyType withPayType:(NSString *)payType)
 {
-  [TalkingDataAppCpa onPay:account withOrderId:orderId withAmount:amount withCurrencyType:currencyType withPayType:payType];
+  [TalkingDataAppCpa onPay:profile withOrderId:orderId withAmount:amount withCurrencyType:currencyType withPayType:payType];
 }
-RCT_EXPORT_METHOD(onPayWithOrder:(NSString *)account withOrderId:(NSString *)orderId withAmount:(int)amount withCurrencyType:(NSString *)currencyType withPayType:(NSString *)payType withOrder:(NSString *)orderString)
+RCT_EXPORT_METHOD(onPayWithOrder:(NSString *)profile withOrderId:(NSString *)orderId withAmount:(int)amount withCurrencyType:(NSString *)currencyType withPayType:(NSString *)payType withOrder:(NSString *)orderString)
 {
   NSError * error = nil;
   NSDictionary * orderDict = [NSJSONSerialization JSONObjectWithData:[orderString dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
@@ -70,7 +70,7 @@ RCT_EXPORT_METHOD(onPayWithOrder:(NSString *)account withOrderId:(NSString *)ord
         [order addItemWithCategory:category itemId:itemid name:name unitPrice:[unitPrice intValue] amount:[amount intValue]];
       }
     }
-    [TalkingDataAppCpa onPay:account withOrderId:orderId withAmount:amount withCurrencyType:currencyType withPayType:payType withOrder:order];
+    [TalkingDataAppCpa onPay:profile withOrderId:orderId withAmount:amount withCurrencyType:currencyType withPayType:payType withOrder:order];
   }
   
 }
@@ -78,9 +78,9 @@ RCT_EXPORT_METHOD(onPayWithOrder:(NSString *)account withOrderId:(NSString *)ord
 
 
 
-RCT_EXPORT_METHOD(onPayWithItem:(NSString *)account withOrderId:(NSString *)orderId withAmount:(int)amount withCurrencyType:(NSString *)currencyType withPayType:(NSString *)payType withItemId:(NSString *)itemId withItemCount:(int)itemCount)
+RCT_EXPORT_METHOD(onPayWithItem:(NSString *)profile withOrderId:(NSString *)orderId withAmount:(int)amount withCurrencyType:(NSString *)currencyType withPayType:(NSString *)payType withItemId:(NSString *)itemId withItemCount:(int)itemCount)
 {
-  [TalkingDataAppCpa onPay:account withOrderId:orderId withAmount:amount withCurrencyType:currencyType withPayType:payType withItemId:itemId withItemCount:itemCount];
+  [TalkingDataAppCpa onPay:profile withOrderId:orderId withAmount:amount withCurrencyType:currencyType withPayType:payType withItemId:itemId withItemCount:itemCount];
 }
 
 
@@ -94,9 +94,9 @@ RCT_EXPORT_METHOD(onAddItemToShoppingCart:(NSString *)itemId category:(NSString 
   [TalkingDataAppCpa onAddItemToShoppingCartWithCategory:category itemId:itemId name:name unitPrice:unitPrice amount:amount];
 }
 
-RCT_EXPORT_METHOD(onPlaceOrder:(NSString *)accountId order:(NSString *)orderString)
+RCT_EXPORT_METHOD(onPlaceOrder:(NSString *)profileId order:(NSString *)orderString)
 {
-  if (!accountId) {
+  if (!profileId) {
     return;
   }
   NSError * error = nil;
@@ -121,13 +121,13 @@ RCT_EXPORT_METHOD(onPlaceOrder:(NSString *)accountId order:(NSString *)orderStri
         [order addItemWithCategory:category itemId:itemid name:name unitPrice:[unitPrice intValue] amount:[amount intValue]];
       }
     }
-    [TalkingDataAppCpa onPlaceOrder:accountId withOrder:order];
+    [TalkingDataAppCpa onPlaceOrder:profileId withOrder:order];
     
   }
 }
 
-RCT_EXPORT_METHOD(onOrderPaySucc:(NSString *)account withOrderId:(NSString *)orderId withAmount:(int)amount withCurrencyType:(NSString *)currencyType withPayType:(NSString *)payType){
-  [TalkingDataAppCpa onOrderPaySucc:account withOrderId:orderId withAmount:amount withCurrencyType:currencyType withPayType:payType];
+RCT_EXPORT_METHOD(onOrderPaySucc:(NSString *)profile withOrderId:(NSString *)orderId withAmount:(int)amount withCurrencyType:(NSString *)currencyType withPayType:(NSString *)payType){
+  [TalkingDataAppCpa onOrderPaySucc:profile withOrderId:orderId withAmount:amount withCurrencyType:currencyType withPayType:payType];
 }
 
 
@@ -172,9 +172,9 @@ RCT_EXPORT_METHOD(onCustEvent10){[TalkingDataAppCpa onCustEvent10];}
 
 
 
-RCT_EXPORT_METHOD(onCreateCard:(NSString *)account method:(NSString *)method content:(NSString *)content)
+RCT_EXPORT_METHOD(onCreateCard:(NSString *)profile method:(NSString *)method content:(NSString *)content)
 {
-  [TalkingDataAppCpa onCreateCard:account method:method content:content];
+  [TalkingDataAppCpa onCreateCard:profile method:method content:content];
 }
 
 RCT_EXPORT_METHOD(onFavorite:(NSString *)category content:(NSString *)content)
@@ -182,14 +182,14 @@ RCT_EXPORT_METHOD(onFavorite:(NSString *)category content:(NSString *)content)
   [TalkingDataAppCpa onFavorite:category content:content];
 }
 
-RCT_EXPORT_METHOD(onShare:(NSString *)account content:(NSString *)content)
+RCT_EXPORT_METHOD(onShare:(NSString *)profile content:(NSString *)content)
 {
-  [TalkingDataAppCpa onShare:account content:content];
+  [TalkingDataAppCpa onShare:profile content:content];
 }
 
-RCT_EXPORT_METHOD(onPunch:(NSString *)account punchId:(NSString *)punchId)
+RCT_EXPORT_METHOD(onPunch:(NSString *)profile punchId:(NSString *)punchId)
 {
-  [TalkingDataAppCpa onPunch:account punchId:punchId];
+  [TalkingDataAppCpa onPunch:profile punchId:punchId];
 }
 
 
@@ -210,37 +210,37 @@ RCT_EXPORT_METHOD(onSearch:(NSString *)tdAdSearch)
 }
 
 
-RCT_EXPORT_METHOD(onReservation:(NSString *)account reservationId:(NSString *)reservationId category:(NSString *)category amount:(int)amount term:(NSString *)term)
+RCT_EXPORT_METHOD(onReservation:(NSString *)profile reservationId:(NSString *)reservationId category:(NSString *)category amount:(int)amount term:(NSString *)term)
 {
-  [TalkingDataAppCpa onReservation:account reservationId:reservationId category:category amount:amount term:term];
+  [TalkingDataAppCpa onReservation:profile reservationId:reservationId category:category amount:amount term:term];
 }
 
-RCT_EXPORT_METHOD(onBooking:(NSString *)account bookingId:(NSString *)bookingId category:(NSString *)category amount:(int)amount content:(NSString *)content)
+RCT_EXPORT_METHOD(onBooking:(NSString *)profile bookingId:(NSString *)bookingId category:(NSString *)category amount:(int)amount content:(NSString *)content)
 {
-  [TalkingDataAppCpa onBooking:account bookingId:bookingId category:category amount:amount content:content];
+  [TalkingDataAppCpa onBooking:profile bookingId:bookingId category:category amount:amount content:content];
 }
 
-RCT_EXPORT_METHOD(onContact:(NSString *)account content:(NSString *)content)
+RCT_EXPORT_METHOD(onContact:(NSString *)profile content:(NSString *)content)
 {
-  [TalkingDataAppCpa onContact:account content:content];
+  [TalkingDataAppCpa onContact:profile content:content];
 }
 
-RCT_EXPORT_METHOD(onLearn:(NSString *)account course:(NSString *)course begin:(int64_t)begin duration:(int)duration)
+RCT_EXPORT_METHOD(onLearn:(NSString *)profile course:(NSString *)course begin:(int64_t)begin duration:(int)duration)
 {
-  [TalkingDataAppCpa onLearn:account course:course begin:begin duration:duration];
+  [TalkingDataAppCpa onLearn:profile course:course begin:begin duration:duration];
 }
 
-RCT_EXPORT_METHOD(onRead:(NSString *)account book:(NSString *)book begin:(int64_t)begin duration:(int)duration)
+RCT_EXPORT_METHOD(onRead:(NSString *)profile book:(NSString *)book begin:(int64_t)begin duration:(int)duration)
 {
-  [TalkingDataAppCpa onRead:account book:book begin:begin duration:duration];
+  [TalkingDataAppCpa onRead:profile book:book begin:begin duration:duration];
 }
 
-RCT_EXPORT_METHOD(onBrowse:(NSString *)account content:(NSString *)content begin:(int64_t)begin duration:(int)duration)
+RCT_EXPORT_METHOD(onBrowse:(NSString *)profile content:(NSString *)content begin:(int64_t)begin duration:(int)duration)
 {
-  [TalkingDataAppCpa onBrowse:account content:content begin:begin duration:duration];
+  [TalkingDataAppCpa onBrowse:profile content:content begin:begin duration:duration];
 }
 
-RCT_EXPORT_METHOD(onTransaction:(NSString *)account transaction:(NSString *)transactionString)
+RCT_EXPORT_METHOD(onTransaction:(NSString *)profile transaction:(NSString *)transactionString)
 {
   TDTransaction * t = [[TDTransaction alloc]init];
   NSError * error = nil;
@@ -255,47 +255,47 @@ RCT_EXPORT_METHOD(onTransaction:(NSString *)account transaction:(NSString *)tran
   t.currencyType = dictADS[@"currencyType"];
   t.content = dictADS[@"content"];
 
-  [TalkingDataAppCpa onTransaction:account transaction:t];
+  [TalkingDataAppCpa onTransaction:profile transaction:t];
 }
 
-RCT_EXPORT_METHOD(onCredit:(NSString *)account amount:(int)amount content:(NSString *)content)
+RCT_EXPORT_METHOD(onCredit:(NSString *)profile amount:(int)amount content:(NSString *)content)
 {
-  [TalkingDataAppCpa onCredit:account amount:amount content:content];
+  [TalkingDataAppCpa onCredit:profile amount:amount content:content];
 }
 
-RCT_EXPORT_METHOD(onChargeBack:(NSString *)account orderId:(NSString *)orderId reason:(NSString *)reason type:(NSString *)type)
+RCT_EXPORT_METHOD(onChargeBack:(NSString *)profile orderId:(NSString *)orderId reason:(NSString *)reason type:(NSString *)type)
 {
-  [TalkingDataAppCpa onChargeBack:account orderId:orderId reason:reason type:type];
+  [TalkingDataAppCpa onChargeBack:profile orderId:orderId reason:reason type:type];
 }
 
-RCT_EXPORT_METHOD(onTrialFinished:(NSString *)account content:(NSString *)content)
+RCT_EXPORT_METHOD(onTrialFinished:(NSString *)profile content:(NSString *)content)
 {
-  [TalkingDataAppCpa onTrialFinished:account content:content];
+  [TalkingDataAppCpa onTrialFinished:profile content:content];
 }
 
-RCT_EXPORT_METHOD(onGuideFinished:(NSString *)account content:(NSString *)content)
+RCT_EXPORT_METHOD(onGuideFinished:(NSString *)profile content:(NSString *)content)
 {
-  [TalkingDataAppCpa onGuideFinished:account content:content];
+  [TalkingDataAppCpa onGuideFinished:profile content:content];
 }
 
-RCT_EXPORT_METHOD(onPreviewFinished:(NSString *)account content:(NSString *)content)
+RCT_EXPORT_METHOD(onPreviewFinished:(NSString *)profile content:(NSString *)content)
 {
-  [TalkingDataAppCpa onPreviewFinished:account content:content];
+  [TalkingDataAppCpa onPreviewFinished:profile content:content];
 }
 
-RCT_EXPORT_METHOD(onFreeFinished:(NSString *)account content:(NSString *)content)
+RCT_EXPORT_METHOD(onFreeFinished:(NSString *)profile content:(NSString *)content)
 {
-  [TalkingDataAppCpa onFreeFinished:account content:content];
+  [TalkingDataAppCpa onFreeFinished:profile content:content];
 }
 
-RCT_EXPORT_METHOD(onLevelPass:(NSString *)account levelId:(NSString *)levelId)
+RCT_EXPORT_METHOD(onLevelPass:(NSString *)profile levelId:(NSString *)levelId)
 {
-  [TalkingDataAppCpa onLevelPass:account levelId:levelId];
+  [TalkingDataAppCpa onLevelPass:profile levelId:levelId];
 }
 
-RCT_EXPORT_METHOD(onAchievementUnlock:(NSString *)account achievementId:(NSString *)achievementId)
+RCT_EXPORT_METHOD(onAchievementUnlock:(NSString *)profile achievementId:(NSString *)achievementId)
 {
-  [TalkingDataAppCpa onAchievementUnlock:account achievementId:achievementId];
+  [TalkingDataAppCpa onAchievementUnlock:profile achievementId:achievementId];
 }
 
 

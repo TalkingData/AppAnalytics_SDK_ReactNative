@@ -15,7 +15,7 @@ public class TalkingDataPackage implements ReactPackage {
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         List<NativeModule> list = new ArrayList<>();
         list.add(new TalkingData(reactContext));
-        list.add(new TDAccountType(reactContext));
+        list.add(new TDProfileType(reactContext));
         return list;
     }
 

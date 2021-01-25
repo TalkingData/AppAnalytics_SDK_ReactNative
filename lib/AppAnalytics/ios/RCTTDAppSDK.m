@@ -11,9 +11,9 @@
 #import "TalkingData.h"
 
 
-@implementation TDAccountTypeRN
+@implementation TDProfileTypeRN
 
-RCT_EXPORT_MODULE(TDAccountType);
+RCT_EXPORT_MODULE(TDProfileType);
 
 + (BOOL)requiresMainQueueSetup
 {
@@ -24,52 +24,52 @@ RCT_EXPORT_MODULE(TDAccountType);
 {
   return
   @{
-    @"ANONYMOUS":@(TDAccountTypeAnonymous),
-    @"REGISTERED":@(TDAccountTypeRegistered),
-    @"SINA_WEIBO":@(TDAccountTypeSinaWeibo),
-    @"QQ":@(TDAccountTypeQQ),
-    @"QQ_WEIBO":@(TDAccountTypeTencentWeibo),
-    @"ND91":@(TDAccountTypeND91),
-    @"WEIXIN":@(TDAccountTypeWeiXin),
-    @"TYPE1":@(TDAccountTypeType1),
-    @"TYPE2":@(TDAccountTypeType2),
-    @"TYPE3":@(TDAccountTypeType3),
-    @"TYPE4":@(TDAccountTypeType4),
-    @"TYPE5":@(TDAccountTypeType5),
-    @"TYPE6":@(TDAccountTypeType6),
-    @"TYPE7":@(TDAccountTypeType7),
-    @"TYPE8":@(TDAccountTypeType8),
-    @"TYPE9":@(TDAccountTypeType9),
-    @"TYPE10":@(TDAccountTypeType10),
+    @"ANONYMOUS":@(TDProfileTypeAnonymous),
+    @"REGISTERED":@(TDProfileTypeRegistered),
+    @"SINA_WEIBO":@(TDProfileTypeSinaWeibo),
+    @"QQ":@(TDProfileTypeQQ),
+    @"QQ_WEIBO":@(TDProfileTypeTencentWeibo),
+    @"ND91":@(TDProfileTypeND91),
+    @"WEIXIN":@(TDProfileTypeWeiXin),
+    @"TYPE1":@(TDProfileTypeType1),
+    @"TYPE2":@(TDProfileTypeType2),
+    @"TYPE3":@(TDProfileTypeType3),
+    @"TYPE4":@(TDProfileTypeType4),
+    @"TYPE5":@(TDProfileTypeType5),
+    @"TYPE6":@(TDProfileTypeType6),
+    @"TYPE7":@(TDProfileTypeType7),
+    @"TYPE8":@(TDProfileTypeType8),
+    @"TYPE9":@(TDProfileTypeType9),
+    @"TYPE10":@(TDProfileTypeType10),
     };
 }
 
 @end
 
 
-@implementation RCTConvert (TDAccountType)
+@implementation RCTConvert (TDProfileType)
 
-RCT_ENUM_CONVERTER(TDAccountType,
+RCT_ENUM_CONVERTER(TDProfileType,
                    (@{
-                      @"ANONYMOUS":@(TDAccountTypeAnonymous),
-                      @"REGISTERED":@(TDAccountTypeRegistered),
-                      @"SINA_WEIBO":@(TDAccountTypeSinaWeibo),
-                      @"QQ":@(TDAccountTypeQQ),
-                      @"QQ_WEIBO":@(TDAccountTypeTencentWeibo),
-                      @"ND91":@(TDAccountTypeND91),
-                      @"WEIXIN":@(TDAccountTypeWeiXin),
-                      @"TYPE1":@(TDAccountTypeType1),
-                      @"TYPE2":@(TDAccountTypeType2),
-                      @"TYPE3":@(TDAccountTypeType3),
-                      @"TYPE4":@(TDAccountTypeType4),
-                      @"TYPE5":@(TDAccountTypeType5),
-                      @"TYPE6":@(TDAccountTypeType6),
-                      @"TYPE7":@(TDAccountTypeType7),
-                      @"TYPE8":@(TDAccountTypeType8),
-                      @"TYPE9":@(TDAccountTypeType9),
-                      @"TYPE10":@(TDAccountTypeType10),
+                      @"ANONYMOUS":@(TDProfileTypeAnonymous),
+                      @"REGISTERED":@(TDProfileTypeRegistered),
+                      @"SINA_WEIBO":@(TDProfileTypeSinaWeibo),
+                      @"QQ":@(TDProfileTypeQQ),
+                      @"QQ_WEIBO":@(TDProfileTypeTencentWeibo),
+                      @"ND91":@(TDProfileTypeND91),
+                      @"WEIXIN":@(TDProfileTypeWeiXin),
+                      @"TYPE1":@(TDProfileTypeType1),
+                      @"TYPE2":@(TDProfileTypeType2),
+                      @"TYPE3":@(TDProfileTypeType3),
+                      @"TYPE4":@(TDProfileTypeType4),
+                      @"TYPE5":@(TDProfileTypeType5),
+                      @"TYPE6":@(TDProfileTypeType6),
+                      @"TYPE7":@(TDProfileTypeType7),
+                      @"TYPE8":@(TDProfileTypeType8),
+                      @"TYPE9":@(TDProfileTypeType9),
+                      @"TYPE10":@(TDProfileTypeType10),
                       }),
-                   TDAccountTypeAnonymous,
+                   TDProfileTypeAnonymous,
                    integerValue)
 
 @end
@@ -111,13 +111,13 @@ RCT_EXPORT_METHOD(setAntiCheatingEnabled:(BOOL)enabled)
 {
   [TalkingData setAntiCheatingEnabled:enabled];
 }
-RCT_EXPORT_METHOD(onRegister:(NSString *)accountId type:(TDAccountType)type name:(NSString *)name)
+RCT_EXPORT_METHOD(onRegister:(NSString *)profileId type:(TDProfileType)type name:(NSString *)name)
 {
-  [TalkingData onRegister:accountId type:type name:name];
+  [TalkingData onRegister:profileId type:type name:name];
 }
-RCT_EXPORT_METHOD(onLogin:(NSString *)accountId type:(TDAccountType)type name:(NSString *)name)
+RCT_EXPORT_METHOD(onLogin:(NSString *)profileId type:(TDProfileType)type name:(NSString *)name)
 {
-  [TalkingData onLogin:accountId type:type name:name];
+  [TalkingData onLogin:profileId type:type name:name];
 }
 
 RCT_EXPORT_METHOD(onEvent:(NSString *)eventName
@@ -126,6 +126,15 @@ RCT_EXPORT_METHOD(onEvent:(NSString *)eventName
 {
   [TalkingData trackEvent:eventName label:label parameters:parameters];
 }
+
+RCT_EXPORT_METHOD(onEventWithValue:(NSString *)eventName
+                  label:(NSString*)label
+                  parameters:(NSDictionary*)parameters
+                  value:(double)value)
+{
+  [TalkingData trackEvent:eventName label:label parameters:parameters value:value];
+}
+
 RCT_EXPORT_METHOD(setGlobalKV:(NSString *)key value:(id)value)
 {
   [TalkingData setGlobalKV:key value:value];
@@ -144,9 +153,9 @@ RCT_EXPORT_METHOD(onPageEnd:(NSString *)pageName)
   [TalkingData trackPageEnd:pageName];
 }
 
-RCT_EXPORT_METHOD(onPlaceOrder:(NSString *)accountId order:(NSString *)orderString)
+RCT_EXPORT_METHOD(onPlaceOrder:(NSString *)profileId order:(NSString *)orderString)
 {
-  if (!accountId) {
+  if (!profileId) {
     return;
   }
   NSError * error = nil;
@@ -170,14 +179,14 @@ RCT_EXPORT_METHOD(onPlaceOrder:(NSString *)accountId order:(NSString *)orderStri
         [order addItem:itemid category:category name:name unitPrice:[unitPrice intValue] amount:[amount intValue] ];
       }
     }
-    [TalkingData onPlaceOrder:accountId order:order];
+    [TalkingData onPlaceOrder:profileId order:order];
     
   }
 }
 
-RCT_EXPORT_METHOD(onOrderPaySucc:(NSString *)accountId payType:(NSString *)payType order:(NSString *)orderString)
+RCT_EXPORT_METHOD(onOrderPaySucc:(NSString *)profileId payType:(NSString *)payType order:(NSString *)orderString)
 {
-  if (!accountId || !payType) {
+  if (!profileId || !payType) {
     return;
   }
   
@@ -202,7 +211,7 @@ RCT_EXPORT_METHOD(onOrderPaySucc:(NSString *)accountId payType:(NSString *)payTy
         [order addItem:itemid category:category name:name unitPrice:[unitPrice intValue] amount:[amount intValue] ];
       }
     }
-    [TalkingData onOrderPaySucc:accountId payType:payType order:order];
+    [TalkingData onOrderPaySucc:profileId payType:payType order:order];
   }
 }
 

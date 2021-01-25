@@ -47,8 +47,8 @@ export default class demo_adt extends Component {
                     title={"onRegister"}
                     onPress={
                         () => {
-                            accountid = 'accountid'
-                            TalkingDataAdTracking.onRegister(accountid);
+                            profileid = 'profileid'
+                            TalkingDataAdTracking.onRegister(profileid);
                         }
                     }
                 />
@@ -56,9 +56,9 @@ export default class demo_adt extends Component {
                     title={"onRegisterWithinvitationCode"}
                     onPress={
                         () => {
-                          accountid = 'accountid'
+                          profileid = 'profileid'
                           invitationCode = 'icode111'
-                          TalkingDataAdTracking.onRegisterWithinvitationCode(accountid,invitationCode);
+                          TalkingDataAdTracking.onRegisterWithinvitationCode(profileid,invitationCode);
                         }
                     }
                 />
@@ -66,8 +66,8 @@ export default class demo_adt extends Component {
                     title={"onLogin"}
                     onPress={
                         () => {
-                          accountid = 'accountid'
-                          TalkingDataAdTracking.onLogin(accountid);
+                          profileid = 'profileid'
+                          TalkingDataAdTracking.onLogin(profileid);
                         }
                     }
                 />
@@ -84,12 +84,12 @@ export default class demo_adt extends Component {
                     title={"onPay"}
                     onPress={
                         () => {
-                          account = 'account';
+                          profile = 'profile';
                           orderId = 'order123';
                           amount = 12345;
                           currencyType = 'CNY';
                           payType = 'payType'
-                          TalkingDataAdTracking.onPay(account,orderId,amount,currencyType,payType);
+                          TalkingDataAdTracking.onPay(profile,orderId,amount,currencyType,payType);
                         }
                     }
                 />
@@ -99,7 +99,7 @@ export default class demo_adt extends Component {
                         () => {
                           let order = new TalkingDataADTOrder('orderid', '100', 'CNY');
                           order.addItemWithItemId('itemid', 'category', 'name' , '1.0', '5');
-                          TalkingDataAdTracking.onPayWithOrder('accountid_001','order_id001',100,'CNY','ApplePay', order.orderString);
+                          TalkingDataAdTracking.onPayWithOrder('profileid_001','order_id001',100,'CNY','ApplePay', order.orderString);
                         }
                     }
                 />
@@ -107,14 +107,14 @@ export default class demo_adt extends Component {
                     title={"onPayWithItem"}
                     onPress={
                         () => {
-                          account = 'account';
+                          profile = 'profile';
                           orderId = 'orderid';
                           amount = 10;
                           currencyType = 'CNY';
                           payType = 'payType';
                           itemId = 'item123';
                           itemcount = 1;
-                          TalkingDataAdTracking.onPayWithItem(account,orderId,amount,currencyType,payType,itemId,itemcount);
+                          TalkingDataAdTracking.onPayWithItem(profile,orderId,amount,currencyType,payType,itemId,itemcount);
                         }
                     }
                 />
@@ -147,9 +147,9 @@ export default class demo_adt extends Component {
                     title={"onPlaceOrder"}
                     onPress={
                         () => {
-                          accountid = 'accountid';
+                          profileid = 'profileid';
                           order = new TalkingDataADTOrder('orderid', '123', 'CNY');
-                          TalkingDataAdTracking.onPlaceOrder(accountid,order.orderString);
+                          TalkingDataAdTracking.onPlaceOrder(profileid,order.orderString);
                         }
                     }
                 />
@@ -157,12 +157,12 @@ export default class demo_adt extends Component {
                     title={"onOrderPaySucc"}
                     onPress={
                         () => {
-                          account = 'account';
+                          profile = 'profile';
                           orderId = 'orderID123';
                           amount = 5;
                           currencyType = 'CNY'
                           payType = 'ApplePay'
-                          TalkingDataAdTracking.onOrderPaySucc(account,orderId,amount,currencyType,payType);
+                          TalkingDataAdTracking.onOrderPaySucc(profile,orderId,amount,currencyType,payType);
                         }
                     }
                 />
@@ -203,10 +203,10 @@ export default class demo_adt extends Component {
                     title={"onCreateCard"}
                     onPress={
                         () => {
-                          account = 'account';
+                          profile = 'profile';
                           method = 'method';
                           content = 'content';
-                          TalkingDataAdTracking.onCreateCard(account,method,content);
+                          TalkingDataAdTracking.onCreateCard(profile,method,content);
                         }
                     }
                 />
@@ -225,9 +225,9 @@ export default class demo_adt extends Component {
                     title={"onShare"}
                     onPress={
                         () => {
-                          account = 'account';
+                          profile = 'profile';
                           content = 'punchId';
-                          TalkingDataAdTracking.onShare(account,content);
+                          TalkingDataAdTracking.onShare(profile,content);
                         }
                     }
                 />
@@ -235,9 +235,9 @@ export default class demo_adt extends Component {
                     title={"onPunch"}
                     onPress={
                         () => {
-                          account = 'account';
+                          profile = 'profile';
                           punchId = 'punchId';
-                          TalkingDataAdTracking.onPunch(account,punchId);
+                          TalkingDataAdTracking.onPunch(profile,punchId);
                         }
                     }
                 />
@@ -262,12 +262,12 @@ export default class demo_adt extends Component {
                     title={"onBooking"}
                     onPress={
                         () => {
-                            account = 'account';
+                            profile = 'profile';
                             bookingid = 'bookingid';
                             category = 'category';
                             amount = 10;
                             content = 'content';
-                            TalkingDataAdTracking.onBooking(account,bookingid,category,amount,content);
+                            TalkingDataAdTracking.onBooking(profile,bookingid,category,amount,content);
                         }
                     }
                 />
@@ -275,9 +275,9 @@ export default class demo_adt extends Component {
                     title={"onContact"}
                     onPress={
                         () => {
-                          account = 'account';
+                          profile = 'profile';
                           content = 'content';
-                          TalkingDataAdTracking.onContact(account,content);
+                          TalkingDataAdTracking.onContact(profile,content);
                         }
                     }
                 />
@@ -285,11 +285,11 @@ export default class demo_adt extends Component {
                     title={"onLearn"}
                     onPress={
                         () => {
-                          account = 'account';
+                          profile = 'profile';
                           course = 'course';
                           begin = 123;
                           duration = 3600;
-                          TalkingDataAdTracking.onLearn(account,course,begin,duration);
+                          TalkingDataAdTracking.onLearn(profile,course,begin,duration);
                         }
                     }
                 />
@@ -297,11 +297,11 @@ export default class demo_adt extends Component {
                     title={"onRead"}
                     onPress={
                         () => {
-                          account = 'account';
+                          profile = 'profile';
                           book = 'book';
                           begin = 123;
                           duration = 3600;
-                          TalkingDataAdTracking.onRead(account,book,begin,duration);
+                          TalkingDataAdTracking.onRead(profile,book,begin,duration);
                         }
                     }
                 />
@@ -309,11 +309,11 @@ export default class demo_adt extends Component {
                     title={"onBrowse"}
                     onPress={
                         () => {
-                          account = 'account';
+                          profile = 'profile';
                           book = 'book';
                           begin = 123;
                           duration = 3600;
-                          TalkingDataAdTracking.onBrowse(account,book,begin,duration);
+                          TalkingDataAdTracking.onBrowse(profile,book,begin,duration);
                         }
                     }
                 />
@@ -331,7 +331,7 @@ export default class demo_adt extends Component {
                           t.endDate = '5566778899';
                           t.currencyType = 'currencyType';
                           t.content = 'content';
-                          TalkingDataAdTracking.onTransaction('account',t.transactionStr);
+                          TalkingDataAdTracking.onTransaction('profile',t.transactionStr);
                         }
                     }
                 />
@@ -339,10 +339,10 @@ export default class demo_adt extends Component {
                     title={"onCredit"}
                     onPress={
                         () => {
-                          account = 'account';
+                          profile = 'profile';
                           amount = 10;
                           content = 'content';
-                          TalkingDataAdTracking.onCredit(account,amount,content);
+                          TalkingDataAdTracking.onCredit(profile,amount,content);
                         }
                     }
                 />
@@ -350,11 +350,11 @@ export default class demo_adt extends Component {
                     title={"onChargeBack"}
                     onPress={
                         () => {
-                          account = 'account';
+                          profile = 'profile';
                           orderId = 'orderid';
                           reason = 'reason';
                           type = 'type';
-                          TalkingDataAdTracking.onChargeBack(account,orderId,reason,type);
+                          TalkingDataAdTracking.onChargeBack(profile,orderId,reason,type);
                         }
                     }
                 />
@@ -362,9 +362,9 @@ export default class demo_adt extends Component {
                     title={"onTrialFinished"}
                     onPress={
                         () => {
-                          account = 'account';
+                          profile = 'profile';
                           content = 'content';
-                          TalkingDataAdTracking.onTrialFinished(account,content);
+                          TalkingDataAdTracking.onTrialFinished(profile,content);
                         }
                     }
                 />
@@ -372,9 +372,9 @@ export default class demo_adt extends Component {
                     title={"onGuideFinished"}
                     onPress={
                         () => {
-                          account = 'account';
+                          profile = 'profile';
                           content = 'content';
-                          TalkingDataAdTracking.onGuideFinished(account,content);
+                          TalkingDataAdTracking.onGuideFinished(profile,content);
                         }
                     }
                 />
@@ -382,9 +382,9 @@ export default class demo_adt extends Component {
                     title={"onPreviewFinished"}
                     onPress={
                         () => {
-                          account = 'account';  
+                          profile = 'profile';
                           content = 'content';
-                          TalkingDataAdTracking.onPreviewFinished(account,content);
+                          TalkingDataAdTracking.onPreviewFinished(profile,content);
 
                         }
                     }
@@ -393,9 +393,9 @@ export default class demo_adt extends Component {
                     title={"onFreeFinished"}
                     onPress={
                         () => {
-                          account = 'account';
+                          profile = 'profile';
                           content = 'content';
-                          TalkingDataAdTracking.onFreeFinished(account,content);
+                          TalkingDataAdTracking.onFreeFinished(profile,content);
                         }
                     }
                 />
@@ -403,9 +403,9 @@ export default class demo_adt extends Component {
                     title={"onLevelPass"}
                     onPress={
                         () => {
-                          account = 'account';
+                          profile = 'profile';
                           levelId = 'levelId';
-                          TalkingDataAdTracking.onLevelPass(account,levelId);
+                          TalkingDataAdTracking.onLevelPass(profile,levelId);
                         }
                     }
                 />
@@ -413,9 +413,9 @@ export default class demo_adt extends Component {
                     title={"onAchievementUnlock"}
                     onPress={
                         () => {
-                          account = 'account';
+                          profile = 'profile';
                           achievementId = 'achievementId';
-                          TalkingDataAdTracking.onAchievementUnlock(account,achievementId);
+                          TalkingDataAdTracking.onAchievementUnlock(profile,achievementId);
                         }
                     }
                 />

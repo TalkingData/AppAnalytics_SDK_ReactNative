@@ -185,36 +185,35 @@ class TalkingDataAdTracking {
 /**
 	* 注册
 	* iOS Android
-	* @param {string} accountId 账户ID
-	* @param {TDAccountType} accountType 账户类型 详见
+	* @param {string} profileId 账户ID
 	* @param {string} name 账户昵称
 	*/
-	static onRegister(account){
-		if (typeof account !== 'string') {
+	static onRegister(profile){
+		if (typeof profile !== 'string') {
 			return ;
 		}
-		TDADT.onRegister(account);
+		TDADT.onRegister(profile);
 	}
 
-	static onRegisterWithinvitationCode(account,invitationCode){
-		if (typeof account !== 'string') {
+	static onRegisterWithinvitationCode(profile,invitationCode){
+		if (typeof profile !== 'string') {
 			return ;
 		}
 		if (typeof invitationCode!== 'string') {
 			return ;
 		}
-		TDADT.onRegisterWithinvitationCode(account,invitationCode);
+		TDADT.onRegisterWithinvitationCode(profile,invitationCode);
 	}
 	/**
 	* 登录
 	* iOS Android
-	* @param {string} account 账户ID
+	* @param {string} profile 账户ID
 	*/
-	static onLogin(account){
-		if (typeof account !== 'string') {
+	static onLogin(profile){
+		if (typeof profile !== 'string') {
 			return ;
 		}
-		TDADT.onLogin(account);
+		TDADT.onLogin(profile);
 	}
 
 	/**
@@ -234,7 +233,7 @@ class TalkingDataAdTracking {
 	/**
 	* 下单。
 	* iOS Android
-	* @param {string} accountId 账户ID
+	* @param {string} profileId 账户ID
 	* @param {object} order 订单对象
 	* order 订单对象
 		{
@@ -245,19 +244,19 @@ class TalkingDataAdTracking {
 
 		}
 	*/
-	static onPlaceOrder(accountId,order){
-		if (typeof accountId !== 'string') {
+	static onPlaceOrder(profileId,order){
+		if (typeof profileId !== 'string') {
 			return;
 		};
 		if (typeof order !== 'string') {
 			return;
 		};
-		TDADT.onPlaceOrder(accountId,order);
+		TDADT.onPlaceOrder(profileId,order);
 	}
 
 
-	static onOrderPaySucc(account,orderId,amount,currencyType,payType){
-		if (typeof account !== 'string') {
+	static onOrderPaySucc(profile,orderId,amount,currencyType,payType){
+		if (typeof profile !== 'string') {
 			return;
 		};
 		if (typeof orderId !== 'string') {
@@ -272,11 +271,11 @@ class TalkingDataAdTracking {
 		if (typeof payType !== 'string') {
 			return;
 		};
-		TDADT.onOrderPaySucc(account,orderId,amount,currencyType,payType);
+		TDADT.onOrderPaySucc(profile,orderId,amount,currencyType,payType);
 	}
 
-	static onPay(account,orderId,amount,currencyType,payType) {
-		if (typeof account !== 'string') {
+	static onPay(profile,orderId,amount,currencyType,payType) {
+		if (typeof profile !== 'string') {
 			return;
 		};
 		if (typeof orderId !== 'string') {
@@ -291,11 +290,11 @@ class TalkingDataAdTracking {
 		if (typeof payType !=='string') {
 			return;
 		};
-		TDADT.onPay(account,orderId,amount,currencyType,payType)
+		TDADT.onPay(profile,orderId,amount,currencyType,payType)
 	}
 
-	static onPayWithItem(account,orderId,amount,currencyType,payType,itemId,itemCount) {
-		if (typeof account !== 'string') {
+	static onPayWithItem(profile,orderId,amount,currencyType,payType,itemId,itemCount) {
+		if (typeof profile !== 'string') {
 			return;
 		};
 		if (typeof orderId !== 'string') {
@@ -316,11 +315,11 @@ class TalkingDataAdTracking {
 		if (typeof itemCount !== 'number') {
 			return;
 		};
-		TDADT.onPayWithItem(account,orderId,amount,currencyType,payType,itemId,itemCount)
+		TDADT.onPayWithItem(profile,orderId,amount,currencyType,payType,itemId,itemCount)
 	}
 
-	static onPayWithOrder(account,orderId,amount,currencyType,payType,orderString) {
-		if (typeof account !== 'string') {
+	static onPayWithOrder(profile,orderId,amount,currencyType,payType,orderString) {
+		if (typeof profile !== 'string') {
 			return;
 		};
 		if (typeof orderId !== 'string') {
@@ -338,7 +337,7 @@ class TalkingDataAdTracking {
 		if (typeof orderString !== 'string') {
 			return;
 		};
-		TDADT.onPayWithOrder(account,orderId,amount,currencyType,payType,orderString)
+		TDADT.onPayWithOrder(profile,orderId,amount,currencyType,payType,orderString)
 	}
 
 
@@ -407,9 +406,9 @@ class TalkingDataAdTracking {
 	}
 
 
-	static onCreateCard(account,method,content)
+	static onCreateCard(profile,method,content)
 	{
-		if (typeof account !== 'string') {
+		if (typeof profile !== 'string') {
 			return;
 		};
 		if (typeof method !== 'string') {
@@ -418,7 +417,7 @@ class TalkingDataAdTracking {
 		if (typeof content !== 'string') {
 			return;
 		}
-		TDADT.onCreateCard(account,method,content);
+		TDADT.onCreateCard(profile,method,content);
 	}
 
 	static onFavorite(category,content)
@@ -433,31 +432,31 @@ class TalkingDataAdTracking {
 		TDADT.onFavorite(category,content);
 	}
 
-	static onShare(account,content)
+	static onShare(profile,content)
 	{
-		if (typeof account !== 'string') {
+		if (typeof profile !== 'string') {
 			return;
 		};
 		if (typeof content !== 'string') {
 			return;
 		}
-		TDADT.onShare(account,content);
+		TDADT.onShare(profile,content);
 	}
 
-	static onPunch(account,punchId)
+	static onPunch(profile,punchId)
 	{
-		if (typeof account !== 'string') {
+		if (typeof profile !== 'string') {
 			return;
 		};
 		if (typeof punchId !== 'string') {
 			return;
 		}
-		TDADT.onPunch(account,punchId);
+		TDADT.onPunch(profile,punchId);
 	}
 
-	static onReservation(account,reservationId,category,amount,term)
+	static onReservation(profile,reservationId,category,amount,term)
 	{
-		if (typeof account !== 'string') {
+		if (typeof profile !== 'string') {
 			return;
 		};
 		if (typeof reservationId !== 'string') {
@@ -473,12 +472,12 @@ class TalkingDataAdTracking {
 			return;
 		}
 
-		TDADT.onReservation(account,reservationId,category,amount,term);
+		TDADT.onReservation(profile,reservationId,category,amount,term);
 	}
 
-	static onBooking(account,bookingId,category,amount,content)
+	static onBooking(profile,bookingId,category,amount,content)
 	{
-		if (typeof account !== 'string') {
+		if (typeof profile !== 'string') {
 			return;
 		};
 		if (typeof bookingId !== 'string') {
@@ -494,12 +493,12 @@ class TalkingDataAdTracking {
 			return;
 		}
 
-		TDADT.onBooking(account,bookingId,category,amount,content);
+		TDADT.onBooking(profile,bookingId,category,amount,content);
 	}
 
-	static onContact(account,content)
+	static onContact(profile,content)
 	{
-		if (typeof account !== 'string') {
+		if (typeof profile !== 'string') {
 			return;
 		};
 
@@ -507,12 +506,12 @@ class TalkingDataAdTracking {
 			return;
 		}
 
-		TDADT.onContact(account,content);
+		TDADT.onContact(profile,content);
 	}
 
-	static onLearn(account,course,begin,duration)
+	static onLearn(profile,course,begin,duration)
 	{
-		if (typeof account !== 'string') {
+		if (typeof profile !== 'string') {
 			return;
 		};
 
@@ -527,12 +526,12 @@ class TalkingDataAdTracking {
 		if (typeof duration !== 'number') {
 			return;
 		}
-		TDADT.onLearn(account,course,begin,duration)
+		TDADT.onLearn(profile,course,begin,duration)
 	}
 
-	static onRead(account,book,begin,duration)
+	static onRead(profile,book,begin,duration)
 	{
-		if (typeof account !== 'string') {
+		if (typeof profile !== 'string') {
 			return;
 		};
 
@@ -547,12 +546,12 @@ class TalkingDataAdTracking {
 		if (typeof duration !== 'number') {
 			return;
 		}
-		TDADT.onRead(account,book,begin,duration)
+		TDADT.onRead(profile,book,begin,duration)
 	}
 
-	static onBrowse(account,content,begin,duration)
+	static onBrowse(profile,content,begin,duration)
 	{
-		if (typeof account !== 'string') {
+		if (typeof profile !== 'string') {
 			return;
 		};
 
@@ -567,12 +566,12 @@ class TalkingDataAdTracking {
 		if (typeof duration !== 'number') {
 			return;
 		}
-		TDADT.onBrowse(account,content,begin,duration)
+		TDADT.onBrowse(profile,content,begin,duration)
 	}
 
 
-	static onTransaction(account,transactionStr){
-		if (typeof account !== 'string') {
+	static onTransaction(profile,transactionStr){
+		if (typeof profile !== 'string') {
 			return;
 		};
 
@@ -580,12 +579,12 @@ class TalkingDataAdTracking {
 			return;
 		}
 
-		TDADT.onTransaction(account,transactionStr);
+		TDADT.onTransaction(profile,transactionStr);
 	}
 
-	static onCredit(account,amount,content)
+	static onCredit(profile,amount,content)
 	{
-		if (typeof account !== 'string') {
+		if (typeof profile !== 'string') {
 			return;
 		};
 		if (typeof amount !== 'number') {
@@ -594,12 +593,12 @@ class TalkingDataAdTracking {
 		if (typeof content !== 'string') {
 			return;
 		}
-		TDADT.onCredit(account,amount,content)
+		TDADT.onCredit(profile,amount,content)
 	}
 
-	static onChargeBack(account,orderId,reason,type)
+	static onChargeBack(profile,orderId,reason,type)
 	{
-		if (typeof account !== 'string') {
+		if (typeof profile !== 'string') {
 			return;
 		};
 		if (typeof orderId !== 'string') {
@@ -611,72 +610,72 @@ class TalkingDataAdTracking {
 		if (typeof type !== 'string') {
 			return;
 		}
-		TDADT.onChargeBack(account,orderId,reason,type)
+		TDADT.onChargeBack(profile,orderId,reason,type)
 	}
 
-	static onTrialFinished(account,content)
+	static onTrialFinished(profile,content)
 	{
-		if (typeof account !== 'string') {
+		if (typeof profile !== 'string') {
 			return;
 		};
 		if (typeof content !== 'string') {
 			return;
 		}
-		TDADT.onTrialFinished(account,content)
+		TDADT.onTrialFinished(profile,content)
 	}
 
-	static onGuideFinished(account,content)
+	static onGuideFinished(profile,content)
 	{
-		if (typeof account !== 'string') {
+		if (typeof profile !== 'string') {
 			return;
 		};
 		if (typeof content !== 'string') {
 			return;
 		}
-		TDADT.onGuideFinished(account,content)
+		TDADT.onGuideFinished(profile,content)
 	}
-	static onPreviewFinished(account,content)
+	static onPreviewFinished(profile,content)
 	{
-		if (typeof account !== 'string') {
+		if (typeof profile !== 'string') {
 			return;
 		};
 		if (typeof content !== 'string') {
 			return;
 		}
-		TDADT.onPreviewFinished(account,content)
+		TDADT.onPreviewFinished(profile,content)
 	}
-	static onFreeFinished(account,content)
+	static onFreeFinished(profile,content)
 	{
-		if (typeof account !== 'string') {
+		if (typeof profile !== 'string') {
 			return;
 		};
 		if (typeof content !== 'string') {
 			return;
 		}
-		TDADT.onFreeFinished(account,content)
+		TDADT.onFreeFinished(profile,content)
 	}
 
-	static onLevelPass(account,levelId)
+	static onLevelPass(profile,levelId)
 	{
-		if (typeof account !== 'string') {
+		if (typeof profile !== 'string') {
 			return;
 		};
 		if (typeof levelId !== 'string') {
 			return;
 		}
-		TDADT.onLevelPass(account,levelId)
+		TDADT.onLevelPass(profile,levelId)
 	}
 
 	
-	static onAchievementUnlock(account,achievementId)
+	static onAchievementUnlock(profile,achievementId)
 	{
-		if (typeof account !== 'string') {
+		if (typeof profile !== 'string') {
 			return;
 		};
 		if (typeof achievementId !== 'string') {
 			return;
 		}
-		TDADT.onAchievementUnlock(account,achievementId)
+		TDADT.onAchievementUnlock(profile,achievementId)
 	}
 
 

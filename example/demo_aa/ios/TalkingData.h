@@ -9,24 +9,28 @@
 #import <Foundation/Foundation.h>
 
 #if TARGET_OS_IOS
-typedef NS_ENUM(NSUInteger, TDAccountType) {
-    TDAccountTypeAnonymous      = 0,    // 匿名账户
-    TDAccountTypeRegistered     = 1,    // 显性注册账户
-    TDAccountTypeSinaWeibo      = 2,    // 新浪微博
-    TDAccountTypeQQ             = 3,    // QQ账户
-    TDAccountTypeTencentWeibo   = 4,    // 腾讯微博
-    TDAccountTypeND91           = 5,    // 91账户
-    TDAccountTypeWeiXin         = 6,    // 微信
-    TDAccountTypeType1          = 11,   // 自定义类型1
-    TDAccountTypeType2          = 12,   // 自定义类型2
-    TDAccountTypeType3          = 13,   // 自定义类型3
-    TDAccountTypeType4          = 14,   // 自定义类型4
-    TDAccountTypeType5          = 15,   // 自定义类型5
-    TDAccountTypeType6          = 16,   // 自定义类型6
-    TDAccountTypeType7          = 17,   // 自定义类型7
-    TDAccountTypeType8          = 18,   // 自定义类型8
-    TDAccountTypeType9          = 19,   // 自定义类型9
-    TDAccountTypeType10         = 20    // 自定义类型10
+#import <WebKit/WebKit.h>
+#endif
+
+#if TARGET_OS_IOS
+typedef NS_ENUM(NSUInteger, TDProfileType) {
+    TDProfileTypeAnonymous      = 0,    // 匿名账户
+    TDProfileTypeRegistered     = 1,    // 显性注册账户
+    TDProfileTypeSinaWeibo      = 2,    // 新浪微博
+    TDProfileTypeQQ             = 3,    // QQ账户
+    TDProfileTypeTencentWeibo   = 4,    // 腾讯微博
+    TDProfileTypeND91           = 5,    // 91账户
+    TDProfileTypeWeiXin         = 6,    // 微信
+    TDProfileTypeType1          = 11,   // 自定义类型1
+    TDProfileTypeType2          = 12,   // 自定义类型2
+    TDProfileTypeType3          = 13,   // 自定义类型3
+    TDProfileTypeType4          = 14,   // 自定义类型4
+    TDProfileTypeType5          = 15,   // 自定义类型5
+    TDProfileTypeType6          = 16,   // 自定义类型6
+    TDProfileTypeType7          = 17,   // 自定义类型7
+    TDProfileTypeType8          = 18,   // 自定义类型8
+    TDProfileTypeType9          = 19,   // 自定义类型9
+    TDProfileTypeType10         = 20    // 自定义类型10
 };
 #endif
 
@@ -75,12 +79,6 @@ typedef NS_ENUM(NSUInteger, TDAccountType) {
 @end
 #endif
 
-// 以下枚举用于WatchApp页面追踪
-typedef enum {
-    TDPageTypeGlance = 1,
-    TDPageTypeNotification = 2,
-    TDPageTypeWatchApp = 3
-} TDPageType;
 
 @interface TalkingData: NSObject
 
@@ -102,7 +100,7 @@ typedef enum {
 /**
  *  @method setExceptionReportEnabled
  *  是否捕捉程序崩溃记录（可选）
-    如果需要记录程序崩溃日志，请将值设成YES，并且在初始化后尽早调用
+ *  如果需要记录程序崩溃日志，请将值设成YES，并且在初始化后尽早调用
  *  @param  enable      默认是 NO
  */
 + (void)setExceptionReportEnabled:(BOOL)enable;
@@ -110,12 +108,22 @@ typedef enum {
 /**
  *  @method setSignalReportEnabled
  *  是否捕捉异常信号（可选）
-    如果需要开启异常信号捕捉功能，请将值设成YES，并且在初始化后尽早调用
+ *  如果需要开启异常信号捕捉功能，请将值设成YES，并且在初始化后尽早调用
  *  @param  enable      默认是NO
  */
 + (void)setSignalReportEnabled:(BOOL)enable;
 #endif
 
+
+#if TARGET_OS_IOS
+/**
+ *  @method setVersionWithCode:name:
+ *  设置应用的版本号和版本名称
+ *  @param  versionCode 应用程序的版本号，默认获取info.plist中CFBundleShortVersionString的值
+ *  @param  versionName 应用程序的版本名称，默认获取info.plist中CFBundleDisplayName的值
+ */
++ (void)setVersionWithCode:(NSString *)versionCode name:(NSString *)versionName;
+#endif
 
 #if TARGET_OS_IOS
 /**
@@ -127,9 +135,10 @@ typedef enum {
 + (void)setLatitude:(double)latitude longitude:(double)longitude;
 #endif
 
+
 #if TARGET_OS_IOS
 /**
- *  @method	sessionStarted:withChannelId:
+ *  @method sessionStarted:withChannelId:
  *  初始化统计实例，请在application:didFinishLaunchingWithOptions:方法里调用
  *  @param  appKey      应用的唯一标识，统计后台注册得到
  *  @param  channelId   渠道名，如“app store”（可选）
@@ -137,40 +146,61 @@ typedef enum {
 + (void)sessionStarted:(NSString *)appKey withChannelId:(NSString *)channelId;
 #endif
 
-/**
- *  @method	initWithWatch:
- *  初始化WatchApp统计实例，请在每个入口类的init方法里调用
- *  @param  appKey      应用的唯一标识，统计后台注册得到
- */
-+ (void)initWithWatch:(NSString *)appKey;
 
 #if TARGET_OS_IOS
 /**
- *	@method	setAntiCheatingEnabled
+ *  @method setAntiCheatingEnabled
  *  是否开启反作弊功能
- *	@param 	enabled 	默认是开启状态
+ *  @param  enabled     默认是开启状态
  */
 + (void)setAntiCheatingEnabled:(BOOL)enabled;
 #endif
 
 
+/**
+ *  @method setProfileId:
+ *  设置帐户ID
+ *  @param  profileId   账户ID
+ */
++ (void)setProfileId:(NSString *)profileId API_DEPRECATED("", ios(1, 1));
+
 #if TARGET_OS_IOS
 /**
  *  @method onRegister  注册
- *  @param  accountId   账户ID
+ *  @param  profileId   账户ID
  *  @param  type        账户类型
  *  @param  name        账户昵称
  */
-+ (void)onRegister:(NSString *)accountId type:(TDAccountType)type name:(NSString *)name;
++ (void)onRegister:(NSString *)profileId type:(TDProfileType)type name:(NSString *)name;
 
 /**
  *  @method onLogin     登录
- *  @param  accountId   账户ID
+ *  @param  profileId   账户ID
  *  @param  type        账户类型
  *  @param  name        账户昵称
  */
-+ (void)onLogin:(NSString *)accountId type:(TDAccountType)type name:(NSString *)name;
++ (void)onLogin:(NSString *)profileId type:(TDProfileType)type name:(NSString *)name;
 
+/**
+ *  @method onLogin
+ *  @param  profileId       账户ID
+ *  @param  type            账户类型
+ */
++ (void)onLogin:(NSString *)profileId type:(TDProfileType)type;
+
+/**
+ *  @method onApply
+ *  @param  profileId       账户ID
+ *  @param  type            账户类型
+ */
++ (void)onApply:(NSString *)profileId type:(TDProfileType)type;
+
+/**
+ *  @method onActivate
+ *  @param  profileId       账户ID
+ *  @param  type            账户类型
+ */
++ (void)onActivate:(NSString *)profileId type:(TDProfileType)type;
 #endif
 
 /**
@@ -190,15 +220,28 @@ typedef enum {
 + (void)trackEvent:(NSString *)eventId label:(NSString *)eventLabel;
 
 /**
- *  @method	trackEvent:label:parameters
+ *  @method trackEvent:label:parameters
  *  统计带二级参数的自定义事件，单次调用的参数数量不能超过10个
  *  @param  eventId     事件名称（自定义）
  *  @param  eventLabel  事件标签（自定义）
  *  @param  parameters  事件参数 (key只支持NSString, value支持NSString和NSNumber)
  */
-+ (void)trackEvent:(NSString *)eventId 
-             label:(NSString *)eventLabel 
++ (void)trackEvent:(NSString *)eventId
+             label:(NSString *)eventLabel
         parameters:(NSDictionary *)parameters;
+
+/**
+ *  @method trackEvent:label:parameters:value:
+ *  数值事件
+ *  @param  eventId     事件名称（自定义）
+ *  @param  eventLabel  事件标签（自定义）
+ *  @param  parameters  事件参数 (key只支持NSString, value支持NSString和NSNumber)
+ *  @param  eventValue  事件数值（double）
+ */
++ (void)trackEvent:(NSString *)eventId
+             label:(NSString *)eventLabel
+        parameters:(NSDictionary *)parameters
+             value:(double)eventValue;
 
 /**
  *  @method setGlobalKV:value:
@@ -216,21 +259,13 @@ typedef enum {
 + (void)removeGlobalKV:(NSString *)key;
 
 /**
- *  @method	trackPageBegin
+ *  @method trackPageBegin
  *  开始跟踪某一页面（可选），记录页面打开时间
     建议在viewWillAppear或者viewDidAppear方法里调用
  *  @param  pageName    页面名称（自定义）
  */
 + (void)trackPageBegin:(NSString *)pageName;
 
-/**
- *  @method trackPageBegin:withPageType:
- *  开始跟踪WatchApp某一页面（可选），记录页面打开时间
-    建议在willActivate方法里调用
- *  @param  pageName    页面名称（自定义）
- *  @param  pageType    页面类型（TDPageType枚举类型）
- */
-+ (void)trackPageBegin:(NSString *)pageName withPageType:(TDPageType)pageType;
 
 /**
  *  @method trackPageEnd
@@ -245,18 +280,24 @@ typedef enum {
 #if TARGET_OS_IOS
 /**
  *  @method onPlaceOrder    下单
- *  @param  accountId       账户ID          类型:NSString
+ *  @param  profileId       账户ID          类型:NSString
  *  @param  order           订单            类型:TalkingDataOrder
  */
-+ (void)onPlaceOrder:(NSString *)accountId order:(TalkingDataOrder *)order;
++ (void)onPlaceOrder:(NSString *)profileId order:(TalkingDataOrder *)order;
+
+/**
+ *  @method onPay           支付
+ *  @param  profileId       账户ID          类型:NSString
+ */
++ (void)onPay:(NSString *)profileId;
 
 /**
  *  @method onOrderPaySucc  支付
- *  @param  accountId       账户ID          类型:NSString
+ *  @param  profileId       账户ID          类型:NSString
  *  @param  payType         支付类型         类型:NSString
  *  @param  order           订单详情         类型:TalkingDataOrder
  */
-+ (void)onOrderPaySucc:(NSString *)accountId payType:(NSString *)payType order:(TalkingDataOrder *)order;
++ (void)onOrderPaySucc:(NSString *)profileId payType:(NSString *)payType order:(TalkingDataOrder *)order;
 
 /**
  *  @method onViewItem
@@ -284,24 +325,148 @@ typedef enum {
 + (void)onViewShoppingCart:(TalkingDataShoppingCart *)shoppingCart;
 #endif
 
+
+
 #if TARGET_OS_IOS
 /**
- *  @method setDeviceToken              设置DeviceToken
- *  @param  deviceToken                 从Apple获取的DeviceToken
+ *  @method handleUrl
+ *  灵动分析扫码唤起接口
+ *  @param  url         唤起灵动的url
  */
-+ (void)setDeviceToken:(NSData *)deviceToken;
++ (BOOL)handleUrl:(NSURL *)url;
+
 
 /**
- *  @method handlePushMessage           处理来自TalkingData的Push消息
- *  @param  message                     收到的消息
- *  @return YES                         来自TalkingData的消息，SDK已处理
- *          NO                          其他来源消息，开发者需自行处理
+ *  @method bindWKWebView
+ *  hybrid 初始化的时候 绑定wkwebview·
+ *  @param  wkwebview 支持灵动事件的wkwebview
  */
-+ (BOOL)handlePushMessage:(NSDictionary *)message;
++ (void)bindWKWebView:(WKWebView*)wkwebview API_AVAILABLE(ios(8.0));
+
+/**
+ *  @method loadWKWebViewConfig
+ *  hybrid 完成加载的时候，load一下hybrid灵动的配置。
+ *  @param  wkwebview     支持灵动事件的webView
+ */
++ (void)loadWKWebViewConfig:(WKWebView*)wkwebview API_AVAILABLE(ios(8.0));
 #endif
 
 
+#if TARGET_OS_IOS
+/**
+ * 获取开机时间
+ */
++ (long)getBootTime;
 
+/**
+ * 获取设备品牌
+ */
++ (NSString *)getBrand;
 
+/**
+ * 获取设备型号
+ */
++ (NSString *)getModel;
+
+/**
+ * 获取系统名称
+ */
++ (NSString *)getOsName;
+
+/**
+ * 获取系统版本
+ */
++ (NSString *)getOsVersionName;
+
+/**
+ * 获取屏幕宽度
+ */
++ (int)getWidthPixels;
+
+/**
+ * 获取屏幕高度
+ */
++ (int)getHeightPixels;
+
+/**
+ * 获取屏幕亮度
+ */
++ (int)getBrightness;
+
+/**
+ * 是否越狱
+ */
++ (BOOL)getJailBroken;
+
+/**
+ * 是否支持蓝牙
+ */
++ (BOOL)isSupportBluetoothModule;
+
+/**
+ * 是否插入耳机
+ */
++ (BOOL)isInsertEarphone;
+
+/**
+ * 获取磁盘总量
+ */
++ (long)getTotalDiskSpace;
+
+/**
+ * 获取磁盘剩余量
+ */
++ (long)getFreeDiskSpace;
+
+/**
+ * 是否连接WiFi
+ */
++ (BOOL)isWiFiDataConnected;
+
+/**
+ * 是否连接蜂窝移动网络
+ */
++ (BOOL)isMobileDataConnected;
+
+/**
+ * 获取当前网络类型
+ */
++ (NSString *)getCurrentNetworkType;
+
+/**
+ * 获取内网IP
+ */
++ (NSString *)getCurrentNetworkIP;
+
+/**
+ * 获取电池电量百分比
+ */
++ (int)getBatteryLevel;
+
+/**
+ * 是否在充电，是否充满电
+ */
++ (int)getBatteryState;
+
+/**
+ * 获取所在国家信息
+ */
++ (NSString *)getSystemLocale;
+
+/**
+ * 获取语言信息
+ */
++ (NSString *)getSystemLanguage;
+
+/**
+ * 获取时区信息
+ */
++ (float)getSystemTimezoneV;
+
+/**
+ * 获取行为识别信息。若此时无行为识别结果，则返回nil！
+ */
++ (NSDictionary *)getActivityRecognition;
+#endif
 
 @end

@@ -9,10 +9,12 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.ReadableNativeArray;
+import com.facebook.react.bridge.ReadableNativeMap;
 import com.tendcloud.tenddata.Order;
 import com.tendcloud.tenddata.ShoppingCart;
 import com.tendcloud.tenddata.TCAgent;
-import com.tendcloud.tenddata.TDAccount;
+import com.tendcloud.tenddata.TDProfile;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -56,7 +58,8 @@ public class TalkingData extends ReactContextBaseJavaModule {
         if (value == null){
             TCAgent.setGlobalKV(key, null);
         }else {
-            TCAgent.setGlobalKV(key, value.toHashMap());
+            ReadableNativeMap map = (ReadableNativeMap) value;
+            TCAgent.setGlobalKV(key, map.toHashMap());
         }
     }
 
@@ -68,7 +71,8 @@ public class TalkingData extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setGlobalKVArray(String key, ReadableArray value) {
-        TCAgent.setGlobalKV(key, value.toArrayList());
+        ReadableNativeArray array = (ReadableNativeArray) value;
+        TCAgent.setGlobalKV(key, array.toArrayList());
     }
 
     /**
@@ -125,6 +129,16 @@ public class TalkingData extends ReactContextBaseJavaModule {
     }
 
     /**
+     * 获取设备匿名标识符
+     *
+     * @param callback 返回获取的设备匿名标识符
+     */
+    @ReactMethod
+    public void getOAID(Promise callback) {
+        callback.resolve(TCAgent.getOAID(context));
+    }
+
+    /**
      * 当自定义事件发生的时候，调用该方法记录相关数据
      *
      * @param eventId 事件 id
@@ -133,12 +147,35 @@ public class TalkingData extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void onEvent(String eventId, String eventLabel, ReadableMap map) {
-        if (!TextUtils.isEmpty(eventId) && !TextUtils.isEmpty(eventLabel) && map != null && !map.toHashMap().isEmpty()){
-            TCAgent.onEvent(context,eventId,eventLabel,map.toHashMap());
-        }else if (!TextUtils.isEmpty(eventId) && !TextUtils.isEmpty(eventLabel) && (map == null || map.toHashMap().isEmpty())){
+        ReadableNativeMap maps = null;
+        if (map != null){
+            maps = (ReadableNativeMap) map;
+        }
+        if (!TextUtils.isEmpty(eventId) && !TextUtils.isEmpty(eventLabel) && maps != null && !maps.toHashMap().isEmpty()){
+            TCAgent.onEvent(context,eventId,eventLabel,maps.toHashMap());
+        }else if (!TextUtils.isEmpty(eventId) && !TextUtils.isEmpty(eventLabel) && (maps == null || maps.toHashMap().isEmpty())){
             TCAgent.onEvent(context,eventId,eventLabel);
-        }else if (!TextUtils.isEmpty(eventId) && TextUtils.isEmpty(eventLabel) && (map == null || map.toHashMap().isEmpty())){
+        }else if (!TextUtils.isEmpty(eventId) && TextUtils.isEmpty(eventLabel) && (maps == null || maps.toHashMap().isEmpty())){
             TCAgent.onEvent(context, eventId);
+        }
+    }
+
+    /**
+     * 当自定义事件发生的时候，调用该方法记录相关数据
+     *
+     * @param eventId 事件 id
+     * @param eventLabel 事件标签
+     * @param map 事件数据
+     * @param value 事件数值
+     */
+    @ReactMethod
+    public void onEventWithValue(String eventId, String eventLabel, ReadableMap map, double value){
+        ReadableNativeMap maps = null;
+        if (map != null){
+            maps = (ReadableNativeMap) map;
+        }
+        if (!TextUtils.isEmpty(eventId) && !TextUtils.isEmpty(eventLabel) && maps != null && !maps.toHashMap().isEmpty()){
+            TCAgent.onEvent(context,eventId,eventLabel,maps.toHashMap(),value);
         }
     }
 
@@ -165,49 +202,49 @@ public class TalkingData extends ReactContextBaseJavaModule {
     /**
      * 记录注册数据
      *
-     * @param accountID 注册账户id
+     * @param profileID 注册账户id
      * @param type 注册账户类型
      * @param name 注册账户昵称
      */
     @ReactMethod
-    public void onRegister(String accountID, int type, String name) {
-        TCAgent.onRegister(accountID, getAccountType(type), name);
+    public void onRegister(String profileID, int type, String name) {
+        TCAgent.onRegister(profileID, getProfileType(type), name);
     }
 
     /**
      * 记录登录数据
      *
-     * @param accountID 登录账户id
+     * @param profileID 登录账户id
      * @param type 登录账户类型
      * @param name 登录账户昵称
      */
     @ReactMethod
-    public void onLogin(String accountID, int type, String name) {
-        TCAgent.onLogin(accountID, getAccountType(type), name);
+    public void onLogin(String profileID, int type, String name) {
+        TCAgent.onLogin(profileID, getProfileType(type), name);
     }
 
     /**
      * 下订单
      *
-     * @param accountID 账号ID
+     * @param profileID 账号ID
      * @param order 订单
      */
     @ReactMethod
-    public void onPlaceOrder(String accountID, String order) {
-        TCAgent.onPlaceOrder(accountID, getOrder(order));
+    public void onPlaceOrder(String profileID, String order) {
+        TCAgent.onPlaceOrder(profileID, getOrder(order));
     }
 
 
     /**
      * 订单支付成功
      *
-     * @param accountID 账号ID
+     * @param profileID 账号ID
      * @param payType 支付类型
      * @param order 订单
      */
     @ReactMethod
-    public void onOrderPaySucc(String accountID, String payType, String order) {
-        TCAgent.onOrderPaySucc(accountID, payType, getOrder(order));
+    public void onOrderPaySucc(String profileID, String payType, String order) {
+        TCAgent.onOrderPaySucc(profileID, payType, getOrder(order));
     }
 
     /**
@@ -251,66 +288,66 @@ public class TalkingData extends ReactContextBaseJavaModule {
      * 获取账户类型
      *
      * @param type int型账户类型
-     * @return AccountType型账户类型
+     * @return ProfileType型账户类型
      */
-    private TDAccount.AccountType getAccountType(int type){
-        TDAccount.AccountType accountType;
+    private TDProfile.ProfileType getProfileType(int type){
+        TDProfile.ProfileType profileType;
         switch (type) {
             case 0:
-                accountType = TDAccount.AccountType.ANONYMOUS;
+                profileType = TDProfile.ProfileType.ANONYMOUS;
                 break;
             case 1:
-                accountType = TDAccount.AccountType.REGISTERED;
+                profileType = TDProfile.ProfileType.REGISTERED;
                 break;
             case 2:
-                accountType = TDAccount.AccountType.SINA_WEIBO;
+                profileType = TDProfile.ProfileType.SINA_WEIBO;
                 break;
             case 3:
-                accountType = TDAccount.AccountType.QQ;
+                profileType = TDProfile.ProfileType.QQ;
                 break;
             case 4:
-                accountType = TDAccount.AccountType.QQ_WEIBO;
+                profileType = TDProfile.ProfileType.QQ_WEIBO;
                 break;
             case 5:
-                accountType = TDAccount.AccountType.ND91;
+                profileType = TDProfile.ProfileType.ND91;
                 break;
             case 6:
-                accountType = TDAccount.AccountType.WEIXIN;
+                profileType = TDProfile.ProfileType.WEIXIN;
                 break;
             case 11:
-                accountType = TDAccount.AccountType.TYPE1;
+                profileType = TDProfile.ProfileType.TYPE1;
                 break;
             case 12:
-                accountType = TDAccount.AccountType.TYPE2;
+                profileType = TDProfile.ProfileType.TYPE2;
                 break;
             case 13:
-                accountType = TDAccount.AccountType.TYPE3;
+                profileType = TDProfile.ProfileType.TYPE3;
                 break;
             case 14:
-                accountType = TDAccount.AccountType.TYPE4;
+                profileType = TDProfile.ProfileType.TYPE4;
                 break;
             case 15:
-                accountType = TDAccount.AccountType.TYPE5;
+                profileType = TDProfile.ProfileType.TYPE5;
                 break;
             case 16:
-                accountType = TDAccount.AccountType.TYPE6;
+                profileType = TDProfile.ProfileType.TYPE6;
                 break;
             case 17:
-                accountType = TDAccount.AccountType.TYPE7;
+                profileType = TDProfile.ProfileType.TYPE7;
                 break;
             case 18:
-                accountType = TDAccount.AccountType.TYPE8;
+                profileType = TDProfile.ProfileType.TYPE8;
                 break;
             case 19:
-                accountType = TDAccount.AccountType.TYPE9;
+                profileType = TDProfile.ProfileType.TYPE9;
                 break;
             case 20:
-                accountType = TDAccount.AccountType.TYPE10;
+                profileType = TDProfile.ProfileType.TYPE10;
                 break;
             default:
-                accountType = TDAccount.AccountType.ANONYMOUS;
+                profileType = TDProfile.ProfileType.ANONYMOUS;
         }
-        return accountType;
+        return profileType;
     }
 
     /**

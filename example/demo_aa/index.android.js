@@ -3,7 +3,7 @@
  * https://github.com/facebook/react-native
  * @flow
  */
-import {TalkingDataAppAnalytics,TDACCOUNT,TalkingDataOrder,TalkingDataShoppingCart} from './TalkingDataAppAnalytics.js'
+import {TalkingDataAppAnalytics,TDPROFILE,TalkingDataOrder,TalkingDataShoppingCart} from './TalkingDataAppAnalytics.js'
 
 import React, { Component } from 'react';
 import {
@@ -16,6 +16,13 @@ import {
 } from 'react-native';
 
 export default class demo_aa extends Component {
+    //当组件要被从界面上移除的时候，就会调用 componentWillUnmount()
+    componentWillUnmount() {
+        // 如果存在this.timer，则使用clearTimeout清空。
+        // 如果你使用多个timer，那么用多个变量，或者用个数组来保存引用，然后逐个clear
+        this.timer && clearTimeout(this.timer);
+    }
+
   render() {
     return (
       <View style={styles.container}>
@@ -27,7 +34,18 @@ export default class demo_aa extends Component {
             });
           }} 
         />
-    
+
+        <Button
+          title={"getOAID"}
+          onPress={() => {
+                this.timer = setTimeout(() => {
+                   TalkingDataAppAnalytics.getOAID((oaid)=>{
+                     Alert.alert(oaid);
+                   });
+                 },3000);
+           }}
+         />
+
         <Button 
           title={"setLogEnabled"} 
           onPress={() => {
@@ -72,20 +90,20 @@ export default class demo_aa extends Component {
         <Button 
           title={"onRegister"} 
           onPress={() => {
-            accountId = '123'; //账户id
-            accountType = TDACCOUNT.ANONYMOUS; //账户类型 枚举
-            accountName = 'NickName'; //账户昵称
-            TalkingDataAppAnalytics.onRegister(accountId,accountType,accountName);
+            profileId = '123'; //账户id
+            profileType = TDPROFILE.ANONYMOUS; //账户类型 枚举
+            profileName = 'NickName'; //账户昵称
+            TalkingDataAppAnalytics.onRegister(profileId,profileType,profileName);
         }} 
         />
 
         <Button 
           title={"onLogin"} 
           onPress={() => {
-            accountId = '123'; //账户id
-            accountType = TDACCOUNT.ANONYMOUS; //账户类型 枚举
-            accountName = 'NickName'; //账户昵称
-            TalkingDataAppAnalytics.onLogin(accountId,accountType,accountName);
+            profileId = '123'; //账户id
+            profileType = TDPROFILE.ANONYMOUS; //账户类型 枚举
+            profileName = 'NickName'; //账户昵称
+            TalkingDataAppAnalytics.onLogin(profileId,profileType,profileName);
         }} 
         />
 
@@ -97,6 +115,17 @@ export default class demo_aa extends Component {
             parameter = {'btn_name':'xx_btn','btn_color':'xxcolor'} //事件参数
             TalkingDataAppAnalytics.onEvent(eventName, eventLabel,parameter);
         }} 
+        />
+
+        <Button
+          title={"onEventWithValue"}
+          onPress={() => {
+            eventName = 'click_btn'; //事件名称
+            eventLabel = 'my_custom_label'; //事件标签
+            parameter = {'btn_name':'xx_btn','btn_color':'xxcolor'} //事件参数
+            value = 5.21;//事件数值
+            TalkingDataAppAnalytics.onEventWithValue(eventName, eventLabel,parameter,value);
+        }}
         />
 
         <Button 
@@ -135,20 +164,20 @@ export default class demo_aa extends Component {
         <Button 
           title={"onPlaceOrder"} 
           onPress={() => {
-            accountId = 'aid_123';//账户id
+            profileId = 'aid_123';//账户id
             orderId = 'oid_123';//订单id
             total = 59900; //总钱数 单位为分
             currencyType = 'CNY';//货币类型
             order = new TalkingDataOrder(orderId,total,currencyType);//生成新的订单对象
             order.addItem('007','家电','电视',499900,1)
-            TalkingDataAppAnalytics.onPlaceOrder(accountId, order.orderString);
+            TalkingDataAppAnalytics.onPlaceOrder(profileId, order.orderString);
         }} 
         />
 
         <Button 
           title={"onOrderPaySucc"} 
           onPress={() => {
-            accountid = 'aid_123';//账户id
+            profileId = 'aid_123';//账户id
 
             payType = '银联支付' //支付类型
 
@@ -157,7 +186,7 @@ export default class demo_aa extends Component {
             currencyType = 'CNY';//货币类型
             order = new TalkingDataOrder(orderId,total,currencyType);//生成新的订单对象
             order.addItem('008','家电','冰箱',399900,1)
-            TalkingDataAppAnalytics.onOrderPaySucc(accountid,payType,order.orderString);
+            TalkingDataAppAnalytics.onOrderPaySucc(profileId,payType,order.orderString);
         }} 
         />
 
@@ -210,7 +239,8 @@ export default class demo_aa extends Component {
       </View>
     );
   }
-}
+  }
+
 
 const styles = StyleSheet.create({
   container: {
