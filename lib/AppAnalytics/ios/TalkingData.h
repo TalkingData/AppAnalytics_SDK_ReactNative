@@ -36,27 +36,6 @@ typedef NS_ENUM(NSUInteger, TDProfileType) {
 
 
 #if TARGET_OS_IOS
-@interface TalkingDataOrder : NSObject
-
-/**
- *  @method createOrder
- *  @param  orderId          订单id         类型:NSString
- *  @param  total            订单总价        类型:int
- *  @param  currencyType     币种           类型:NSString
- */
-+ (TalkingDataOrder *)createOrder:(NSString *)orderId total:(int)total currencyType:(NSString *)currencyType;
-
-/**
- *  @method addItemWithCategory
- *  @param  itemId           商品Id         类型:NSString
- *  @param  category         商品类别        类型:NSString
- *  @param  name             商品名称        类型:NSString
- *  @param  unitPrice        商品单价        类型:int
- *  @param  amount           商品数量        类型:int
- */
-- (TalkingDataOrder *)addItem:(NSString *)itemId category:(NSString *)category name:(NSString *)name unitPrice:(int)unitPrice amount:(int)amount;
-
-@end
 
 
 @interface TalkingDataShoppingCart : NSObject
@@ -115,15 +94,6 @@ typedef NS_ENUM(NSUInteger, TDProfileType) {
 #endif
 
 
-#if TARGET_OS_IOS
-/**
- *  @method setVersionWithCode:name:
- *  设置应用的版本号和版本名称
- *  @param  versionCode 应用程序的版本号，默认获取info.plist中CFBundleShortVersionString的值
- *  @param  versionName 应用程序的版本名称，默认获取info.plist中CFBundleDisplayName的值
- */
-+ (void)setVersionWithCode:(NSString *)versionCode name:(NSString *)versionName;
-#endif
 
 #if TARGET_OS_IOS
 /**
@@ -181,26 +151,6 @@ typedef NS_ENUM(NSUInteger, TDProfileType) {
  */
 + (void)onLogin:(NSString *)profileId type:(TDProfileType)type name:(NSString *)name;
 
-/**
- *  @method onLogin
- *  @param  profileId       账户ID
- *  @param  type            账户类型
- */
-+ (void)onLogin:(NSString *)profileId type:(TDProfileType)type;
-
-/**
- *  @method onApply
- *  @param  profileId       账户ID
- *  @param  type            账户类型
- */
-+ (void)onApply:(NSString *)profileId type:(TDProfileType)type;
-
-/**
- *  @method onActivate
- *  @param  profileId       账户ID
- *  @param  type            账户类型
- */
-+ (void)onActivate:(NSString *)profileId type:(TDProfileType)type;
 #endif
 
 /**
@@ -279,25 +229,29 @@ typedef NS_ENUM(NSUInteger, TDProfileType) {
 
 #if TARGET_OS_IOS
 /**
- *  @method onPlaceOrder    下单
- *  @param  profileId       账户ID          类型:NSString
- *  @param  order           订单            类型:TalkingDataOrder
+ *  @method onPlaceOrder    提交订单
+ *  @param  orderId         订单ID              类型:NSString
+ *  @param  amount          订单金额             类型:int
+ *  @param  currencyType    货币类型             类型:NSString
  */
-+ (void)onPlaceOrder:(NSString *)profileId order:(TalkingDataOrder *)order;
++ (void)onPlaceOrder:(NSString *)orderId amount:(int)amount currencyType:(NSString *)currencyType;
+
 
 /**
- *  @method onPay           支付
- *  @param  profileId       账户ID          类型:NSString
+ *  @method onOrderPaySucc  支付订单
+ *  @param  orderId         订单ID              类型:NSString
+ *  @param  amount          订单金额             类型:int
+ *  @param  currencyType    货币类型             类型:NSString
+ *  @param  paymentType     支付途径              类型:NSString
  */
-+ (void)onPay:(NSString *)profileId;
-
++ (void)onOrderPaySucc:(NSString *)orderId amount:(int)amount currencyType:(NSString *)currencyType paymentType:(NSString *)paymentType;
 /**
- *  @method onOrderPaySucc  支付
- *  @param  profileId       账户ID          类型:NSString
- *  @param  payType         支付类型         类型:NSString
- *  @param  order           订单详情         类型:TalkingDataOrder
+ *  @method onCancelOrder    取消订单
+ *  @param  orderId          订单ID              类型:NSString
+ *  @param  amount           订单金额             类型:int
+ *  @param  currencyType     货币类型             类型:NSString
  */
-+ (void)onOrderPaySucc:(NSString *)profileId payType:(NSString *)payType order:(TalkingDataOrder *)order;
++ (void)onCancelOrder:(NSString *)orderId amount:(int)amount currencyType:(NSString *)currencyType;
 
 /**
  *  @method onViewItem
@@ -352,121 +306,5 @@ typedef NS_ENUM(NSUInteger, TDProfileType) {
 #endif
 
 
-#if TARGET_OS_IOS
-/**
- * 获取开机时间
- */
-+ (long)getBootTime;
-
-/**
- * 获取设备品牌
- */
-+ (NSString *)getBrand;
-
-/**
- * 获取设备型号
- */
-+ (NSString *)getModel;
-
-/**
- * 获取系统名称
- */
-+ (NSString *)getOsName;
-
-/**
- * 获取系统版本
- */
-+ (NSString *)getOsVersionName;
-
-/**
- * 获取屏幕宽度
- */
-+ (int)getWidthPixels;
-
-/**
- * 获取屏幕高度
- */
-+ (int)getHeightPixels;
-
-/**
- * 获取屏幕亮度
- */
-+ (int)getBrightness;
-
-/**
- * 是否越狱
- */
-+ (BOOL)getJailBroken;
-
-/**
- * 是否支持蓝牙
- */
-+ (BOOL)isSupportBluetoothModule;
-
-/**
- * 是否插入耳机
- */
-+ (BOOL)isInsertEarphone;
-
-/**
- * 获取磁盘总量
- */
-+ (long)getTotalDiskSpace;
-
-/**
- * 获取磁盘剩余量
- */
-+ (long)getFreeDiskSpace;
-
-/**
- * 是否连接WiFi
- */
-+ (BOOL)isWiFiDataConnected;
-
-/**
- * 是否连接蜂窝移动网络
- */
-+ (BOOL)isMobileDataConnected;
-
-/**
- * 获取当前网络类型
- */
-+ (NSString *)getCurrentNetworkType;
-
-/**
- * 获取内网IP
- */
-+ (NSString *)getCurrentNetworkIP;
-
-/**
- * 获取电池电量百分比
- */
-+ (int)getBatteryLevel;
-
-/**
- * 是否在充电，是否充满电
- */
-+ (int)getBatteryState;
-
-/**
- * 获取所在国家信息
- */
-+ (NSString *)getSystemLocale;
-
-/**
- * 获取语言信息
- */
-+ (NSString *)getSystemLanguage;
-
-/**
- * 获取时区信息
- */
-+ (float)getSystemTimezoneV;
-
-/**
- * 获取行为识别信息。若此时无行为识别结果，则返回nil！
- */
-+ (NSDictionary *)getActivityRecognition;
-#endif
 
 @end

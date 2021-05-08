@@ -109,7 +109,7 @@ RCT_EXPORT_METHOD(setLatitude:(double)latitude longitude:(double)longitude)
 }
 RCT_EXPORT_METHOD(setAntiCheatingEnabled:(BOOL)enabled)
 {
-  [TalkingData setAntiCheatingEnabled:enabled];
+
 }
 RCT_EXPORT_METHOD(onRegister:(NSString *)profileId type:(TDProfileType)type name:(NSString *)name)
 {
@@ -153,66 +153,20 @@ RCT_EXPORT_METHOD(onPageEnd:(NSString *)pageName)
   [TalkingData trackPageEnd:pageName];
 }
 
-RCT_EXPORT_METHOD(onPlaceOrder:(NSString *)profileId order:(NSString *)orderString)
+RCT_EXPORT_METHOD(onPlaceOrder:(NSString *)orderId amount:(int)amount currencyType:(NSString *)currencyType)
 {
-  if (!profileId) {
-    return;
-  }
-  NSError * error = nil;
-  NSDictionary * orderDict = [NSJSONSerialization JSONObjectWithData:[orderString dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-  if (!error) {
-    NSString * orderid = [orderDict objectForKey:@"orderId"];
-    NSNumber * total = [orderDict objectForKey:@"total"];
-    NSString * currencyType = [orderDict objectForKey:@"currencyType"];
-    NSArray * items = [orderDict objectForKey:@"items"];
-    TalkingDataOrder * order = [TalkingDataOrder createOrder:orderid total:[total intValue] currencyType:currencyType];
-    if (!order) {
-      return;
-    }
-    if (items && items.count!=0) {
-      for (NSDictionary * eachItem in items) {
-        NSString * itemid = [eachItem objectForKey:@"itemId"];
-        NSString * category = [eachItem objectForKey:@"category"];
-        NSString * name = [eachItem objectForKey:@"name"];
-        NSString * unitPrice = [eachItem objectForKey:@"unitPrice"];
-        NSString * amount = [eachItem objectForKey:@"amount"];
-        [order addItem:itemid category:category name:name unitPrice:[unitPrice intValue] amount:[amount intValue] ];
-      }
-    }
-    [TalkingData onPlaceOrder:profileId order:order];
-    
-  }
+    [TalkingData onPlaceOrder:orderId amount:amount currencyType:currencyType];
 }
 
-RCT_EXPORT_METHOD(onOrderPaySucc:(NSString *)profileId payType:(NSString *)payType order:(NSString *)orderString)
+
+RCT_EXPORT_METHOD(onOrderPaySucc:(NSString *)orderId amount:(int)amount currencyType:(NSString *)currencyType paymentType:(NSString *)paymentType)
 {
-  if (!profileId || !payType) {
-    return;
-  }
-  
-  NSError * error = nil;
-  NSDictionary * orderDict = [NSJSONSerialization JSONObjectWithData:[orderString dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-  if (!error) {
-    NSString * orderid = [orderDict objectForKey:@"orderId"];
-    NSNumber * total = [orderDict objectForKey:@"total"];
-    NSString * currencyType = [orderDict objectForKey:@"currencyType"];
-    NSArray * items = [orderDict objectForKey:@"items"];
-    TalkingDataOrder * order = [TalkingDataOrder createOrder:orderid total:[total intValue] currencyType:currencyType];
-    if (!order) {
-      return;
-    }
-    if (items && items.count!=0) {
-      for (NSDictionary * eachItem in items) {
-        NSString * itemid = [eachItem objectForKey:@"itemId"];
-        NSString * category = [eachItem objectForKey:@"category"];
-        NSString * name = [eachItem objectForKey:@"name"];
-        NSString * unitPrice = [eachItem objectForKey:@"unitPrice"];
-        NSString * amount = [eachItem objectForKey:@"amount"];
-        [order addItem:itemid category:category name:name unitPrice:[unitPrice intValue] amount:[amount intValue] ];
-      }
-    }
-    [TalkingData onOrderPaySucc:profileId payType:payType order:order];
-  }
+    [TalkingData onOrderPaySucc:orderId amount:amount currencyType:currencyType paymentType:paymentType];
+}
+
+RCT_EXPORT_METHOD(onCancelOrder:(NSString *)orderId amount:(int)amount currencyType:(NSString *)currencyType)
+{
+    [TalkingData onCancelOrder:orderId amount:amount currencyType:currencyType];
 }
 
 RCT_EXPORT_METHOD(onViewItem:(NSString *)itemId category:(NSString *)category name:(NSString *)name unitPrice:(int)unitPrice)

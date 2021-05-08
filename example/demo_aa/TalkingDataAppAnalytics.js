@@ -24,28 +24,6 @@ const TD = NativeModules.TalkingData;
 */
 const TDPROFILE = NativeModules.TDProfileType;
 
-class TalkingDataOrder {
-
-	constructor(orderId,total,currencyType) {
-		this.orderId = orderId;
-		this.total = total;
-		this.currencyType = currencyType;
-		this.items = new Array();
-  	}
-
-  	addItem(itemId,category,name,unitPrice,amount){
-  		this.items.push({'itemId':itemId,'category':category,'name':name,'unitPrice':unitPrice,'amount':amount});
-  	}
-
-  	get orderString(){
-  		return JSON.stringify({
-  			'orderId':this.orderId,
-  			'total':this.total,
-  			'currencyType':this.currencyType,
-  			'items':this.items
-  		});
-  	}
-}
 
 class TalkingDataShoppingCart {
 	
@@ -266,14 +244,17 @@ class TalkingDataAppAnalytics {
 
 		}
 	*/
-	static onPlaceOrder(profileId,order){
-		TD.onPlaceOrder(profileId,order);
+	static onPlaceOrder(orderId,amount,currencyType){
+		TD.onPlaceOrder(orderId,amount,currencyType);
 	}
 
-	static onOrderPaySucc(profileId,payType,order){
-		TD.onOrderPaySucc(profileId,payType,order);
+	static onOrderPaySucc(orderId,amount,currencyType,paymentType){
+        TD.onOrderPaySucc(orderId,amount,currencyType,paymentType);
 	}
 
+    static onCancelOrder(orderId,amount,currencyType){
+        TD.onCancelOrder(orderId,amount,currencyType);
+    }
 	static onViewItem(itemId,category,name,unitPrice){
 		TD.onViewItem(itemId,category,name,unitPrice);
 	}
@@ -289,4 +270,4 @@ class TalkingDataAppAnalytics {
 
 }
 
-export {TalkingDataAppAnalytics,TDPROFILE,TalkingDataOrder,TalkingDataShoppingCart};
+export {TalkingDataAppAnalytics,TDPROFILE,TalkingDataShoppingCart};

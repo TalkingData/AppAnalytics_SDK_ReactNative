@@ -11,7 +11,6 @@ import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableNativeArray;
 import com.facebook.react.bridge.ReadableNativeMap;
-import com.tendcloud.tenddata.Order;
 import com.tendcloud.tenddata.ShoppingCart;
 import com.tendcloud.tenddata.TCAgent;
 import com.tendcloud.tenddata.TDProfile;
@@ -224,27 +223,41 @@ public class TalkingData extends ReactContextBaseJavaModule {
     }
 
     /**
-     * 下订单
+     * 提交订单
      *
-     * @param profileID 账号ID
-     * @param order 订单
+     * @param orderID       订单
+     * @param amount        订单金额
+     * @param currencyType  货币类型
      */
     @ReactMethod
-    public void onPlaceOrder(String profileID, String order) {
-        TCAgent.onPlaceOrder(profileID, getOrder(order));
+    public void onPlaceOrder(String orderID, int amount, String currencyType) {
+        TCAgent.onPlaceOrder(orderID,amount,currencyType);
     }
 
 
     /**
-     * 订单支付成功
+     * 支付订单
      *
-     * @param profileID 账号ID
-     * @param payType 支付类型
-     * @param order 订单
+     * @param orderID       订单
+     * @param amount        订单金额
+     * @param currencyType  货币类型
+     * @param paymentType   支付类型
      */
     @ReactMethod
-    public void onOrderPaySucc(String profileID, String payType, String order) {
-        TCAgent.onOrderPaySucc(profileID, payType, getOrder(order));
+    public void onOrderPaySucc(String orderID, int amount, String currencyType, String paymentType) {
+        TCAgent.onOrderPaySucc(orderID, amount, currencyType, paymentType);
+    }
+
+    /**
+     * 取消订单
+     *
+     * @param orderID       订单
+     * @param amount        订单金额
+     * @param currencyType  货币类型
+     */
+    @ReactMethod
+    public void onCancelOrder(String orderID, int amount, String currencyType) {
+        TCAgent.onCancelOrder(orderID,amount,currencyType);
     }
 
     /**
@@ -348,38 +361,6 @@ public class TalkingData extends ReactContextBaseJavaModule {
                 profileType = TDProfile.ProfileType.ANONYMOUS;
         }
         return profileType;
-    }
-
-    /**
-     * 获取订单
-     *
-     * @param json 订单
-     * @return Order订单对象
-     */
-    private Order getOrder(String json){
-        try {
-            JSONObject jsonObject = new JSONObject(json);
-            Order order = Order.createOrder(jsonObject.getString("orderId"), jsonObject.getInt("total"), jsonObject.getString("currencyType"));
-            JSONArray items = jsonObject.getJSONArray("items");
-            for (int i = 0;i<items.length();i++) {
-                JSONObject a = items.getJSONObject(i);
-                String id = a.getString("itemId");
-                String category = a.getString("category");
-                String name = a.getString("name");
-                int unitPrice = a.getInt("unitPrice");
-                int count = a.getInt("amount");
-                if (TextUtils.isEmpty(id)) {
-                    order.addItem(category,name,unitPrice,count);
-                }else{
-                    order.addItem(id,category,name,unitPrice,count);
-                }
-            }
-            return order;
-        }catch (Throwable t){
-            t.printStackTrace();
-        }
-
-        return null;
     }
 
     /**

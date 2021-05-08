@@ -148,21 +148,6 @@ App Analytics react-native 平台 SDK 由`封装层`和`Native SDK`两部分构�
   ```
   ...
   
-  class TalkingDataOrder {
-  
-  	constructor(orderId,total,currencyType) {
-  		...
-    	}
-  
-    	addItem(itemId,category,name,unitPrice,amount){
-  	  	...	  	
-  	}
-  
-    	get orderString(){
-    		...
-    	}
-  }
-  
   class TalkingDataShoppingCart {
   	
   	constructor(){
@@ -180,14 +165,18 @@ App Analytics react-native 平台 SDK 由`封装层`和`Native SDK`两部分构�
   
   ...
   
-  static onPlaceOrder(profileId,order){
+  static onPlaceOrder(orderId,amount,currencyType){
   	...
   }
   
-  static onOrderPaySucc(profileId,payType,order){
+  static onOrderPaySucc(orderId,amount,currencyType,paymentType){
   	...
   }
   
+  static onCancelOrder(orderId,amount,currencyType){
+    ...
+  }
+    
   static onViewItem(itemId,category,name,unitPrice){
   	...
   }
@@ -208,18 +197,22 @@ App Analytics react-native 平台 SDK 由`封装层`和`Native SDK`两部分构�
   ```
   ...
   
-  import com.tendcloud.tenddata.Order;
   import com.tendcloud.tenddata.ShoppingCart;
   
   ...
   
     @ReactMethod
-    public void onPlaceOrder(String profileID, String order) {
+    public void onPlaceOrder(String orderID, int amount, String currencyType) {
         ...
     }
   
     @ReactMethod
-    public void onOrderPaySucc(String profileID, String payType, String order) {
+    public void onOrderPaySucc(String orderID, int amount, String currencyType, String paymentType) {
+        ...
+    }
+    
+    @ReactMethod
+    public void onCancelOrder(String orderID, int amount, String currencyType) {
         ...
     }
   
@@ -240,9 +233,6 @@ App Analytics react-native 平台 SDK 由`封装层`和`Native SDK`两部分构�
     
     ...
     
-    private Order getOrder(String json){
-        ...
-    }
   
     private ShoppingCart getShoppingCart(String json){
         ...
@@ -256,14 +246,19 @@ App Analytics react-native 平台 SDK 由`封装层`和`Native SDK`两部分构�
   ```
   ...
   
-  RCT_EXPORT_METHOD(onPlaceOrder:(NSString *)profileId order:(NSString *)orderString)
+  RCT_EXPORT_METHOD(onPlaceOrder:(NSString *)orderId amount:(int)amount currencyType:(NSString *)currencyType)
   {
   	...
   }
   
-  RCT_EXPORT_METHOD(onOrderPaySucc:(NSString *)profileId payType:(NSString *)payType order:(NSString *)orderString)
+  RCT_EXPORT_METHOD(onOrderPaySucc:(NSString *)orderId amount:(int)amount currencyType:(NSString *)currencyType paymentType:(NSString *)paymentType)
   {
     	...
+  }
+  
+  RCT_EXPORT_METHOD(onCancelOrder:(NSString *)orderId amount:(int)amount currencyType:(NSString *)currencyType)
+  {
+  	...
   }
   
   RCT_EXPORT_METHOD(onViewItem:(NSString *)itemId category:(NSString *)category name:(NSString *)name unitPrice:(int)unitPrice)
@@ -285,11 +280,6 @@ App Analytics react-native 平台 SDK 由`封装层`和`Native SDK`两部分构�
   ```
   ...
   
-  @interface TalkingDataOrder : NSObject
-  + (TalkingDataOrder *)createOrder:(NSString *)orderId total:(int)total currencyType:(NSString *)currencyType;
-  - (TalkingDataOrder *)addItem:(NSString *)itemId category:(NSString *)category name:(NSString *)name unitPrice:(int)unitPrice amount:(int)amount;
-  @end
-  
   @interface TalkingDataShoppingCart : NSObject
   + (TalkingDataShoppingCart *)createShoppingCart;
   - (TalkingDataShoppingCart *)addItem:(NSString *)itemId category:(NSString *)category name:(NSString *)name unitPrice:(int)unitPrice amount:(int)amount;
@@ -297,8 +287,9 @@ App Analytics react-native 平台 SDK 由`封装层`和`Native SDK`两部分构�
   
   ...
   
-  + (void)onPlaceOrder:(NSString *)profile order:(TalkingDataOrder *)order;
-  + (void)onOrderPaySucc:(NSString *)profile payType:(NSString *)payType order:(TalkingDataOrder *)order;
+  + (void)onPlaceOrder:(NSString *)orderId amount:(int)amount currencyType:(NSString *)currencyType;
+  + (void)onOrderPaySucc:(NSString *)orderId amount:(int)amount currencyType:(NSString *)currencyType paymentType:(NSString *)paymentType;
+  + (void)onCancelOrder:(NSString *)orderId amount:(int)amount currencyType:(NSString *)currencyType;
   + (void)onViewItem:(NSString *)itemId category:(NSString *)category name:(NSString *)name unitPrice:(int)unitPrice;
   + (void)onAddItemToShoppingCart:(NSString *)itemId category:(NSString *)category name:(NSString *)name unitPrice:(int)unitPrice amount:(int)amount;
   + (void)onViewShoppingCart:(TalkingDataShoppingCart *)shoppingCart;
@@ -570,8 +561,9 @@ import {TalkingDataAppAnalytics,TDPROFILE,TalkingDataOrder,TalkingDataShoppingCa
 | [removeGlobalKV(k)](#removeglobalkv)                 |    k 需要删除的全局的key      |  ✅  |   ✅   |  删除全局数据  |
 | [onPageStart(pageName)](#onpagestart)                 |   pageName 页面名称     |  ✅  |   ✅   |  触发页面事件，在页面加载完毕的时候调用，用于记录页面名称和使用时长，和 onPageEnd 配合使用  |
 | [onPageEnd(pageName)](#onpageend)                 |    pageName 页面名称      |  ✅  |   ✅   |  触发页面事件，在页面加载完毕的时候调用，用于记录页面名称和使用时长，和 onPageBegin 配合使用|
-| [onPlaceOrder(profileId,orderString)](#onplaceorder)                 |    profileId 账户id,orderString 订单的字符串     |  ✅  |   ✅   |  下单接口用于记录用户在使用应用过程中的成功下单的行为。 下单接口由3个子接口构成：创建订单、添加订单详情、成功下单。  |
-| [onOrderPaySucc(profileId,payType,orderString)](#onOrderPaySucc(profileId,payType,orderString))                 |    profileId账户id,payType 支付类型,orderString 订单的字符串     |  ✅  |   ✅   |  成功支付订单接口用于记录用户完成订单支付的行为。 |
+| [onPlaceOrder(orderId,amount,currencyType)](#onplaceorder)                 |    orderId 订单id, amount 总钱数, currencyType 货币类型    |  ✅  |   ✅   |  下单接口用于记录用户在使用应用过程中的成功下单的行为  |
+| [onOrderPaySucc(orderId,amount,currencyType,paymentType)](#onorderpaysucc)                 |    orderId 订单id, amount 总钱数, currencyType 货币类型, paymentType 支付类型     |  ✅  |   ✅   |  成功支付订单接口用于记录用户完成订单支付的行为。 |
+| [onCancelOrder(orderId,amount,currencyType)](#oncancelorder)                 |    orderId 订单id, amount 总钱数, currencyType 货币类型     |  ✅  |   ✅   |  取消订单接口用于记录用户取消订单的行为。 |
 | [onViewItem(itemId,category,name)](#onviewitem)                 |   itemId item的id,category 类别,name item的名称    |  ✅  |   ✅   | 用于记录用户查看商品详情的行为。 |
 | [onAddItemToShoppingCart(itemId,category,name,unitPrice,amount)](#onadditemtoshoppingcart)                 |    itemId item的ID,category 类别,name 名称,unitPrice 单价,amount 数量     |  ✅  |   ✅   |  用于记录用户将商品加入购物车的行为。|
 | [onViewShoppingCart(shoppingCartString)](#onviewshoppingcart)                 |   shoppingCartString 购物车字符串    |  ✅  |   ✅   | 查看购物车用于记录用户浏览购物车内商品的行为。 这个接口由3个子接口构成：创建购物车、添加购物车详情、查看购物车。调用时需要按顺序完成这3个子接口的调用，否则可能会无法产生正确的查看购物车行为数据。 |
@@ -1016,59 +1008,53 @@ TalkingDataAppAnalytics.onPageEnd(pageName);
 ---
 
 <span id="onplaceorder"></span>
-### onPlaceOrder(profileId,orderString)
+### onPlaceOrder(orderId,amount,currencyType)
+
+> 重要！下单的接口现在已经做了变更，原有的接口已经不建议使用，请开发者尽快更新
 
 下单接口用于记录用户在使用应用过程中的成功下单的行为。
-下单接口由3个子接口构成：创建订单、添加订单详情、成功下单。
 
 **Examples**
 
 ```js
-import {TalkingDataAppAnalytics, TalkingDataOrder} from 'TalkingDataAppAnalytics.js'
+import {TalkingDataAppAnalytics} from 'TalkingDataAppAnalytics.js'
 
-profileId = 'aid_123';//账户id
 orderId = 'oid_123';//订单id
-total = 59900; //总钱数 单位为分
+amount = 59900; //总钱数 单位为分
 currencyType = 'CNY';//货币类型
-order = new TalkingDataOrder(orderId,total,currencyType);//生成新的订单对象
-order.addItem('007','家电','电视',499900,1)
-TalkingDataAppAnalytics.onPlaceOrder(profileId, order.orderString);
+TalkingDataAppAnalytics.onPlaceOrder(orderId, amount, currencyType);
 
 ```
 
 **Notes**
+
 > 接口支持iOS+Android平台。
 
 **参数**
 
-* **profileId (required):** string 账户id
 * **orderId (required):** string 订单id
-* **total (required):** string 总钱数 单位为分
+* **amount (required):** string 总钱数 单位为分
 * **currencyType (required):** string 货币类型
 
 ---
 
 <span id="onorderpaysucc"></span>
-### onOrderPaySucc(profileId,payType,orderString)
+### onOrderPaySucc(orderId,amount,currencyType,paymentType)
+
+> 重要！成功支付订单的接口现在已经做了变更，原有的接口已经不建议使用，请开发者尽快更新
 
 成功支付订单接口用于记录用户完成订单支付的行为。
-
 
 **Examples**
 
 ```js
-import {TalkingDataAppAnalytics, TalkingDataOrder} from 'TalkingDataAppAnalytics.js'
-
-profileid = 'aid_123';//账户id
-
-payType = '银联支付' //支付类型
+import {TalkingDataAppAnalytics} from 'TalkingDataAppAnalytics.js'
 
 orderId = 'oid_123';//订单id
-total = 59900; //总钱数 单位为分
+amount = 59900; //总钱数 单位为分
 currencyType = 'CNY';//货币类型
-order = new TalkingDataOrder(orderId,total,currencyType);//生成新的订单对象
-order.addItem('008','家电','冰箱',399900,1)
-TalkingDataAppAnalytics.onOrderPaySucc(profileid,payType,order.orderString);
+paymentType = '银联支付' //支付类型
+TalkingDataAppAnalytics.onOrderPaySucc(orderId, amount, currencyType, paymentType);
 
 ```
 
@@ -1078,13 +1064,44 @@ TalkingDataAppAnalytics.onOrderPaySucc(profileid,payType,order.orderString);
 
 **参数**
 
-* **profileid (required):** string 账户id
-* **payType (required):** string 支付方式
 * **orderId (required):** string 订单id
-* **total (required):** number 总钱数 单位为分
+* **amount (required):** number 总钱数 单位为分
+* **currencyType (required):** string 货币类型
+* **paymentType (required):** string 支付方式
+
+---
+
+<span id="oncancelorder"></span>
+
+### onCancelOrder(orderId,amount,currencyType)
+
+下单接口用于记录用户在使用应用过程中的取消订单的行为。
+
+**Examples**
+
+```js
+import {TalkingDataAppAnalytics} from 'TalkingDataAppAnalytics.js'
+
+orderId = 'oid_123';//订单id
+amount = 59900; //总钱数 单位为分
+currencyType = 'CNY';//货币类型
+TalkingDataAppAnalytics.onCancelOrder(orderId, amount, currencyType);
+
+```
+
+**Notes**
+
+> 接口支持iOS+Android平台。
+
+**参数**
+
+* **orderId (required):** string 订单id
+* **amount (required):** string 总钱数 单位为分
 * **currencyType (required):** string 货币类型
 
 ---
+
+
 
 <span id="onviewitem"></span>
 ### onViewItem(itemId,category,name,unitPrice)

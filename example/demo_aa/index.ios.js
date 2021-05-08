@@ -3,7 +3,7 @@
  * https://github.com/facebook/react-native
  * @flow
  */
-import {TalkingDataAppAnalytics,TDPROFILE,TalkingDataOrder,TalkingDataShoppingCart} from './TalkingDataAppAnalytics.js'
+import {TalkingDataAppAnalytics,TDPROFILE,TalkingDataShoppingCart} from './TalkingDataAppAnalytics.js'
 
 import React, { Component } from 'react';
 import {
@@ -146,30 +146,32 @@ export default class demo_aa extends Component {
         <Button 
           title={"onPlaceOrder"} 
           onPress={() => {
-            profileId = 'aid_123';//账户id
-            orderId = 'oid_123';//订单id
-            total = 59900; //总钱数 单位为分
-            currencyType = 'CNY';//货币类型
-            order = new TalkingDataOrder(orderId,total,currencyType);//生成新的订单对象
-            order.addItem('007','家电','电视',499900,1)
-            TalkingDataAppAnalytics.onPlaceOrder(profileId, order.orderString);
+           orderId = 'oid_123';//订单id
+           total = 59900; //总钱数 单位为分
+           currencyType = 'CNY';//货币类型
+           TalkingDataAppAnalytics.onPlaceOrder(orderId,total,currencyType);
         }} 
         />
 
         <Button 
           title={"onOrderPaySucc"} 
           onPress={() => {
-            profileId = 'aid_123';//账户id
-
-            payType = '银联支付' //支付类型
-
             orderId = 'oid_123';//订单id
             total = 59900; //总钱数 单位为分
             currencyType = 'CNY';//货币类型
-            order = new TalkingDataOrder(orderId,total,currencyType);//生成新的订单对象
-            order.addItem('008','家电','冰箱',399900,1)
-            TalkingDataAppAnalytics.onOrderPaySucc(profileId,payType,order.orderString);
+            paymentType = '银联支付' //支付类型
+            TalkingDataAppAnalytics.onOrderPaySucc(orderId,total,currencyType,paymentType);
         }} 
+        />
+
+         <Button
+           title={"onCancelOrder"}
+           onPress={() => {
+             orderId = 'oid_123';//订单id
+             total = 59900; //总钱数 单位为分
+             currencyType = 'CNY';//货币类型
+             TalkingDataAppAnalytics.onCancelOrder(orderId,total,currencyType);
+        }}
         />
 
         <Button 
